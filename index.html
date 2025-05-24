@@ -91,9 +91,11 @@
         }
 
         .course-grid-container {
-            padding: calc(var(--homepage-header-height) + 3rem) 2rem 3rem 2rem; /* 顶部padding考虑页眉高度 */
-            max-width: 1400px; /* Max width for larger screens */
+            padding: calc(var(--homepage-header-height) + 3rem) 2rem 3rem 2rem;
+            max-width: 1880px; /* Increased from 1750px for more room */
             margin: 0 auto; /* Center the grid */
+            position: relative; /* For absolute positioning of sidebar */
+            overflow-x: hidden; /* Prevent horizontal scroll if sidebar pokes out slightly */
         }
         .course-grid {
             display: grid;
@@ -337,6 +339,198 @@
             transform: rotate(15deg); /* Slight rotation for dynamism */
         }
 
+        /* New styles for sidebar layout and reminder card */
+        .course-content-main {
+            max-width: 1300px; /* Approx 4 cards (300px each) + 3 gaps (2rem each) */
+            margin: 0 auto; /* Ensure course content itself is centered */
+        }
+
+        .exam-reminder-sidebar {
+            /* flex: 1; */ /* Removed flex property */
+            width: 220px; /* Make sidebar smaller */
+            position: absolute;
+            top: calc(var(--homepage-header-height) + 2rem); /* Increased top margin for clearance */
+            right: 2rem; /* Position from the right edge of container */
+            /* left: calc(50% + 650px + 2rem); */ /* Removed complex left positioning */
+        }
+
+        .reminder-card {
+            background-color: white;
+            padding: 1.2rem; /* Slightly reduced padding */
+            border-radius: 10px; /* Slightly smaller radius */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+            border: 1px solid var(--border-color);
+        }
+
+        .reminder-card h4 {
+            font-size: 1.15rem; /* Slightly smaller title */
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.6rem;
+        }
+
+        .reminder-card p {
+            font-size: 0.9rem; /* Slightly smaller text */
+            color: var(--text-color-medium);
+            line-height: 1.5;
+            margin-bottom: 0.7rem;
+        }
+        .reminder-card p strong {
+            color: var(--text-color-dark);
+        }
+
+        .countdown {
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed var(--border-color);
+        }
+        .countdown p {
+            font-size: 0.85rem; /* Smaller text */
+            color: var(--text-color-light);
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+        .countdown-values {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .countdown-values div {
+            font-size: 0.8rem; /* Smaller text */
+            color: var(--text-color-medium);
+        }
+        .countdown-values span {
+            display: block;
+            font-size: 1.6rem; /* Smaller numbers */
+            font-weight: bold;
+            color: var(--primary-color-dark);
+            margin-bottom: 0.15rem;
+        }
+
+        /* .reminder-details-btn:hover removed as button is removed */
+        
+        /* Responsive adjustments for sidebar */
+        /* Removed the problematic @media (max-width: 1600px) block */
+
+        @media (max-width: 1699px) { /* Adjusted breakpoint for stacking */
+            .course-grid-container {
+                padding-left: 1rem; /* Reduce padding on smaller screens */
+                padding-right: 1rem;
+            }
+            .exam-reminder-sidebar {
+                position: static; /* Stack sidebar */
+                width: 100%; /* Full width on smaller screens */
+                margin: 0 auto 2rem auto; /* Center and add bottom margin */
+                max-width: 450px; /* Optional: constrain max-width when stacked, made a bit smaller */
+            }
+             /* Ensure course-content-main still uses available width */
+            .course-content-main {
+                max-width: 100%; 
+            }
+        }
+
+        /* Styles for Learning Heatmap */
+        .learning-heatmap-card {
+            background-color: white;
+            padding: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+            border: 1px solid var(--border-color);
+            margin-top: 1.5rem; /* Space above this card */
+        }
+
+        .learning-heatmap-card h4 {
+            font-size: 1.15rem;
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            /* Adjust grid columns based on how many days you want to show per week */
+            grid-template-columns: repeat(7, 1fr); /* Example: 7 days a week */
+            gap: 3px; /* Small gap between cells */
+            margin-bottom: 1rem;
+            min-height: 100px; /* Placeholder height */
+        }
+
+        .heatmap-cell {
+            width: 100%;
+            padding-bottom: 100%; /* Creates a square aspect ratio */
+            background-color: #f8f9fa; /* MODIFIED: Default very light gray for empty/future cells */
+            border-radius: 3px;
+            border: 1px solid #e9ecef; /* MODIFIED: Matching lighter border */
+            box-sizing: border-box;
+            font-size: 0.6rem; /* For potential day numbers, tiny */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color-light);
+            position: relative; /* For tooltips if added later */
+        }
+        
+        .heatmap-day-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 0.65em; /* Relative to cell size, make it small */
+            color: var(--text-color-light); /* Light color for the date */
+            z-index: 0; /* Behind flag if present */
+        }
+
+        .heatmap-exam-flag {
+            color: var(--accent-color-dark); /* Or a distinct color like red: #e53e3e */
+            font-size: 0.9em; /* Adjust size relative to cell */
+            position: absolute; /* Position within the cell */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; /* Ensure it's above background color */
+        }
+
+        .exam-day-cell {
+            /* Optional: Add a special border or slightly different background to highlight exam day further */
+            /* border: 1px solid var(--accent-color-dark) !important; */
+        }
+        
+        /* Heatmap cell activity levels - colors from light to dark primary */
+        .heatmap-cell.level-0 { background-color: #f0f3f5; border-color: #dee2e6; } /* MODIFIED: Very Light Grayish Blue */
+        .heatmap-cell.level-1 { background-color: #bee3f8; border-color: #90cdf4; } /* Light Blue */
+        .heatmap-cell.level-2 { background-color: #90cdf4; border-color: #63b3ed; } /* Medium Blue */
+        .heatmap-cell.level-3 { background-color: #63b3ed; border-color: #4299e1; } /* Darker Blue */
+        .heatmap-cell.level-4 { background-color: #4299e1; border-color: #3182ce; } /* Darkest Blue (like primary) */
+        
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align to right by default */
+            gap: 5px;
+        }
+
+        .heatmap-cell-legend {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: 1px solid var(--text-color-light);
+        }
+        .heatmap-cell-legend.level-0 { background-color: #f0f3f5; border-color: #dee2e6; } /* MODIFIED: Very Light Grayish Blue */
+        .heatmap-cell-legend.level-1 { background-color: #bee3f8; border-color: #90cdf4; }
+        .heatmap-cell-legend.level-2 { background-color: #90cdf4; border-color: #63b3ed; }
+        .heatmap-cell-legend.level-3 { background-color: #63b3ed; border-color: #4299e1; }
+        .heatmap-cell-legend.level-4 { background-color: #4299e1; border-color: #3182ce; }
+
+        .exam-day-cell .heatmap-day-number {
+            /* Optional: Hide day number on exam day if flag is enough */
+            /* display: none; */ 
+        }
+
     </style>
 </head>
 <body>
@@ -351,8 +545,42 @@
     </header>
 
     <main class="course-grid-container">
-        <div id="course-grid" class="course-grid">
+        <div class="course-content-main">
+            <div id="course-grid" class="course-grid">
+                <!-- 课程卡片将由JavaScript动态生成于此 -->
             </div>
+        </div>
+        <aside class="exam-reminder-sidebar">
+            <div class="reminder-card">
+                <h4><i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--accent-color);"></i>重要提醒</h4>
+                <p><strong>考试名称：</strong><br>【电子学会】Python一级</p>
+                <p><strong>考试时间：</strong><br>2025年6月7日 (周六)<br>14:00 - 15:00</p>
+                <div id="countdown-timer-sidebar" class="countdown">
+                    <p>距离考试还有：</p>
+                    <div class="countdown-values">
+                        <div><span id="days">00</span> 天</div>
+                        <div><span id="hours">00</span> 时</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="learning-heatmap-card">
+                <h4><i class="fas fa-fire-alt" style="margin-right: 8px; color: var(--accent-color-dark);"></i>今日学习力</h4>
+                <div id="learning-heatmap-grid" class="heatmap-grid">
+                    <!-- 热力图格子将由JavaScript动态生成 -->
+                </div>
+                <div class="heatmap-legend">
+                    <span style="font-size: 0.75rem; color: var(--text-color-light);">少</span>
+                    <span class="heatmap-cell-legend level-0"></span>
+                    <span class="heatmap-cell-legend level-1"></span>
+                    <span class="heatmap-cell-legend level-2"></span>
+                    <span class="heatmap-cell-legend level-3"></span>
+                    <span class="heatmap-cell-legend level-4"></span>
+                    <span style="font-size: 0.75rem; color: var(--text-color-light);">多</span>
+                </div>
+            </div>
+
+        </aside>
     </main>
 
     <footer class="app-footer">
@@ -511,6 +739,198 @@
 
             courseGrid.appendChild(cardLink);
         });
+
+        // JavaScript for Sidebar Countdown Timer
+        function updateCountdownSidebar() {
+            const examDate = new Date("June 7, 2025 14:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = examDate - now;
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+
+            if (distance < 0) {
+                document.getElementById("countdown-timer-sidebar").innerHTML = "<p style='font-size: 1.1rem; color: var(--accent-color-dark); font-weight: bold;'>考试已经开始/结束！</p>";
+                if (daysEl) daysEl.textContent = "00";
+                if (hoursEl) hoursEl.textContent = "00";
+                clearInterval(countdownIntervalSidebar);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            if (daysEl) daysEl.textContent = days.toString().padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+        }
+
+        // Initialize countdown and update every second
+        updateCountdownSidebar(); // Initial call
+        const countdownIntervalSidebar = setInterval(updateCountdownSidebar, 1000);
+
+        // --- Learning Heatmap Functionality ---
+        const heatmapGrid = document.getElementById('learning-heatmap-grid');
+        const WEEKS_TO_SHOW = 5; // Show last 5 weeks (approx)
+        const DAYS_IN_WEEK = 7;
+        const totalDaysToShow = WEEKS_TO_SHOW * DAYS_IN_WEEK;
+        const LEARNING_DATA_KEY = 'learningHeatmapData';
+
+        // Color levels (0: least, 4: most activity)
+        const activityColorClasses = [
+            'level-0', // Very light activity or just opened
+            'level-1',
+            'level-2',
+            'level-3',
+            'level-4'  // Max activity
+        ];
+        const TIME_THRESHOLDS = [5, 15, 30, 60]; // Minutes for each level (e.g., >5min=level-1, >15min=level-2 etc.)
+                                                  // level-0 is for < TIME_THRESHOLDS[0]
+
+        let dailyVisitStartTime = null;
+        let todayLearningInterval = null;
+
+        // --- Constants for Heatmap Date Range ---
+        const EXAM_DATE_STR = "2025-06-07";
+        const EXAM_DATE = new Date(EXAM_DATE_STR + "T00:00:00"); // Ensure it's start of day for comparisons
+        const WEEKS_AROUND_EXAM = 5; // Show approx 5 weeks, with exam date being the endpoint.
+        // --- End Constants ---
+
+        function getLearningData() {
+            const data = localStorage.getItem(LEARNING_DATA_KEY);
+            return data ? JSON.parse(data) : {};
+        }
+
+        function saveLearningData(data) {
+            localStorage.setItem(LEARNING_DATA_KEY, JSON.stringify(data));
+        }
+
+        function getFormattedDate(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function renderHeatmap() {
+            if (!heatmapGrid) return;
+            heatmapGrid.innerHTML = ''; // Clear previous grid
+            const learningData = getLearningData();
+            
+            // Calculate the end date for the heatmap (Saturday of the week EXAM_DATE is in)
+            let heatmapEndDate = new Date(EXAM_DATE);
+            heatmapEndDate.setDate(EXAM_DATE.getDate() + (6 - EXAM_DATE.getDay())); // Go to Saturday of exam week
+
+            // Calculate the start date (Sunday, WEEKS_AROUND_EXAM weeks before)
+            let heatmapStartDate = new Date(heatmapEndDate);
+            heatmapStartDate.setDate(heatmapEndDate.getDate() - (WEEKS_AROUND_EXAM * DAYS_IN_WEEK) + 1);
+            // Ensure it's a Sunday
+            heatmapStartDate.setDate(heatmapStartDate.getDate() - heatmapStartDate.getDay());
+
+            const totalCellsToRender = WEEKS_AROUND_EXAM * DAYS_IN_WEEK;
+            
+            for (let i = 0; i < totalCellsToRender; i++) {
+                const cellDate = new Date(heatmapStartDate);
+                cellDate.setDate(heatmapStartDate.getDate() + i);
+                const dateStr = getFormattedDate(cellDate);
+                
+                const cell = document.createElement('div');
+                cell.classList.add('heatmap-cell');
+                cell.dataset.date = dateStr;
+                cell.title = dateStr; // Tooltip with full date
+
+                // Add day number text
+                const dayNumberText = document.createElement('span');
+                dayNumberText.className = 'heatmap-day-number';
+                dayNumberText.textContent = cellDate.getDate();
+                cell.appendChild(dayNumberText);
+
+                // Add flag icon for exam date
+                if (dateStr === EXAM_DATE_STR) {
+                    const flagIcon = document.createElement('i');
+                    flagIcon.className = 'fas fa-flag heatmap-exam-flag';
+                    cell.appendChild(flagIcon);
+                    cell.classList.add('exam-day-cell'); // Special class for exam day
+                }
+
+                const dayData = learningData[dateStr];
+                let level = 0;
+                if (dayData && dayData.durationMinutes > 0) {
+                    if (dayData.durationMinutes >= TIME_THRESHOLDS[3]) level = 4;
+                    else if (dayData.durationMinutes >= TIME_THRESHOLDS[2]) level = 3;
+                    else if (dayData.durationMinutes >= TIME_THRESHOLDS[1]) level = 2;
+                    else if (dayData.durationMinutes >= TIME_THRESHOLDS[0]) level = 1;
+                    else level = 0; // Still counts as visited if duration > 0 but < first threshold
+                }
+                cell.classList.add(activityColorClasses[level]);
+                heatmapGrid.appendChild(cell);
+            }
+        }
+        
+        function updateTodayActivity() {
+            const todayStr = getFormattedDate(new Date());
+            const learningData = getLearningData();
+            
+            if (!learningData[todayStr]) {
+                learningData[todayStr] = { durationMinutes: 0 };
+            }
+            // Increment duration (e.g., by 1 minute)
+            // For more fine-grained, this could be based on actual time difference
+            learningData[todayStr].durationMinutes += 1; 
+            saveLearningData(learningData);
+            
+            // Update cell color for today on the heatmap
+            const todayCell = heatmapGrid.querySelector(`.heatmap-cell[data-date="${todayStr}"]`);
+            if (todayCell) {
+                activityColorClasses.forEach(cls => todayCell.classList.remove(cls)); // Remove old level
+                let level = 0;
+                const duration = learningData[todayStr].durationMinutes;
+                if (duration >= TIME_THRESHOLDS[3]) level = 4;
+                else if (duration >= TIME_THRESHOLDS[2]) level = 3;
+                else if (duration >= TIME_THRESHOLDS[1]) level = 2;
+                else if (duration >= TIME_THRESHOLDS[0]) level = 1;
+                else level = 0;
+                todayCell.classList.add(activityColorClasses[level]);
+            }
+        }
+
+        function startTrackingToday() {
+            const todayStr = getFormattedDate(new Date());
+            const learningData = getLearningData();
+
+            // Mark today as visited (level 0 at least if not already more)
+            if (!learningData[todayStr] || learningData[todayStr].durationMinutes === 0) {
+                 if (!learningData[todayStr]) learningData[todayStr] = { durationMinutes: 0 };
+                 // Slightly increment to mark as active for level 0 if it's truly 0
+                 // This ensures it gets an initial color if TIME_THRESHOLDS[0] is > 0
+                 learningData[todayStr].durationMinutes = 0.1; 
+                 saveLearningData(learningData);
+                 renderHeatmap(); // Re-render to show initial mark for today
+            } else {
+                 renderHeatmap(); // Render existing data
+            }
+
+            // Clear any existing interval before starting a new one
+            if (todayLearningInterval) {
+                clearInterval(todayLearningInterval);
+            }
+            // Update duration every minute
+            todayLearningInterval = setInterval(updateTodayActivity, 60000); // 60000ms = 1 minute
+        }
+
+        // Initial setup
+        if (heatmapGrid) { // Ensure the element exists
+            renderHeatmap();
+            startTrackingToday();
+        }
+
+        // Save data on page leave
+        window.addEventListener('beforeunload', () => {
+            // This is a good place to ensure the latest minute is counted if needed,
+            // but setInterval should handle most cases.
+            // For simplicity, we rely on the interval for now.
+            // If more precise tracking on exit is needed, calculate elapsed time since last save here.
+        });
+
     </script>
 </body>
 </html>
