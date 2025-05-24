@@ -1,0 +1,1129 @@
+[
+  {
+    "id": "20220426-lyl-012",
+    "question_number_original": "1",
+    "type": "single_choice",
+    "question_text": "关于Python语言的注释，以下选项中描述错误的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "Python语言有两种注释方式：单行注释和多行注释"
+      },
+      {
+        "key": "B",
+        "text": "Python语言的单行注释以#开头"
+      },
+      {
+        "key": "C",
+        "text": "Python多行注释使用###来做为标记"
+      },
+      {
+        "key": "D",
+        "text": "注释用于解释代码原理或者用途"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Python的单行注释以`#`开头。多行注释通常使用三个单引号 `''' '''` 或三个双引号 `\"\"\" \"\"\"` 来标记，而不是 `###`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "Python基础",
+      "注释"
+    ]
+  },
+  {
+    "id": "20220426-lyl-016",
+    "question_number_original": "2",
+    "type": "single_choice",
+    "question_text": "下列代码执行后最有可能绘制出的图形是？（ ）\nimport turtle\nturtle.forward(200)\nturtle.left(144)\nturtle.forward(200)\nturtle.left(144)\nturtle.forward(200)\nturtle.left(144)\nturtle.forward(200)\nturtle.left(144)\nturtle.forward(200)\nturtle.hideturtle()",
+    "options": [
+      {
+        "key": "A",
+        "text": "[图形A]"
+      },
+      {
+        "key": "B",
+        "text": "[图形B]"
+      },
+      {
+        "key": "C",
+        "text": "[图形C]"
+      },
+      {
+        "key": "D",
+        "text": "[图形D]"
+      }
+    ],
+    "answer": "B",
+    "explanation": "这段代码重复执行\"前进200，左转144度\"的操作5次。每次左转144度是绘制五角星时常用的外角转动角度 (360/5 = 72度是每个顶点对应的中心角，而五角星的每个角的内角是36度，外角是180-36=144度，或者另一种理解是海龟画笔每次转过形成星形尖角的角度)。因此，这段代码会绘制一个五角星。",
+    "image_url": "image/202212_1.png",
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "循环绘图",
+      "几何图形",
+      "五角星"
+    ]
+  },
+  {
+    "id": "NEW-PY-ARITHMETIC-OP-003",
+    "question_number_original": "3",
+    "type": "single_choice",
+    "question_text": "在Python中，运行以下代码段后，变量`c`的值是多少？\n\na = 10\nb = 20\nc = a + b / 2 * 5 - (a + b) % 3\n\n（ ）",
+    "options": [
+      { "key": "A", "text": "30.0" },
+      { "key": "B", "text": "50.0" },
+      { "key": "C", "text": "60.0" },
+      { "key": "D", "text": "40.0" }
+    ],
+    "answer": "C",
+    "explanation": "运算顺序如下：\n1. 括号内的加法：`(a + b)` 即 `(10 + 20)` 结果为 `30`。\n2. 除法：`b / 2` 即 `20 / 2` 结果为 `10.0` (注意结果是浮点数)。\n3. 乘法：`10.0 * 5` 结果为 `50.0`。\n4. 取余：`30 % 3` 结果为 `0`。\n5. 加法：`a + 50.0` 即 `10 + 50.0` 结果为 `60.0`。\n6. 减法：`60.0 - 0` 结果为 `60.0`。\n因此，`c` 的值为 `60.0`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "Python基础",
+      "运算符优先级",
+      "算术运算",
+      "数据类型"
+    ]
+  },
+  {
+    "id": "20220427-yxy-036",
+    "question_number_original": "4",
+    "type": "single_choice",
+    "question_text": "在turtle库中，turtle.speed(a)用于设定画笔的运动速度，关于该指令说法错误的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "在turtle.speed(a)指令中，当参数a的值为0时，画笔的运动速度最慢。"
+      },
+      {
+        "key": "B",
+        "text": "在turtle.speed(a)指令中，turtle.speed(9)使画笔的运动速度比turtle.speed(10)慢。"
+      },
+      {
+        "key": "C",
+        "text": "在turtle.speed(a)指令中，a的数值最小是0，最大是10。"
+      },
+      {
+        "key": "D",
+        "text": "在turtle.speed(a)指令中，除了0之外，数字越大，速度越快。"
+      }
+    ],
+    "answer": "A",
+    "explanation": "`turtle.speed(0)` 表示最快的绘制速度（几乎没有动画效果）。参数范围是0-10的整数，其中1是最慢的速度，10是较快的速度。数字越大（1-10之间），速度越快。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "speed"
+    ]
+  },
+  {
+    "id": "20220502-yfj-006",
+    "question_number_original": "5",
+    "type": "single_choice",
+    "question_text": "运行如下代码，在输入数值6后，输出的结果是？（ ）\na=int(input(\"请输入你的年龄\"))\nprint(type(a))",
+    "options": [
+      {
+        "key": "A",
+        "text": "6"
+      },
+      {
+        "key": "B",
+        "text": "6.0"
+      },
+      {
+        "key": "C",
+        "text": "class 'int'"
+      },
+      {
+        "key": "D",
+        "text": "class 'str'"
+      }
+    ],
+    "answer": "C",
+    "explanation": "`input()` 函数返回的是字符串。`int()` 函数将输入的字符串（例如'6'）转换成整数。`type(a)` 会返回变量 `a` 的数据类型，因为 `a` 是整数，所以结果是 `class 'int'`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "input函数",
+      "type函数",
+      "数据类型转换",
+      "int()"
+    ]
+  },
+  {
+    "id": "20220502-yfj-014",
+    "question_number_original": "6",
+    "type": "single_choice",
+    "question_text": "如程序所示，绘制完一个半圆圆弧，画笔最终坐标位置是？（ ）\nimport turtle\nturtle.pendown()\nturtle.circle(50,180)\nturtle.penup()\nturtle.done()",
+    "options": [
+      {
+        "key": "A",
+        "text": "(0,50)"
+      },
+      {
+        "key": "B",
+        "text": "(0,100)"
+      },
+      {
+        "key": "C",
+        "text": "(50,0)"
+      },
+      {
+        "key": "D",
+        "text": "(100,0)"
+      }
+    ],
+    "answer": "B",
+    "explanation": "海龟初始位置在(0,0)，朝向右边。`turtle.circle(50, 180)` 会以当前位置左侧50个单位处（即(0,50)）为圆心，画一个半径为50的180度圆弧。画完半圆后，海龟会到达圆弧的另一端，即直径的另一端，坐标为(0,100)。",
+    "image_url": null,
+    "difficulty": 4,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "circle",
+      "坐标计算"
+    ]
+  },
+  {
+    "id": "20220502-zzh-016",
+    "question_number_original": "7",
+    "type": "single_choice",
+    "question_text": "程序print(5+2)的运行结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "7"
+      },
+      {
+        "key": "B",
+        "text": "('5+2')"
+      },
+      {
+        "key": "C",
+        "text": "5+2"
+      },
+      {
+        "key": "D",
+        "text": "52"
+      }
+    ],
+    "answer": "A",
+    "explanation": "`print()` 函数会先计算括号内的表达式 `5+2`，结果是 `7`，然后将这个计算结果输出。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "print语句",
+      "算术运算"
+    ]
+  },
+  {
+    "id": "20220502-zzh-019",
+    "question_number_original": "8",
+    "type": "single_choice",
+    "question_text": "运行语句turtle.goto(-400,-300)，画笔将到？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "画布左上角"
+      },
+      {
+        "key": "B",
+        "text": "画布右上角"
+      },
+      {
+        "key": "C",
+        "text": "画布右下角"
+      },
+      {
+        "key": "D",
+        "text": "画布左下角"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Turtle画布的坐标系中心是(0,0)。X轴负方向是左边，Y轴负方向是下边。因此，坐标(-400, -300) 表示画布的左下角区域。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "坐标系统",
+      "goto"
+    ]
+  },
+  {
+    "id": "20220503-yfj-021",
+    "question_number_original": "9",
+    "type": "single_choice",
+    "question_text": "运行指令print(3*5>2 and 6>=6.0)，请问根据运算的优先级，首先进行哪一部分的运算？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "5>2"
+      },
+      {
+        "key": "B",
+        "text": "6>=6.0"
+      },
+      {
+        "key": "C",
+        "text": "and"
+      },
+      {
+        "key": "D",
+        "text": "3*5"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Python中运算符的优先级顺序是：算术运算符 > 比较运算符 > 逻辑运算符。在算术运算符中，乘法 `*` 的优先级较高。所以 `3*5` 会最先计算。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "运算符优先级"
+    ]
+  },
+  {
+    "id": "20220503-yfj-022",
+    "question_number_original": "10",
+    "type": "single_choice",
+    "question_text": "下列程序运行的结果是？（ ）\na=10\nb=15\nb+=a\nprint(b)",
+    "options": [
+      {
+        "key": "A",
+        "text": "10"
+      },
+      {
+        "key": "B",
+        "text": "25"
+      },
+      {
+        "key": "C",
+        "text": "15"
+      },
+      {
+        "key": "D",
+        "text": "30"
+      }
+    ],
+    "answer": "B",
+    "explanation": "`b+=a` 是复合赋值运算符，等价于 `b = b + a`。初始时 `a=10`, `b=15`。所以 `b` 变为 `15 + 10 = 25`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "赋值运算符",
+      "变量"
+    ]
+  },
+  {
+    "id": "20220504-jt-002",
+    "question_number_original": "11",
+    "type": "single_choice",
+    "question_text": "Python程序保存后的文件扩展名是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": ".sb3"
+      },
+      {
+        "key": "B",
+        "text": ".py"
+      },
+      {
+        "key": "C",
+        "text": ".pn"
+      },
+      {
+        "key": "D",
+        "text": ".cpp"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Python源代码文件通常使用 `.py` 作为文件扩展名。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Python基础",
+      "文件后缀"
+    ]
+  },
+  {
+    "id": "20220504-jt-007",
+    "question_number_original": "12",
+    "type": "single_choice",
+    "question_text": "下列不是Python保留字的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "and"
+      },
+      {
+        "key": "B",
+        "text": "false"
+      },
+      {
+        "key": "C",
+        "text": "True"
+      },
+      {
+        "key": "D",
+        "text": "import"
+      }
+    ],
+    "answer": "B",
+    "explanation": "`and`、`True`、`import` 都是Python的保留字（关键字）。Python中的布尔假值是 `False` (首字母大写)，而 `false` (全小写) 不是保留字。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "关键字",
+      "保留字"
+    ]
+  },
+  {
+    "id": "20220504-jt-009",
+    "question_number_original": "13",
+    "type": "single_choice",
+    "question_text": "根据Python变量的命名规则，下列不可以作为变量名的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "a2b"
+      },
+      {
+        "key": "B",
+        "text": "2ab"
+      },
+      {
+        "key": "C",
+        "text": "ab2"
+      },
+      {
+        "key": "D",
+        "text": "_ab2"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Python变量名不能以数字开头。`a2b`, `ab2`, `_ab2` 都是合法的变量名。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "变量命名规则"
+    ]
+  },
+  {
+    "id": "20220505-yt-0017",
+    "question_number_original": "14",
+    "type": "single_choice",
+    "question_text": "下面的turtle命令，不可能改变画笔的颜色的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "turtle.fillcolor()"
+      },
+      {
+        "key": "B",
+        "text": "turtle.color()"
+      },
+      {
+        "key": "C",
+        "text": "turtle.pencolor()"
+      },
+      {
+        "key": "D",
+        "text": "turtle.color(255,255,255)"
+      }
+    ],
+    "answer": "A",
+    "explanation": "`turtle.fillcolor()` 用于设置填充区域的颜色，它不直接改变画笔（线条）的颜色。`turtle.color()` (一个参数或两个参数) 和 `turtle.pencolor()` 都可以改变画笔的颜色。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "颜色设置"
+    ]
+  },
+  {
+    "id": "20220505-yt-0021",
+    "question_number_original": "15",
+    "type": "single_choice",
+    "question_text": "turtle画图的功能中，能够实现隐藏画笔的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "turtle.undo()"
+      },
+      {
+        "key": "B",
+        "text": "turtle.shape()"
+      },
+      {
+        "key": "C",
+        "text": "turtle.penup()"
+      },
+      {
+        "key": "D",
+        "text": "turtle.hideturtle()"
+      }
+    ],
+    "answer": "D",
+    "explanation": "`turtle.hideturtle()` 或其简写 `turtle.ht()` 用于隐藏海龟图标，使其在画布上不可见。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "画笔控制",
+      "hideturtle"
+    ]
+  },
+  {
+    "id": "20220505-yt-0026",
+    "question_number_original": "16",
+    "type": "single_choice",
+    "question_text": "print(34 * 2.0)的输出结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "34"
+      },
+      {
+        "key": "B",
+        "text": "68"
+      },
+      {
+        "key": "C",
+        "text": "68.0"
+      },
+      {
+        "key": "D",
+        "text": "34*2.0"
+      }
+    ],
+    "answer": "C",
+    "explanation": "整数 `34` 与浮点数 `2.0` 相乘，结果会自动提升为浮点数。`34 * 2.0 = 68.0`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "数据类型",
+      "浮点数运算",
+      "print输出"
+    ]
+  },
+  {
+    "id": "20220505-yt-0035",
+    "question_number_original": "17",
+    "type": "single_choice",
+    "question_text": "涛涛家一共有爸爸、妈妈、涛涛三个人，涛涛爸爸比涛涛妈妈大2岁，比涛涛大25岁，今年全家年龄加在一起是54岁，那么涛涛爸爸、涛涛妈妈、涛涛今年的年龄分别是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "28、26、1"
+      },
+      {
+        "key": "B",
+        "text": "25、27、2"
+      },
+      {
+        "key": "C",
+        "text": "27、25、2"
+      },
+      {
+        "key": "D",
+        "text": "30、28、5"
+      }
+    ],
+    "answer": "C",
+    "explanation": "设涛涛的年龄为x。则爸爸的年龄是 x+25，妈妈的年龄是 (x+25)-2 = x+23。三人年龄之和为 x + (x+25) + (x+23) = 54。解方程：3x + 48 = 54  => 3x = 6 => x = 2。所以涛涛2岁，爸爸27岁，妈妈25岁。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "逻辑推理",
+      "数学应用"
+    ]
+  },
+  {
+    "id": "20220507-hhl-02",
+    "question_number_original": "18",
+    "type": "single_choice",
+    "question_text": "print(9//2)的结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "5.0"
+      },
+      {
+        "key": "B",
+        "text": "4.0"
+      },
+      {
+        "key": "C",
+        "text": "4"
+      },
+      {
+        "key": "D",
+        "text": "5"
+      }
+    ],
+    "answer": "C",
+    "explanation": "`//` 是整除运算符，它返回除法结果的整数部分。`9` 整除 `2` 的结果是 `4`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "运算符",
+      "整除"
+    ]
+  },
+  {
+    "id": "20220508-jt-022",
+    "question_number_original": "19",
+    "type": "single_choice",
+    "question_text": "下列代码的运行结果是？（ ）\na=1\nA=True\nprint(a==A)",
+    "options": [
+      {
+        "key": "A",
+        "text": "False"
+      },
+      {
+        "key": "B",
+        "text": "True"
+      },
+      {
+        "key": "C",
+        "text": "1"
+      },
+      {
+        "key": "D",
+        "text": "程序运行错误"
+      }
+    ],
+    "answer": "B",
+    "explanation": "在Python中，布尔值 `True` 在进行数值比较时等同于整数 `1`。因此，`a` (值为1) 与 `A` (值为True，即1) 进行比较 `a==A`，结果是 `True`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "布尔值比较",
+      "数据类型"
+    ]
+  },
+  {
+    "id": "20220508-wb-008",
+    "question_number_original": "20",
+    "type": "single_choice",
+    "question_text": "下列代码运行的结果是？（ ）\nnum='5'*'5'\nprint(num)",
+    "options": [
+      {
+        "key": "A",
+        "text": "25"
+      },
+      {
+        "key": "B",
+        "text": "5, 5, 5, 5, 5 "
+      },
+      {
+        "key": "C",
+        "text": "'5' * '5'"
+      },
+      {
+        "key": "D",
+        "text": "报错，无法运行。"
+      }
+    ],
+    "answer": "D",
+    "explanation": "字符串乘法操作要求一个操作数是字符串，另一个操作数是整数（表示重复的次数）。尝试将两个字符串相乘 (`'5'*'5'`) 会导致 `TypeError`，程序无法运行。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "字符串运算",
+      "类型错误"
+    ]
+  },
+  {
+    "id": "20220508-wb-013",
+    "question_number_original": "21",
+    "type": "single_choice",
+    "question_text": "turtle库中left()函数里面填写的参数是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "长度"
+      },
+      {
+        "key": "B",
+        "text": "时间"
+      },
+      {
+        "key": "C",
+        "text": "角度"
+      },
+      {
+        "key": "D",
+        "text": "像素"
+      }
+    ],
+    "answer": "C",
+    "explanation": "`turtle.left(angle)` 函数用于使海龟向左（逆时针）旋转，其参数 `angle` 代表旋转的角度值。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "left函数"
+    ]
+  },
+  {
+    "id": "20220508-wb-022",
+    "question_number_original": "22",
+    "type": "single_choice",
+    "question_text": "123%101的结果是多少？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "22"
+      },
+      {
+        "key": "B",
+        "text": "23"
+      },
+      {
+        "key": "C",
+        "text": "123"
+      },
+      {
+        "key": "D",
+        "text": "101"
+      }
+    ],
+    "answer": "A",
+    "explanation": "`%` 是取余运算符。`123` 除以 `101` 商 `1` 余 `22`。所以 `123 % 101` 的结果是 `22`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "运算符",
+      "取余"
+    ]
+  },
+  {
+    "id": "20220522-zwh-09",
+    "question_number_original": "23",
+    "type": "single_choice",
+    "question_text": "下列代码段执行后a的值为字符串的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "a= int('4.5')"
+      },
+      {
+        "key": "B",
+        "text": "a= float(\"4\")"
+      },
+      {
+        "key": "C",
+        "text": "a= int(float('4.5'))"
+      },
+      {
+        "key": "D",
+        "text": "a= str(4.5)"
+      }
+    ],
+    "answer": "D",
+    "explanation": "`str()` 函数可以将其他数据类型转换为字符串。`str(4.5)` 会将浮点数 `4.5` 转换为字符串 `'4.5'`。\n选项A会报错，因为 `int()` 不能直接转换带小数点的字符串。\n选项B中 `a` 的值是浮点数 `4.0`。\n选项C中 `a` 的值是整数 `4`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "数据类型转换",
+      "str()"
+    ]
+  },
+  {
+    "id": "20220522-zwh-27",
+    "question_number_original": "24",
+    "type": "single_choice",
+    "question_text": "a=2,b=6,print(a>b)的结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "False"
+      },
+      {
+        "key": "B",
+        "text": "True"
+      },
+      {
+        "key": "C",
+        "text": "32"
+      },
+      {
+        "key": "D",
+        "text": "5"
+      }
+    ],
+    "answer": "A",
+    "explanation": "比较运算符 `>` 用于判断左操作数是否大于右操作数。`a>b` 即 `2>6`，这个条件不成立，所以结果是布尔值 `False`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "比较运算符",
+      "布尔值"
+    ]
+  },
+  {
+    "id": "20220522-zwh-29",
+    "question_number_original": "25",
+    "type": "single_choice",
+    "question_text": "假设a=2,b=1,c=a and b,那么c的值是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "3"
+      },
+      {
+        "key": "B",
+        "text": "1"
+      },
+      {
+        "key": "C",
+        "text": "2"
+      },
+      {
+        "key": "D",
+        "text": "0"
+      }
+    ],
+    "answer": "B",
+    "explanation": "逻辑运算符 `and`：如果第一个操作数 `a` (值为2，布尔上下文中为True) 为真，则 `and` 运算的结果是第二个操作数 `b` 的值。所以 `c` 的值是 `1`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "逻辑运算符",
+      "and",
+      "短路求值"
+    ]
+  },
+  {
+    "id": "20220426-lyl-030",
+    "question_number_original": "26",
+    "type": "true_false",
+    "question_text": "在Python语言中，\"==\" 表示赋值，（变量）==（表达式），将该式右边的表达式计算后的结果值赋给左侧变量。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "在Python中，`==` 是比较运算符，用于判断两个值是否相等。赋值运算符是 `=`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "运算符",
+      "赋值",
+      "比较"
+    ]
+  },
+  {
+    "id": "20220426-lyl-033",
+    "question_number_original": "27",
+    "type": "true_false",
+    "question_text": "x,y=y,x可以实现x和y值的互换。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "这是Python中一种特有的、简洁的多重赋值语法，可以快速交换两个变量的值。它首先计算右边的表达式（获取y和x的当前值），然后将这些值赋给左边的变量。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "变量赋值",
+      "多重赋值",
+      "变量交换"
+    ]
+  },
+  {
+    "id": "20220427-yxy-023",
+    "question_number_original": "28",
+    "type": "true_false",
+    "question_text": "DZXh与DZXH是两个不同的变量。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "Python中的变量名是区分大小写的。因此，`DZXh` 和 `DZXH` 会被视为两个不同的变量。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "变量命名",
+      "大小写敏感"
+    ]
+  },
+  {
+    "id": "20220427-yxy-029",
+    "question_number_original": "29",
+    "type": "true_false",
+    "question_text": "turtle是Python中的一个模块，想要使用这个模块需要通过input(\"turtle\")导入使用的模块。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "要使用Python中的模块（如turtle库），需要使用 `import` 语句，例如 `import turtle`。`input()` 函数用于获取用户输入。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "模块导入",
+      "import"
+    ]
+  },
+  {
+    "id": "20220502-zzh-026",
+    "question_number_original": "30",
+    "type": "true_false",
+    "question_text": "IDLE编辑器只能运行单行语句。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "IDLE有两种主要模式：交互模式（Shell）可以逐行执行语句；脚本模式（编辑器）可以编写和运行包含多行代码的完整程序文件。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "IDLE模式"
+    ]
+  },
+  {
+    "id": "20220502-zzh-028",
+    "question_number_original": "31",
+    "type": "true_false",
+    "question_text": "运行语句intstr=9将报错。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "`intstr=9` 是一个合法的变量赋值语句。它将整数 `9` 赋给名为 `intstr` 的变量。虽然变量名中包含 `int` 和 `str`，但这只是一个普通的变量名，并不会导致错误。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "变量赋值",
+      "变量命名"
+    ]
+  },
+  {
+    "id": "20220505-jt-018",
+    "question_number_original": "32",
+    "type": "true_false",
+    "question_text": "已知a='123.6'，我们可以使用int(a)将字符串'123.6'转换成数值123.6。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "`int()` 函数用于将字符串或数字转换为整数。它不能直接转换包含小数点的字符串（如 `'123.6'`），这会导致 `ValueError`。要将 `'123.6'` 转换为数值 `123.6`，应该使用 `float(a)`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "数据类型转换",
+      "int()",
+      "float()"
+    ]
+  },
+  {
+    "id": "20220506-zmt-026",
+    "question_number_original": "33",
+    "type": "true_false",
+    "question_text": "不可以在同一台计算机上安装多个Python版本。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "可以在同一台计算机上安装和管理多个不同版本的Python。通常会使用虚拟环境或版本管理工具（如pyenv）来处理。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "Python环境",
+      "多版本安装"
+    ]
+  },
+  {
+    "id": "20220506-zmt-029",
+    "question_number_original": "34",
+    "type": "true_false",
+    "question_text": "Python3.x 中input()函数的返回值是字符串。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "在Python 3.x版本中，`input()` 函数总是将用户的输入作为字符串类型返回，无论用户输入的是数字还是文本。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "input函数",
+      "返回值类型"
+    ]
+  },
+  {
+    "id": "20220506-zmt-035",
+    "question_number_original": "35",
+    "type": "true_false",
+    "question_text": "运行turtle.left(120)的命令是逆时针旋转120度。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "`turtle.left(angle)` 命令使海龟从当前方向向左（逆时针方向）旋转指定的角度。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "Turtle",
+      "转向命令",
+      "left"
+    ]
+  },
+  {
+    "id": "202212-P1-36",
+    "question_number_original": "36",
+    "type": "programming",
+    "title": "儿童标准身高体重计算",
+    "description": "问题描述：生活水平的提高和儿童健康体质并没有齐头并进，肥胖率的上升，体检合格率的下降，足以引起社会和家长对孩子健康发育的重视。本程序旨在帮助家长运用标准身高体重计算公式了解孩子是否符合标准（适用于2-12岁儿童）。\n按足岁年龄计算： 儿童的标准身高=年龄×5+75（厘米）儿童的标准体重=年龄×2+8（公斤）\n输入格式：输入一个数字，代表该儿童的足岁年龄。（输入使用input()，并有相应提示信息）\n输出格式：输出该儿童的标准身高和体重值。（输出使用print()，分两行输出，并有相应提示信息）",
+    "reference_solution": "age_str = input(\"请输入儿童的足岁年龄:\")\nage = int(age_str) # 确保将输入转换为整数\nh = age * 5 + 75\nw = age * 2 + 8\nprint(\"该儿童的标准身高应为:\", h, \"(厘米)\")\nprint(\"该儿童的标准体重应为:\", w, \"(公斤)\")",
+    "image_url": null,
+    "difficulty": 2,
+    "scoring_criteria": [
+      "（1）有输入语句并且有清楚的提示字符串；(1分）",
+      "（2）有输出语句并且按照题意输出；(2分）",
+      "（3）有类型转化语句；(1分）",
+      "（4）有计算语句；(两个各2分，共4分）",
+      "（5）程序符合题目要求。(2分）"
+    ],
+    "tags": [
+      "编程题",
+      "input函数",
+      "print语句",
+      "数据类型转换",
+      "算术运算"
+    ]
+  },
+  {
+    "id": "202212-P1-37",
+    "question_number_original": "37",
+    "type": "programming",
+    "title": "Turtle绘制田字格",
+    "description": "要求：\n１.画一个边长为400的正方形，然后将其平均分割成4份，分割线相交于一点，形成一个田字格，效果如下图：\n２.正方形的边框为黑色，分割线的颜色为红色；\n３.分割线的交点为画布的中心；\n４.最后海龟要隐藏。",
+    "reference_solution": "import turtle\n\n# 设置画布和初始位置，确保图形居中且完整\nscreen = turtle.Screen()\nscreen.setup(500, 500) # 画布略大于图形，避免边缘被截断\nt = turtle.Turtle()\nt.speed(0) # 最快速度，节省时间\n\n# 绘制黑色边框的正方形 (中心为原点(0,0))\nt.penup()\nt.goto(-200, -200) # 正方形左下角顶点\nt.pendown()\nt.pencolor(\"black\")\nfor _ in range(4):\n    t.forward(400)\n    t.left(90)\n\n# 绘制红色分割线\nt.pencolor(\"red\")\n\n# 水平分割线\nt.penup()\nt.goto(-200, 0) # 水平线左端点\nt.pendown()\nt.goto(200, 0)  # 水平线右端点\n\n# 垂直分割线\nt.penup()\nt.goto(0, -200) # 垂直线下端点\nt.pendown()\nt.goto(0, 200)  # 垂直线上端点\n\n# 隐藏海龟\nt.hideturtle()\nturtle.done()",
+    "image_url": "image/202212.png",
+    "difficulty": 2,
+    "scoring_criteria": [
+      "（1）导入海龟库正确：（2分）",
+      "（2）有前进命令；（2分）",
+      "（3）有转动90°命令；（2分）",
+      "（4）有颜色工具；（2分）",
+      "（5）有移动坐标命令；（2分）",
+      "（6）坐标计算准确，能绘制出正方形2分，分割线2分; (4分）",
+      "（7）有隐藏海龟命令；（2分）",
+      "（8）程序正常运行，运行结果和要求一致。（4分，根据不符合要求的多少扣分，一般一项不符合扣1分，如果多项不符合要求，最多扣除4分）"
+    ],
+    "tags": [
+      "编程题",
+      "Turtle",
+      "图形绘制",
+      "循环",
+      "坐标",
+      "颜色设置"
+    ]
+  }
+]

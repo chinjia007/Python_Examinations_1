@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第4课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 标准化 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-rgb: 102, 126, 234;
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --text-color-dark-rgb: 26, 32, 44;
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 标准化 */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 1.5rem; /* 标准化 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-sizing: border-box; 
+        }
+        .main-header .header-content-wrapper {
+            display: flex;
+            align-items: center;
+            flex-grow: 0; 
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; /* 标准化 */
+        }
+        
+        /* Added .header-icon based on lesson1.html standard */
+        .header-icon { 
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); /* 只减去主页眉高度 */
+            position: fixed;
+            top: var(--header-height); /* 只贴在主页眉下方 */
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Consistent monospaced font stack */
+            background-color: #e2e8f0; /* Light gray background, Tailwind's gray-200 */
+            color: #2d3748; /* Dark gray text, Tailwind's gray-800 */
+            padding: 0.2em 0.4em; /* Slightly adjusted padding */
+            border-radius: 5px; /* Slightly more rounded corners */
+            font-size: 0.9em; /* Relative font size */
+            border: 1px solid #cbd5e0; /* Slightly darker border, Tailwind's gray-300 */
+            display: inline-block; /* Ensures proper block-like behavior for padding/border */
+            line-height: 1.4; /* Adjusted line height for better readability */
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "4"; /* For lesson 4 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw; 
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif; 
+            color: rgba(var(--primary-color-rgb, 102, 126, 234), 0.08); 
+            opacity: 1;
+            z-index: -1; 
+            pointer-events: none; 
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 
+                         -1px -1px 0px rgba(0,0,0,0.02); 
+            user-select: none; 
+        }
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <!-- Header: Only site title and home button -->
+    <header class="main-header shadow-lg">
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container">
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="main-title">Python一级训练营</h1>
+            </div>
+        </div>
+        <div class="header-actions-container">
+            <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                <i class="fas fa-terminal"></i>开始编程
+            </a>
+            <a href="index.html" class="header-action-button home-button-style">
+                <i class="fas fa-house"></i>返回主页
+            </a>
+        </div>
+    </header>
+
+
+    <!-- New Sticky Lesson Unit Header -->
+    <div id="lesson-unit-header">
+        <!-- Content will be dynamically filled by JS -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l4-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l4-what-is-string" class="sidebar-link">一、什么是字符串？</a></li>
+                <li><a href="#section-l4-creating-strings" class="sidebar-link">二、创建字符串</a></li>
+                <li><a href="#section-l4-string-operations" class="sidebar-link">三、字符串的"魔法"操作</a></li>
+                <li><a href="#section-l4-multiline-strings" class="sidebar-link">四、多行文字与三引号</a></li>
+                <li><a href="#section-l4-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l4-objectives-container" class="content-section">
+                        <h3 id="section-l4-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>深入理解<strong class="highlight-key">字符串 (String, str)</strong> 数据类型的概念。</li>
+                            <li>掌握创建字符串的两种主要方式：使用<strong class="highlight-key">单引号 (' ')</strong>和<strong class="highlight-key">双引号 (" ")</strong>。</li>
+                            <li>学会字符串的基本操作：<strong class="highlight-key">连接 (+)</strong> 和<strong class="highlight-key">重复 (*)</strong>。</li>
+                            <li>理解不同数据类型（特别是字符串和数字）之间不能直接进行某些运算（如用 + 连接），需要<strong class="highlight-key">类型转换</strong>。</li>
+                            <li>了解使用<strong class="highlight-key">三引号 (''' ''' 或 """ """)</strong> 创建多行字符串。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l4-what-is-string" class="section-main-title first-in-section">
+                            <i class="fas fa-quote-left section-title-icon"></i>一、 什么是字符串？
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，我们之前在 <code class="inline-code">print()</code> 函数里输出过文字，比如 <code class="inline-code">"你好，世界！"</code>。在Python中，像这样一串文字、字母、数字或者符号，我们都称之为<strong class="highlight-key">字符串 (String)</strong>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            你可以把字符串想象成一串用绳子串起来的珠子，每个珠子就是一个字符（比如一个汉字、一个英文字母、一个数字或者一个标点符号）。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            字符串是编程中非常常用的一种数据类型，用来表示文本信息。比如，你的名字、一本书的标题、一条消息等等，都可以用字符串来表示。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            在Python中，字符串的数据类型缩写是 <code class="inline-code">str</code>。
+                        </p>
+                        <h4 class="knowledge-subtitle">思考与讨论：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>除了我们之前打印过的"你好，世界！"，你还能想到哪些信息可以用字符串来表示吗？（例如：你的学校名称、你最喜欢的颜色、一句歌词等）</li>
+                            <li>数字 <code class="inline-code">123</code> 和字符串 <code class="inline-code">"123"</code> 有什么不同呢？（提示：想一想它们能不能直接做数学加法）</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l4-creating-strings" class="section-main-title first-in-section">
+                            <i class="fas fa-pen-fancy section-title-icon"></i>二、 创建字符串：给文字穿上"引号"外衣
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            为了让Python知道我们写的是一串文字（字符串），而不是一个变量名或者一个数字，我们需要给这些文字"穿上外衣"——也就是用<strong class="highlight-key">引号</strong>把它们包围起来。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">Python提供了两种常用的引号来创建字符串：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li><strong>单引号 (<code class="inline-code">' '</code>)</strong>：
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">my_pet = '小猫'
+print(my_pet)
+print(type(my_pet)) # 会输出 &lt;class 'str'&gt;</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>双引号 (<code class="inline-code">" "</code>)</strong>：
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">my_dream = "成为宇航员"
+print(my_dream)
+print(type(my_dream)) # 也会输出 &lt;class 'str'&gt;</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>单引号和双引号是等效的</strong>：用单引号创建的字符串和用双引号创建的字符串，对于Python来说是一样的，没有区别。你可以根据自己的喜好或者具体情况来选择使用哪一种。</p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>什么时候需要特别选择？</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>如果你的字符串本身就包含单引号，那么最好用双引号把它包起来，例如： <code class="inline-code">message = "I'm a student."</code></li>
+                            <li>如果你的字符串本身就包含双引号，那么最好用单引号把它包起来，例如： <code class="inline-code">book_title = '他说："你好！"'</code></li>
+                            <li>如果字符串里既有单引号又有双引号，那怎么办呢？后面我们会学到一种叫做"转义字符"的东西来解决。</li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题1 (判断下列哪些是合法的字符串)：</h4>
+                        <div class="exercise-container" id="l4_ex1_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">"我的名字是小明"</code></h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l4_ex1_1_legal" name="l4_ex1_1" value="合法"><label for="l4_ex1_1_legal">合法</label></div>
+                                <div><input type="radio" id="l4_ex1_1_illegal" name="l4_ex1_1" value="不合法"><label for="l4_ex1_1_illegal">不合法</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkStringLegality('l4_ex1_1', '合法', '使用了双引号包围。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l4_ex1_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">'Python 很有趣!'</code></h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l4_ex1_2_legal" name="l4_ex1_2" value="合法"><label for="l4_ex1_2_legal">合法</label></div>
+                                <div><input type="radio" id="l4_ex1_2_illegal" name="l4_ex1_2" value="不合法"><label for="l4_ex1_2_illegal">不合法</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkStringLegality('l4_ex1_2', '合法', '使用了单引号包围。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l4_ex1_3_container">
+                            <h4 class="exercise-title">3. <code class="inline-code">你好中国</code> (没有引号)</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l4_ex1_3_legal" name="l4_ex1_3" value="合法"><label for="l4_ex1_3_legal">合法</label></div>
+                                <div><input type="radio" id="l4_ex1_3_illegal" name="l4_ex1_3" value="不合法"><label for="l4_ex1_3_illegal">不合法</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkStringLegality('l4_ex1_3', '不合法', '字符串必须用引号包围。如果\'你好中国\'不是一个已经赋值的变量名，Python会认为你想用一个叫\'你好中国\'的变量，但这个变量没有定义，会报错 NameError。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l4_ex1_4_container">
+                            <h4 class="exercise-title">4. <code class="inline-code">"I love 'Python'"</code></h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l4_ex1_4_legal" name="l4_ex1_4" value="合法"><label for="l4_ex1_4_legal">合法</label></div>
+                                <div><input type="radio" id="l4_ex1_4_illegal" name="l4_ex1_4" value="不合法"><label for="l4_ex1_4_illegal">不合法</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkStringLegality('l4_ex1_4', '合法', '外层使用双引号，内部可以包含单引号。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-l4-string-operations" class="section-main-title first-in-section">
+                            <i class="fas fa-magic section-title-icon"></i>三、 字符串的"魔法"操作：连接与重复
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            字符串除了可以存储文字，还可以进行一些有趣的"魔法"操作。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>字符串连接 (Concatenation) - 用加号 <code class="inline-code">+</code></strong>：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>我们可以用加号 <code class="inline-code">+</code> 把两个或多个字符串"粘"在一起，形成一个新的、更长的字符串。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">str1 = "Python"
+str2 = "真棒"
+result = str1 + " " + str2  # 中间加一个空格字符串
+print(result)           # 会输出：Python 真棒</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>字符串重复 (Repetition) - 用乘号 <code class="inline-code">*</code></strong>：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>我们可以用乘号 <code class="inline-code">*</code> 把一个字符串重复好几次。你需要一个字符串和一个<strong class="highlight-key">整数</strong>。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">separator = "-" * 10  # 把字符串"-"重复10次
+print(separator)      # 会输出：----------
+greeting = "加油！" * 3
+print(greeting)       # 会输出：加油！加油！加油！</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题2 (写出 <code class="inline-code">print()</code> 语句的输出结果)：</h4>
+                        <div class="exercise-container" id="l4_saq_2_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">print("Go" + "Fish")</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l4_saq_2_1_solution')">查看答案/解析</button>
+                            <div id="l4_saq_2_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">GoFish</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 两个字符串直接连接在一起。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l4_saq_2_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">print("Ha" * 4)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l4_saq_2_2_solution')">查看答案/解析</button>
+                            <div id="l4_saq_2_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">HaHaHaHa</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 字符串 "Ha" 重复了4次。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l4_saq_2_3_container">
+                            <h4 class="exercise-title">3. </h4>
+                            <div class="code-block-container mb-2">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">part1 = "Python is "
+part2 = "fun!"
+print(part1 + part2)</code></pre>
+                            </div>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l4_saq_2_3_solution')">查看答案/解析</button>
+                            <div id="l4_saq_2_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">Python is fun!</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 变量 part1 和 part2 存储的字符串被连接起来。</p>
+                            </div>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">练习题3 (找出下面代码中的错误并改正)：</h4>
+                        <div class="exercise-container" id="l4_ex3_container">
+                             <div class="code-block-container mb-2">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python"># 原始错误代码
+count = 5
+message = "我有 " + count + " 个苹果。"
+print(message)</code></pre>
+                            </div>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l4_ex3_solution')">查看错误原因及改正</button>
+                            <div id="l4_ex3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>错误原因：</h5>
+                                <p class="text-gray-700"><code class="inline-code">count</code> 是一个整数变量，不能直接用 <code class="inline-code">+</code> 与字符串 <code class="inline-code">"我有 "</code> 和 <code class="inline-code">" 个苹果。"</code> 连接。</p>
+                                <h5>改正后的代码：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">count = 5
+message = "我有 " + str(count) + " 个苹果。" # 将整数count转换为字符串
+print(message)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l4-multiline-strings" class="section-main-title first-in-section">
+                            <i class="fas fa-align-left section-title-icon"></i>四、 多行文字怎么办？三引号来帮忙！
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            有时候，我们想表示一段比较长的文字，这段文字本身就分成了好几行，比如一首诗、一段歌词或者一个地址。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            如果用普通的单引号或双引号，我们就得在每行的末尾加上一个特殊的换行符 <code class="inline-code">\n</code>，会比较麻烦。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Python提供了一种更方便的方式来创建<strong class="highlight-key">多行字符串</strong>：使用<strong class="highlight-key">三个单引号 <code class="inline-code">''' '''</code></strong>或者<strong class="highlight-key">三个双引号 <code class="inline-code">""" """</code></strong>把整段文字包起来。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">在三引号里面的文字，你写的时候是什么样（包括换行和空格），它存到字符串里就是什么样。</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">poem = """静夜思
+床前明月光，
+疑是地上霜。
+举头望明月，
+低头思故乡。"""
+print(poem)
+
+address = '''北京市
+海淀区
+中关村大街1号'''
+print(address)</code></pre>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4 mt-4">
+                            还记得吗？三引号除了可以创建多行字符串，如果它没有被赋值给任何变量，也可以当作<strong class="highlight-key">多行注释</strong>来用。
+                        </p>
+                        
+                        <h4 class="knowledge-subtitle">练习题4 (操作题)：</h4>
+                        <div class="exercise-container" id="l4_op_ex4_container">
+                            <p class="text-gray-700 mb-2">请用三引号创建一个包含你最喜欢的一首短诗（至少两行）的字符串变量，并用 <code class="inline-code">print()</code> 函数把它输出到屏幕上。</p>
+                            <p class="text-sm text-gray-500">(这是一个操作任务，请在你的IDLE环境中完成。)</p>
+                            <textarea id="l4_op_ex4_code" class="w-full h-32 p-3 border border-gray-300 rounded-lg font-mono text-base focus:ring-2 focus:ring-orange-500 focus:border-transparent mt-2" placeholder="你可以在这里记录你的代码（可选）..."></textarea>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l4_op_ex4_solution')">查看提示/示例代码</button>
+                            <div id="l4_op_ex4_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>提示/示例代码：</h5>
+                                <p class="text-gray-700">例如，如果你喜欢《春晓》：</p>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">my_poem = """春眠不觉晓，
+处处闻啼鸟。"""
+print(my_poem)</code></pre>
+                                </div>
+                                <p class="text-gray-700 mt-2">你可以替换成任何你喜欢的诗句。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l4-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们深入学习了字符串这个"文字"类型的数据。我们知道了怎么用单引号或双引号来创建它们，还学会了用加号 <code class="inline-code">+</code> 把字符串"粘"起来，用乘号 <code class="inline-code">*</code> 让字符串"变多"。最重要的是，我们明白了字符串和数字是不同的"物种"，不能随便混在一起运算，需要的时候要用 <code class="inline-code">str()</code> 这样的函数来"变身"。最后，我们还掌握了用三引号轻松创建多行文字的方法。字符串在编程中无处不在，熟练掌握它对我们非常重要！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 学习愉快！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const mainHeader = document.querySelector('header.main-header');
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            
+            // Standardized lesson title retrieval or definition
+            const lessonSpecificTitle = "第4课：数据类型（字符串）"; // Standardized title for Lesson 4
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+            
+            // Ensure removal of any unit title from main header
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 80; 
+            if (mainHeader) {
+                headerHeight = mainHeader.offsetHeight; 
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) { 
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 40; 
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0) {
+                    newActiveId = sectionsToObserve[0].id;
+                 }
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 1); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is CSS driven
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        function checkStringLegality(questionName, correctAnswerString, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+            const container = document.getElementById(`${questionName}_container`);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswerString) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong> (${selectedValue})<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>你选择了 "${selectedValue}"，正确答案是：${correctAnswerString}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                Prism.highlightAllUnder(solutionEl); 
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

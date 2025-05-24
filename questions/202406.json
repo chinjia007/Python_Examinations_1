@@ -1,0 +1,1138 @@
+[
+  {
+    "id": "202406_CHOICE_1",
+    "question_number_original": "1",
+    "type": "single_choice",
+    "question_text": "在使用turtle绘制图形时，如果要控制小海龟移动到 x 坐标为 200，y 坐标为150 的位置，以下代码能够实现效果的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "turtle.go(150, 200)"
+      },
+      {
+        "key": "B",
+        "text": "turtle.go(200, 150)"
+      },
+      {
+        "key": "C",
+        "text": "turtle.goto(150, 200)"
+      },
+      {
+        "key": "D",
+        "text": "turtle.goto(200, 150)"
+      }
+    ],
+    "answer": "D",
+    "explanation": "`turtle.goto(x, y)` 命令用于将海龟移动到指定的x坐标和y坐标。题目要求x为200，y为150，所以正确的是 `turtle.goto(200, 150)`。`turtle.go()` 不是标准的Turtle命令。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "坐标移动",
+      "goto"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_2",
+    "question_number_original": "2",
+    "type": "single_choice",
+    "question_text": "下列关于Python程序设计语言的说法，错误的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "Python 是一门面向对象的编程语言"
+      },
+      {
+        "key": "B",
+        "text": "Python 程序文件后缀是 .py"
+      },
+      {
+        "key": "C",
+        "text": "Python 程序只能在 IDLE 上运行"
+      },
+      {
+        "key": "D",
+        "text": "Python 程序支持多种操作系统"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Python程序可以在多种环境中运行，如IDLE、VS Code、PyCharm、Jupyter Notebook以及直接在命令行运行，并非只能在IDLE上运行。其他选项都是正确的描述。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Python基础",
+      "Python特性",
+      "开发环境"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_3",
+    "question_number_original": "3",
+    "type": "single_choice",
+    "question_text": "在Python中，使用type()函数可以获取参数的数据类型，那么运行type(\"int\")的运行结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "<class 'int'>"
+      },
+      {
+        "key": "B",
+        "text": "<class 'str'>"
+      },
+      {
+        "key": "C",
+        "text": "<class 'float'>"
+      },
+      {
+        "key": "D",
+        "text": "<class 'bool'>"
+      }
+    ],
+    "answer": "B",
+    "explanation": "`\"int\"` 本身是一个用引号括起来的字符串，所以 `type(\"int\")` 会返回字符串类型，即 `<class 'str'>`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "type函数",
+      "数据类型",
+      "字符串"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_4",
+    "question_number_original": "4",
+    "type": "single_choice",
+    "question_text": "使用下列哪一项可以导入turtle画图模块？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "import turtle"
+      },
+      {
+        "key": "B",
+        "text": "import Turtle"
+      },
+      {
+        "key": "C",
+        "text": "turtle import"
+      },
+      {
+        "key": "D",
+        "text": "import turtle.Turtle"
+      }
+    ],
+    "answer": "A",
+    "explanation": "在Python中导入模块的标准语法是 `import module_name`。Turtle模块的名称是 `turtle` (全小写)。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "模块导入",
+      "import"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_5",
+    "question_number_original": "5",
+    "type": "single_choice",
+    "question_text": "使用turtle.circle(4,360,6)绘制的是什么图形？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "半径为4的圆"
+      },
+      {
+        "key": "B",
+        "text": "半径为360的圆"
+      },
+      {
+        "key": "C",
+        "text": "六边形"
+      },
+      {
+        "key": "D",
+        "text": "正方形"
+      }
+    ],
+    "answer": "C",
+    "explanation": "`turtle.circle(radius, extent, steps)` 函数中，如果提供了 `steps` 参数，则绘制的是一个内切于半径为 `radius` 的圆的正 `steps` 边形。这里 `steps` 是6，所以绘制的是六边形。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "circle",
+      "多边形"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_6",
+    "question_number_original": "6",
+    "type": "single_choice",
+    "question_text": "下列表达式的结果最大的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "20%4"
+      },
+      {
+        "key": "B",
+        "text": "20**2"
+      },
+      {
+        "key": "C",
+        "text": "20*4"
+      },
+      {
+        "key": "D",
+        "text": "20//4"
+      }
+    ],
+    "answer": "B",
+    "explanation": "A: `20%4` (20除以4的余数) = 0\nB: `20**2` (20的2次方) = 400\nC: `20*4` (20乘以4) = 80\nD: `20//4` (20整除以4) = 5\n因此，结果最大的是 `20**2`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "算术运算",
+      "运算符"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_7",
+    "question_number_original": "7",
+    "type": "single_choice",
+    "question_text": "程序1\na=（5>4）+2\nprint (a)\n程序2\na=5>4+2\nprint (a)\n的运行结果分别是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "3  False"
+      },
+      {
+        "key": "B",
+        "text": "True  2"
+      },
+      {
+        "key": "C",
+        "text": "True  3"
+      },
+      {
+        "key": "D",
+        "text": "3  True"
+      }
+    ],
+    "answer": "A",
+    "explanation": "程序1：`5>4` 的结果是 `True`。在Python中，`True` 在算术运算中被当作 `1`。所以 `a = True + 2` 即 `a = 1 + 2 = 3`。\n程序2：算术运算符 `+` 的优先级高于比较运算符 `>`。所以先计算 `4+2 = 6`。然后计算 `5 > 6`，结果是 `False`。所以 `a = False`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "运算符优先级",
+      "布尔运算",
+      "类型转换"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_8",
+    "question_number_original": "8",
+    "type": "single_choice",
+    "question_text": "下列关于turtle.circle()和turtle.dot()指令说法正确的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "turtle.circle()指令只能绘制圆或者圆弧"
+      },
+      {
+        "key": "B",
+        "text": "turtle.circle()的参数为直径，turtle.circle(30)绘制的图形半径为15"
+      },
+      {
+        "key": "C",
+        "text": "turtle.dot()指令的作用是绘制圆点"
+      },
+      {
+        "key": "D",
+        "text": "turtle.dot()的参数为半径，turtle.dot(30)绘制的图形半径为30"
+      }
+    ],
+    "answer": "C",
+    "explanation": "A: `turtle.circle()` 还可以绘制正多边形（当提供steps参数时）。\nB: `turtle.circle(radius)` 的参数是半径。\nC: `turtle.dot(size)` 用于绘制一个指定直径（size）的实心圆点。\nD: `turtle.dot(size)` 的参数是直径。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "circle",
+      "dot"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_9",
+    "question_number_original": "9",
+    "type": "single_choice",
+    "question_text": "关于turtle库说法正确的是？（ ）\n①画布的位置是固定的，无法调整 \n②write()指令可以在画布中添加文字 \n③goto(100,100)指的是将画笔移动到坐标为(100,100)的位置上\n④dot(100)可以绘制出一个半径为100的圆",
+    "options": [
+      {
+        "key": "A",
+        "text": "①②"
+      },
+      {
+        "key": "B",
+        "text": "①③"
+      },
+      {
+        "key": "C",
+        "text": "②③"
+      },
+      {
+        "key": "D",
+        "text": "③④"
+      }
+    ],
+    "answer": "C",
+    "explanation": "① 错误：可以使用 `turtle.setup()` 调整画布位置。\n② 正确：`turtle.write()` 可以在当前画笔位置书写文字。\n③ 正确：`turtle.goto(x, y)` 将画笔移动到指定坐标。\n④ 错误：`turtle.dot(size)` 绘制的是直径为 `size` 的圆点，不是半径为100的圆（线）。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "库函数"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_10",
+    "question_number_original": "10",
+    "type": "single_choice",
+    "question_text": "在Turtle库中，既可以设置画笔颜色，又可以设置填充颜色的指令是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "turtle.color()"
+      },
+      {
+        "key": "B",
+        "text": "turtle.bgcolor()"
+      },
+      {
+        "key": "C",
+        "text": "turtle.pencolor()"
+      },
+      {
+        "key": "D",
+        "text": "turtle.fill_color()"
+      }
+    ],
+    "answer": "A",
+    "explanation": "`turtle.color(pencolor, fillcolor)` 可以同时设置画笔颜色和填充颜色。如果只提供一个颜色参数，则同时设置两者。`turtle.bgcolor()` 设置背景色，`turtle.pencolor()` 只设置画笔颜色，`turtle.fillcolor()` (注意下划线) 只设置填充颜色。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "颜色设置",
+      "color"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_11",
+    "question_number_original": "11",
+    "type": "single_choice",
+    "question_text": "假设a=\"吉祥\";b=\"如意\";c=\"a\"+\"b\";print(c)，请问输出结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "吉祥 如意"
+      },
+      {
+        "key": "B",
+        "text": "吉祥如意"
+      },
+      {
+        "key": "C",
+        "text": "ab"
+      },
+      {
+        "key": "D",
+        "text": "a+b"
+      }
+    ],
+    "answer": "C",
+    "explanation": "代码中 `c=\"a\"+\"b\"` 是将字符串 `\"a\"` 和字符串 `\"b\"` 连接起来，得到字符串 `\"ab\"`。变量 `a` 和 `b` 的值（`\"吉祥\"` 和 `\"如意\"`）并没有被使用在这个连接操作中。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "字符串连接",
+      "变量与字面量"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_12",
+    "question_number_original": "12",
+    "type": "single_choice",
+    "question_text": "如果你今年的年龄是10周岁，则运行下面的程序，在提示语后面输入10后，c的值为多少？（ ）\na=input('请输入你的年龄：')\nc=a+2",
+    "options": [
+      {
+        "key": "A",
+        "text": "12"
+      },
+      {
+        "key": "B",
+        "text": "102"
+      },
+      {
+        "key": "C",
+        "text": "程序出错"
+      },
+      {
+        "key": "D",
+        "text": "'10+2'"
+      }
+    ],
+    "answer": "C",
+    "explanation": "`input()` 函数返回的是字符串。如果输入 `10`，则 `a` 的值是字符串 `'10'`。执行 `c = a + 2` 时，会尝试将字符串 `'10'` 和整数 `2` 相加，这会导致 `TypeError`，程序出错。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "input函数",
+      "数据类型",
+      "类型错误"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_13",
+    "question_number_original": "13",
+    "type": "single_choice",
+    "question_text": "Python中如何计算得到2024除以3的余数？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "2024%3"
+      },
+      {
+        "key": "B",
+        "text": "2024//3"
+      },
+      {
+        "key": "C",
+        "text": "2024/3"
+      },
+      {
+        "key": "D",
+        "text": "2024\\3"
+      }
+    ],
+    "answer": "A",
+    "explanation": "取余运算符在Python中是 `%`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "运算符",
+      "取余"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_14",
+    "question_number_original": "14",
+    "type": "single_choice",
+    "question_text": "下列各语句输出结果为True的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "print((0>1)or(2>1))"
+      },
+      {
+        "key": "B",
+        "text": "print(not 1)"
+      },
+      {
+        "key": "C",
+        "text": "print((1>=0)and(1>=2))"
+      },
+      {
+        "key": "D",
+        "text": "print(True!=1)"
+      }
+    ],
+    "answer": "A",
+    "explanation": "A: `(0>1)` 是 `False`，`(2>1)` 是 `True`。`False or True` 的结果是 `True`。\nB: `1` 在布尔上下文中为 `True`，`not True` 是 `False`。\nC: `(1>=0)` 是 `True`，`(1>=2)` 是 `False`。`True and False` 的结果是 `False`。\nD: `True` 在数值比较中等于 `1`，所以 `True != 1` (即 `1 != 1`) 是 `False`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "逻辑运算符",
+      "比较运算符",
+      "布尔运算"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_15",
+    "question_number_original": "15",
+    "type": "single_choice",
+    "question_text": "在Python中，表达式6-3*2的结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "0"
+      },
+      {
+        "key": "B",
+        "text": "6"
+      },
+      {
+        "key": "C",
+        "text": "12"
+      },
+      {
+        "key": "D",
+        "text": "1"
+      }
+    ],
+    "answer": "A",
+    "explanation": "根据运算符优先级，乘法 `*` 优先于减法 `-`。所以先计算 `3*2 = 6`，然后计算 `6-6 = 0`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "算术运算",
+      "运算符优先级"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_16",
+    "question_number_original": "16",
+    "type": "single_choice",
+    "question_text": "在Python中，以下哪个表达式的结果与其他三个不同？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "True and False"
+      },
+      {
+        "key": "B",
+        "text": "not False"
+      },
+      {
+        "key": "C",
+        "text": "3<4"
+      },
+      {
+        "key": "D",
+        "text": "4!=5"
+      }
+    ],
+    "answer": "A",
+    "explanation": "A: `True and False` 的结果是 `False`。\nB: `not False` 的结果是 `True`。\nC: `3<4` 的结果是 `True`。\nD: `4!=5` (4不等于5) 的结果是 `True`。\n所以，选项A的结果与其他三个不同。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "逻辑运算符",
+      "比较运算符",
+      "布尔运算"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_17",
+    "question_number_original": "17",
+    "type": "single_choice",
+    "question_text": "运行下面IDLE中的代码，应使用哪个选项中的功能？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "File中的Open"
+      },
+      {
+        "key": "B",
+        "text": "Edit中的Undo"
+      },
+      {
+        "key": "C",
+        "text": "Run中的Run Module"
+      },
+      {
+        "key": "D",
+        "text": "Options中的Configure IDLE"
+      }
+    ],
+    "answer": "C",
+    "explanation": "在IDLE的脚本编辑窗口中编写代码后，要执行该脚本，通常使用 `Run` 菜单下的 `Run Module` 选项，或者按快捷键 `F5`。",
+    "image_url": "image/202406_1.png",
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "IDLE操作",
+      "运行代码"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_18",
+    "question_number_original": "18",
+    "type": "single_choice",
+    "question_text": "执行下面的代码，打印结果为？（ ）\n# print('锲而舍之，朽木不折；')\nprint('锲而不舍，金石可镂。')",
+    "options": [
+      {
+        "key": "A",
+        "text": "锲而舍之，朽木不折；\n锲而不舍，金石可镂。"
+      },
+      {
+        "key": "B",
+        "text": "锲而不舍，金石可镂。\n锲而舍之，朽木不折；"
+      },
+      {
+        "key": "C",
+        "text": "锲而舍之，朽木不折；"
+      },
+      {
+        "key": "D",
+        "text": "锲而不舍，金石可镂。"
+      }
+    ],
+    "answer": "D",
+    "explanation": "第一行代码以 `#` 开头，是单行注释，Python解释器会忽略它。所以只有第二行 `print('锲而不舍，金石可镂。')` 会被执行。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "注释",
+      "print语句"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_19",
+    "question_number_original": "19",
+    "type": "single_choice",
+    "question_text": "执行代码 print(17 or 39)，打印结果为？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "True"
+      },
+      {
+        "key": "B",
+        "text": "False"
+      },
+      {
+        "key": "C",
+        "text": "17"
+      },
+      {
+        "key": "D",
+        "text": "39"
+      }
+    ],
+    "answer": "C",
+    "explanation": "逻辑运算符 `or` 的工作方式：如果第一个操作数为真（非零数字在布尔上下文中为真），则 `or` 运算的结果是第一个操作数的值。因为 `17` 是非零数字，所以结果是 `17`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "逻辑运算符",
+      "or",
+      "短路求值"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_20",
+    "question_number_original": "20",
+    "type": "single_choice",
+    "question_text": "阿明在一条小河边取水，他有两个水桶，一个红色一个绿色。红色水桶的容量是6升，绿色水桶的容量是7升。阿明想在红色水桶中正好装入5升水，他该怎么做呢？下面给出了八项操作，选择其中的一部分就能在红色水桶中正好装入5升水。哪个选项中的操作顺序能够达到目标？（ ）\n①将红色水桶装满；\n②将绿色水桶装满；\n③第二次将红色水桶装满；\n④第二次将绿色水桶装满；\n⑤将红色水桶中的水全部倒入绿色水桶；\n⑥将绿色水桶中的水全部倒入红色水桶；\n⑦将红色水桶中的水倒入绿色水桶，直到绿色水桶装满；\n⑧将绿色水桶中的水倒入红色水桶，直到红色水桶装满；",
+    "options": [
+      {
+        "key": "A",
+        "text": "②①⑦③"
+      },
+      {
+        "key": "B",
+        "text": "①⑤⑧④"
+      },
+      {
+        "key": "C",
+        "text": "②⑧④⑤"
+      },
+      {
+        "key": "D",
+        "text": "①⑤③⑦"
+      }
+    ],
+    "answer": "D",
+    "explanation": "我们来逐步验证选项D：\n①将红色水桶装满；(红:6, 绿:0)\n⑤将红色水桶中的水全部倒入绿色水桶；(红:0, 绿:6)\n③第二次将红色水桶装满；(红:6, 绿:6)\n⑦将红色水桶中的水倒入绿色水桶，直到绿色水桶装满；(绿色水桶还能装7-6=1升。红色水桶倒入1升后，红:5, 绿:7)\n此时红色水桶中有5升水，达到目标。",
+    "image_url": null,
+    "difficulty": 4,
+    "tags": [
+      "单选题",
+      "逻辑推理",
+      "问题解决"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_21",
+    "question_number_original": "21",
+    "type": "single_choice",
+    "question_text": "下面哪个选项的代码，可以画出一个直径为80的红色空心圆形？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "import turtle\nturtle.color('red')\nturtle.circle(40)"
+      },
+      {
+        "key": "B",
+        "text": "import turtle\nturtle.color('red')\nturtle.dot(80)"
+      },
+      {
+        "key": "C",
+        "text": "import turtle\nturtle.color('red')\nturtle.begin_fill()\nturtle.circle(40)\nturtle.end_fill()"
+      },
+      {
+        "key": "D",
+        "text": "import turtle\nturtle.pencolor('red')\nturtle.begin_fill()\nturtle.dot(80)\nturtle.end_fill()"
+      }
+    ],
+    "answer": "A",
+    "explanation": "要画空心圆，不能使用填充命令。`turtle.circle(radius)` 的参数是半径，直径80则半径为40。`turtle.color('red')` 会将画笔颜色设为红色。选项A符合要求。选项B画的是实心圆点。选项C和D都使用了填充。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "Turtle",
+      "circle",
+      "颜色设置"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_22",
+    "question_number_original": "22",
+    "type": "single_choice",
+    "question_text": "print(\"16+2\")输出的结果是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "\"16+2\""
+      },
+      {
+        "key": "B",
+        "text": "18"
+      },
+      {
+        "key": "C",
+        "text": "162"
+      },
+      {
+        "key": "D",
+        "text": "16+2"
+      }
+    ],
+    "answer": "D",
+    "explanation": "`print()` 函数打印字符串时，会原样输出字符串的内容，不包括外层的引号。所以 `print(\"16+2\")` 的结果是 `16+2`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "单选题",
+      "print语句",
+      "字符串输出"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_23",
+    "question_number_original": "23",
+    "type": "single_choice",
+    "question_text": "下面哪个选项可以作为 Python 的变量名？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "for"
+      },
+      {
+        "key": "B",
+        "text": "if"
+      },
+      {
+        "key": "C",
+        "text": "else"
+      },
+      {
+        "key": "D",
+        "text": "Break"
+      }
+    ],
+    "answer": "D",
+    "explanation": "`for`、`if`、`else` 都是Python的关键字（保留字），不能用作变量名。`Break` (首字母大写) 不是Python的关键字 (关键字是 `break` 全小写)，因此可以作为变量名。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "变量命名规则",
+      "关键字"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_24",
+    "question_number_original": "24",
+    "type": "single_choice",
+    "question_text": "以下运算符中，运算优先级最高的是？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "<="
+      },
+      {
+        "key": "B",
+        "text": "or"
+      },
+      {
+        "key": "C",
+        "text": "=="
+      },
+      {
+        "key": "D",
+        "text": "%"
+      }
+    ],
+    "answer": "D",
+    "explanation": "在给出的选项中，算术运算符 `%` (取余) 的优先级高于比较运算符 `<=` 和 `==`，而比较运算符的优先级又高于逻辑运算符 `or`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "单选题",
+      "运算符优先级"
+    ]
+  },
+  {
+    "id": "202406_CHOICE_25",
+    "question_number_original": "25",
+    "type": "single_choice",
+    "question_text": "已知变量a=8，b=7，执行语句a*=a-b后，变量a的值为以下哪一个？（ ）",
+    "options": [
+      {
+        "key": "A",
+        "text": "-8"
+      },
+      {
+        "key": "B",
+        "text": "8"
+      },
+      {
+        "key": "C",
+        "text": "-7"
+      },
+      {
+        "key": "D",
+        "text": "7"
+      }
+    ],
+    "answer": "B",
+    "explanation": "`a*=a-b` 等价于 `a = a * (a-b)`。\n首先计算括号内的 `a-b`，即 `8-7 = 1`。\n然后计算 `a * 1`，即 `8 * 1 = 8`。\n所以变量 `a` 的最终值是 `8`。",
+    "image_url": null,
+    "difficulty": 3,
+    "tags": [
+      "单选题",
+      "赋值运算符",
+      "算术运算",
+      "运算符优先级"
+    ]
+  },
+  {
+    "id": "202406_TF_26",
+    "question_number_original": "26",
+    "type": "true_false",
+    "question_text": "Python无论在哪个编译器中编写代码，编写完一行代码后，回车就会马上运行出现输出结果。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "这种行为（写一行回车立即执行）通常发生在Python的交互模式（如IDLE的Shell，或命令行Python解释器）。在脚本模式或大多数IDE的编辑器中，需要编写完整的程序或代码块后，再统一运行。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "Python环境",
+      "交互模式",
+      "脚本模式"
+    ]
+  },
+  {
+    "id": "202406_TF_27",
+    "question_number_original": "27",
+    "type": "true_false",
+    "question_text": "toy = '足球' 这句代码中，toy 是变量的名字。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "在这句赋值语句中，`toy` 是用来存储值 `'足球'` 的变量名。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "变量"
+    ]
+  },
+  {
+    "id": "202406_TF_28",
+    "question_number_original": "28",
+    "type": "true_false",
+    "question_text": "运行str(49)的结果是'49'。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "`str()` 函数用于将其他数据类型转换为字符串。`str(49)` 会将整数 `49` 转换为字符串 `'49'`。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "数据类型转换",
+      "str()"
+    ]
+  },
+  {
+    "id": "202406_TF_29",
+    "question_number_original": "29",
+    "type": "true_false",
+    "question_text": "以下Python语句的运行结果是“hello world”。（ ）\nprint(“hello”,end=‘  ’)\nprint(“world”)",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "第一个 `print` 语句因为 `end=' '`，所以输出 \"hello\" 后不会换行，而是输出一个空格。第二个 `print` 语句接着输出 \"world\"。因此结果是 \"hello world\"。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "print语句",
+      "end参数"
+    ]
+  },
+  {
+    "id": "202406_TF_30",
+    "question_number_original": "30",
+    "type": "true_false",
+    "question_text": "在Python编程中，input()为输入函数，在输入数据时，可以将输入数据直接显示到控制台。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "`input()` 函数用于获取用户的输入，用户输入的内容会显示在控制台上（作为输入过程的一部分），但 `input()` 函数本身的作用是返回这个输入值给程序，而不是直接将其作为程序的输出显示。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "input函数"
+    ]
+  },
+  {
+    "id": "202406_TF_31",
+    "question_number_original": "31",
+    "type": "true_false",
+    "question_text": "在Python中允许同时为多个变量进行赋值，故赋值语句：a,b,c = 1,2,3,4是正确的。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "Python允许多重赋值，但赋值操作符左右两边的元素数量必须相等。这里左边有3个变量，右边有4个值，会导致 `ValueError`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "变量赋值",
+      "多重赋值"
+    ]
+  },
+  {
+    "id": "202406_TF_32",
+    "question_number_original": "32",
+    "type": "true_false",
+    "question_text": "Python3的代码可以直接在Python2上运行。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "Python 2 和 Python 3 之间存在一些不兼容的语法和特性，例如 `print` 语句的用法、整数除法等。因此，Python 3 的代码通常不能直接在 Python 2 上无修改地运行。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "Python版本"
+    ]
+  },
+  {
+    "id": "202406_TF_33",
+    "question_number_original": "33",
+    "type": "true_false",
+    "question_text": "在Python中，and、or、True和False都是保留字。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "这些都是Python语言中的关键字（保留字），具有特殊的含义，不能用作普通的标识符。",
+    "image_url": null,
+    "difficulty": 1,
+    "tags": [
+      "判断题",
+      "关键字",
+      "保留字"
+    ]
+  },
+  {
+    "id": "202406_TF_34",
+    "question_number_original": "34",
+    "type": "true_false",
+    "question_text": "hideturtle() 可以将画笔移动到起始位置。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "F",
+    "explanation": "`hideturtle()` 或 `ht()` 命令用于隐藏海龟图标，使其在画布上不可见，但并不会改变画笔的位置。将画笔移动到起始位置（原点）的命令是 `turtle.home()`。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "Turtle",
+      "hideturtle"
+    ]
+  },
+  {
+    "id": "202406_TF_35",
+    "question_number_original": "35",
+    "type": "true_false",
+    "question_text": "turtle库中，turtle.begin_fill()和turtle.end_fill()必须成对使用。（ ）",
+    "options": [
+      {
+        "key": "T",
+        "text": "正确"
+      },
+      {
+        "key": "F",
+        "text": "错误"
+      }
+    ],
+    "answer": "T",
+    "explanation": "要使用Turtle库进行颜色填充，必须先调用 `turtle.begin_fill()` 开始记录填充区域，绘制完封闭图形后，再调用 `turtle.end_fill()` 来完成填充。",
+    "image_url": null,
+    "difficulty": 2,
+    "tags": [
+      "判断题",
+      "Turtle",
+      "颜色填充"
+    ]
+  },
+  {
+    "id": "202406_PROG_36",
+    "question_number_original": "36",
+    "type": "programming",
+    "title": "绘制圆形分割线",
+    "description": "绘制图形要求：\n（1）绘制如图所示图形，圆的中心为坐标原点（0,0）；\n（2）已知圆半径100，右边为红色（red），左边为黄色（yellow）；\n（3）画笔的粗细为5，画笔黑色，画笔速度设置为5；\n（4）画笔最终回到坐标原点并隐藏。",
+    "reference_solution": "import turtle\n\nturtle.hideturtle() # 先隐藏，避免初始箭头\nturtle.speed(5)\nturtle.pensize(5)\nturtle.pencolor(\"black\")\n\n# 绘制左边黄色半圆\nturtle.fillcolor(\"yellow\")\nturtle.begin_fill()\nturtle.circle(100, 180) # 画上半圆 (默认从底部开始逆时针)\nturtle.end_fill()\n\n# 绘制右边红色半圆\nturtle.fillcolor(\"red\")\nturtle.begin_fill()\nturtle.circle(100, 180) # 继续画下半圆\nturtle.end_fill()\n\n# 绘制中间的黑色竖线\n# (注意：由于填充，这条线可能被覆盖，如果严格要求黑色竖线可见，绘制逻辑需要调整，\n#  例如先画线再分别填充两个半圆，或者画完填充后再画一条覆盖的黑线)\n# 按照题目“平台生成图片时会部分遮挡中间竖线颜色，属于平台问题”，这里简单画一条\nturtle.penup()\nturtle.goto(0, 100)\nturtle.pendown()\nturtle.goto(0, -100)\n\nturtle.penup()\nturtle.goto(0, 0)\nturtle.hideturtle()\n\nturtle.done()",
+    "image_url": "image/202406.png",
+    "difficulty": 4,
+    "scoring_criteria": [
+      "（1）导入库文件正确；（2分）",
+      "（2）有移动命令；（2分）",
+      "（3）有填充颜色指令；（2分）",
+      "（4）有画圆工具；（2分）",
+      "（5）画笔速度2分，画笔粗细2分，回到原点并隐藏2分，填充颜色正确2分（各1分）；（8分）",
+      "（6）图形正确；（2分）",
+      "（7）运行正常。（2分）"
+    ],
+    "tags": [
+      "编程题",
+      "Turtle",
+      "图形绘制",
+      "颜色填充",
+      "circle"
+    ]
+  },
+  {
+    "id": "202406_PROG_37",
+    "question_number_original": "37",
+    "type": "programming",
+    "title": "购物计算",
+    "description": "小明去体育商店买东西，一共带了x元。他买了一个价格为a元的乒乓球拍，接着用剩下钱全买了乒乓球，乒乓球价格为b元。请问他买了几个乒乓球？\n要求：（1）用键盘输入总共带了多少钱；（2）用键盘输入乒乓球拍的价格；（3）用键盘输入乒乓球的价格；（4）根据输入计算小明买了几个乒乓球；（5）输出买乒乓球的数量。\n输入样例：\n总共带了多少元：50\n球拍的价格是多少元：30\n乒乓球的单价是多少元：5\n输出样例：\n乒乓球的数量是：4",
+    "reference_solution": "total_money_str = input(\"总共带了多少元：\")\nracket_price_str = input(\"球拍的价格是多少元：\")\nball_price_str = input(\"乒乓球的单价是多少元：\")\n\ntotal_money = int(total_money_str)\nracket_price = int(racket_price_str)\nball_price = int(ball_price_str)\n\nremaining_money = total_money - racket_price\nnumber_of_balls = remaining_money // ball_price\n\nprint(\"乒乓球的数量是：\", number_of_balls)",
+    "image_url": null,
+    "difficulty": 2,
+    "scoring_criteria": [
+      "（1）有输入语句；（2分）",
+      "（2）有输出语句；（2分）",
+      "（3）有类型转化语句，并且所有类型转换正确，否则该项分数为0；（2分）",
+      "（4）有计算语句，并且计算正确，如果计算错误该项分数为0；（2分）",
+      "（5）程序符合题目要求，运行正确。（2分）"
+    ],
+    "tags": [
+      "编程题",
+      "输入输出",
+      "数据类型转换",
+      "算术运算",
+      "整除"
+    ]
+  }
+]

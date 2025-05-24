@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第7课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 标准化 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            --lesson7-theme-color-rgb: 245, 101, 101; /* RGB for #f56565 */
+        }
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 标准化 */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 标准化 */
+            justify-content: space-between; /* 标准化 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 标准化 */
+            position: fixed; /* 标准化 */
+            top: 0; /* 标准化 */
+            left: 0; /* 标准化 */
+            right: 0; /* 标准化 */
+            box-sizing: border-box; /* 标准化 */
+        }
+        .main-header .header-content-wrapper {
+            display: flex;
+            /* flex-direction: column; */ /* Removed for standard layout */
+            align-items: center;   /* Standard: ensure items are vertically centered */
+            /* text-align: center; */   /* Removed for standard layout */
+            flex-grow: 0; /* Standard */
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.2rem; 
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; /* 标准化 */
+        }
+        .header-icon { 
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        /* Added #lesson-unit-header based on lesson1.html standard */
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); 
+            position: fixed;
+            top: var(--header-height); 
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Consistent monospaced font stack */
+            background-color: #e2e8f0; /* Light gray background, Tailwind's gray-200 */
+            color: #2d3748; /* Dark gray text, Tailwind's gray-800 */
+            padding: 0.2em 0.4em; /* Slightly adjusted padding */
+            border-radius: 5px; /* Slightly more rounded corners */
+            font-size: 0.9em; /* Relative font size */
+            border: 1px solid #cbd5e0; /* Slightly darker border, Tailwind's gray-300 */
+            display: inline-block; /* Ensures proper block-like behavior for padding/border */
+            line-height: 1.4; /* Adjusted line height for better readability */
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "7"; /* Specific to lesson 7 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw;
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            color: rgba(var(--lesson7-theme-color-rgb), 0.08);
+            opacity: 1;
+            z-index: -1;
+            pointer-events: none;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5),
+                         -1px -1px 0px rgba(0,0,0,0.02);
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header shadow-lg"> <!-- Removed Tailwind classes -->
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="main-title">Python一级训练营</h1> <!-- Removed text-3xl -->
+            </div>
+            <!-- <div class="course-unit-title">第7课 逻辑表达式与比较运算符</div> --> <!-- Removed from here -->
+        </div>
+        <div class="header-actions-container">
+            <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                <i class="fas fa-terminal"></i>开始编程
+            </a>
+            <a href="index.html" class="header-action-button home-button-style">
+                <i class="fas fa-house"></i>返回主页
+            </a>
+        </div>
+    </header>
+
+    <!-- New Sticky Lesson Unit Header - Added based on lesson1 standard -->
+    <div id="lesson-unit-header">
+        <!-- Content will be dynamically filled by JS -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l7-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l7-boolean-values" class="sidebar-link">一、认识布尔值</a></li>
+                <li><a href="#section-l7-comparison-operators" class="sidebar-link">二、比较运算符</a></li>
+                <li><a href="#section-l7-booleans-and-numbers" class="sidebar-link">三、True/False与数字</a></li>
+                <li><a href="#section-l7-logical-expressions" class="sidebar-link">四、编写逻辑表达式</a></li>
+                <li><a href="#section-l7-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l7-objectives-container" class="content-section">
+                        <h3 id="section-l7-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>理解什么是<strong class="highlight-key">布尔值 (Boolean values)</strong>，知道它们只有两种：<strong class="highlight-key">True</strong> (真) 和 <strong class="highlight-key">False</strong> (假)。</li>
+                            <li>掌握Python中常用的<strong class="highlight-key">比较运算符</strong>：<code class="inline-code">==</code> (等于), <code class="inline-code">!=</code> (不等于), <code class="inline-code">&gt;</code> (大于), <code class="inline-code">&lt;</code> (小于), <code class="inline-code">&gt;=</code> (大于等于), <code class="inline-code">&lt;=</code> (小于等于)。</li>
+                            <li>理解比较运算的结果总是布尔值 (<strong class="highlight-key">True</strong> 或 <strong class="highlight-key">False</strong>)。</li>
+                            <li>知道在Python中，<strong class="highlight-key">True</strong> 在数值比较中等同于 <code class="inline-code">1</code>，<strong class="highlight-key">False</strong> 等同于 <code class="inline-code">0</code>。</li>
+                            <li>能够运用比较运算符编写简单的逻辑判断表达式。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l7-boolean-values" class="section-main-title first-in-section">
+                            <i class="fas fa-check-circle section-title-icon"></i><i class="fas fa-times-circle section-title-icon" style="margin-left:-15px; color: #ef4444;"></i>一、 对与错：认识布尔值
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，在生活中，我们经常会判断一件事情是对的还是错的，是真的还是假的。比如，"太阳从东边升起"这是对的（真的），"鱼儿能在天上飞"这是错的（假的）。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            在Python编程中，也有类似表示"对"与"错"、"真"与"假"的值，我们称它们为<strong class="highlight-key">布尔值 (Boolean values)</strong>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">布尔值非常简单，它只有<strong class="highlight-key">两种</strong>可能的值：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">True</strong>：表示"真"、"对"、"成立"。</li>
+                            <li><strong class="highlight-key">False</strong>：表示"假"、"错"、"不成立"。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong>注意</strong>：在Python中，<code class="inline-code">True</code> 和 <code class="inline-code">False</code> 这两个单词的首字母必须大写，它们是Python的关键字。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            布尔值在编程中非常重要，它们是进行逻辑判断和控制程序流程的基础。
+                        </p>
+                        <h4 class="knowledge-subtitle">思考与讨论：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>请你说出生活中的一个"真"的描述和一个"假"的描述。</li>
+                            <li>如果我们想用布尔值来表示"今天是不是晴天？"，如果今天是晴天，应该用哪个布尔值？如果不是晴天呢？</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l7-comparison-operators" class="section-main-title first-in-section">
+                            <i class="fas fa-balance-scale section-title-icon"></i>二、 比一比大小：比较运算符
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们经常需要比较两个东西的大小、或者判断它们是不是一样。比如，比较两个小朋友谁的个子高，或者看看两个苹果是不是一样重。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Python提供了一些特殊的符号，叫做<strong class="highlight-key">比较运算符 (Comparison Operators)</strong>，来帮助我们进行这种比较。比较的结果，就会是一个布尔值 (<strong class="highlight-key">True</strong> 或 <strong class="highlight-key">False</strong>)。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">常用的比较运算符：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>等于 (<code class="inline-code">==</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左右两边的值是否<strong class="highlight-key">相等</strong>。</li>
+                                    <li><strong>注意</strong>：是<strong class="highlight-key">两个等号 <code class="inline-code">==</code></strong>，不是我们之前学的赋值用的一个等号 <code class="inline-code">=</code>！</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(5 == 5)  # 5等于5吗？是的，所以输出：True
+print(10 == 7) # 10等于7吗？不是，所以输出：False
+print("hello" == "hello") # 字符串"hello"等于"hello"吗？是的，输出：True
+print("Apple" == "apple") # 字符串"Apple"等于"apple"吗？不是，因为大小写不同，输出：False</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>不等于 (<code class="inline-code">!=</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左右两边的值是否<strong class="highlight-key">不相等</strong>。</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(5 != 5)  # 5不等于5吗？不是的（它们是相等的），所以输出：False
+print(10 != 7) # 10不等于7吗？是的，所以输出：True</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>大于 (<code class="inline-code">&gt;</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左边的值是否<strong class="highlight-key">大于</strong>右边的值。</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(10 > 5)  # 10大于5吗？是的，输出：True
+print(3 > 8)   # 3大于8吗？不是，输出：False</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>小于 (<code class="inline-code">&lt;</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左边的值是否<strong class="highlight-key">小于</strong>右边的值。</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(10 < 5)  # 10小于5吗？不是，输出：False
+print(3 < 8)   # 3小于8吗？是的，输出：True</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>大于等于 (<code class="inline-code">&gt;=</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左边的值是否<strong class="highlight-key">大于或者等于</strong>右边的值。</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(10 >= 5) # 10大于等于5吗？是的（大于），输出：True
+print(5 >= 5)  # 5大于等于5吗？是的（等于），输出：True
+print(3 >= 8)  # 3大于等于8吗？不是，输出：False</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>小于等于 (<code class="inline-code">&lt;=</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>用来判断左边的值是否<strong class="highlight-key">小于或者等于</strong>右边的值。</li>
+                                    <li>示例：
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">print(10 <= 5) # 10小于等于5吗？不是，输出：False
+print(5 <= 5)  # 5小于等于5吗？是的（等于），输出：True
+print(3 <= 8)  # 3小于等于8吗？是的（小于），输出：True</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题1 (写出 <code class="inline-code">print()</code> 语句的输出结果)：</h4>
+                        <div class="exercise-container" id="l7_saq_1_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">print(100 == 10 * 10)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_1_1_solution')">查看答案/解析</button>
+                            <div id="l7_saq_1_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">True</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">10 * 10</code> 等于 <code class="inline-code">100</code>，所以 <code class="inline-code">100 == 100</code> 是 <code class="inline-code">True</code>。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l7_saq_1_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">print("Python" != "python")</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_1_2_solution')">查看答案/解析</button>
+                            <div id="l7_saq_1_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">True</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 字符串比较区分大小写，<code class="inline-code">"Python"</code> 和 <code class="inline-code">"python"</code> 是不同的字符串，所以它们不相等，结果是 <code class="inline-code">True</code>。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l7_saq_1_3_container">
+                            <h4 class="exercise-title">3. </h4>
+                            <div class="code-block-container mb-2">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">x = 15
+y = 20
+print(x >= y)</code></pre>
+                            </div>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_1_3_solution')">查看答案/解析</button>
+                            <div id="l7_saq_1_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">False</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">x</code> 是 <code class="inline-code">15</code>，<code class="inline-code">y</code> 是 <code class="inline-code">20</code>。 <code class="inline-code">15 >= 20</code> 不成立。</p>
+                            </div>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">练习题2 (选择题)：</h4>
+                        <div class="exercise-container" id="l7_mcq_2_1">
+                            <h4 class="exercise-title">1. 如果 <code class="inline-code">a = 20</code>，<code class="inline-code">b = "20"</code>，那么 <code class="inline-code">a == b</code> 的结果是？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l7_mcq_2_1_opt1" name="l7_mcq_2_1" value="A"><label for="l7_mcq_2_1_opt1">A. True</label></div>
+                                <div><input type="radio" id="l7_mcq_2_1_opt2" name="l7_mcq_2_1" value="B"><label for="l7_mcq_2_1_opt2">B. False</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l7_mcq_2_1', 'B', '`a` 是整数 `20`，`b` 是字符串 `20`。虽然它们看起来内容相似，但因为数据类型不同，Python认为它们不相等。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l7_mcq_2_2">
+                            <h4 class="exercise-title">2. 哪个表达式的结果是 <code class="inline-code">True</code>？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l7_mcq_2_2_optA" name="l7_mcq_2_2" value="A"><label for="l7_mcq_2_2_optA">A. <code class="inline-code">7 < 3</code></label></div>
+                                <div><input type="radio" id="l7_mcq_2_2_optB" name="l7_mcq_2_2" value="B"><label for="l7_mcq_2_2_optB">B. <code class="inline-code">8 != 8</code></label></div>
+                                <div><input type="radio" id="l7_mcq_2_2_optC" name="l7_mcq_2_2" value="C"><label for="l7_mcq_2_2_optC">C. <code class="inline-code">10 <= 10</code></label></div>
+                                <div><input type="radio" id="l7_mcq_2_2_optD" name="l7_mcq_2_2" value="D"><label for="l7_mcq_2_2_optD">D. <code class="inline-code">"abc" > "xyz"</code></label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l7_mcq_2_2', 'C', 'A是False；B是False；C是True因为10等于10；D是False因为按字典序`abc`小于`xyz`。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l7-booleans-and-numbers" class="section-main-title first-in-section">
+                            <i class="fas fa-link section-title-icon"></i>三、 True、False 与数字的"亲戚关系"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            在Python中，布尔值 <code class="inline-code">True</code> 和 <code class="inline-code">False</code> 有时候可以像数字一样参与运算或比较。
+                        </p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">True</strong> 在数值上可以看作是 <strong class="highlight-key">1</strong>。</li>
+                            <li><strong class="highlight-key">False</strong> 在数值上可以看作是 <strong class="highlight-key">0</strong>。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2">这种特性在某些情况下很有用，但我们初学时主要理解它们在比较时的行为。</p>
+                        <p class="text-gray-700 leading-relaxed mb-2">示例：</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">print(True == 1)  # 输出：True (因为True相当于1)
+print(False == 0) # 输出：True (因为False相当于0)
+print(True > False)# 输出：True (因为1 > 0)
+print(True + True) # 输出：2 (因为1 + 1 = 2)</code></pre>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed my-4">
+                            例如之前试卷中出现 <code class="inline-code">print(a==A)</code>，如果 <code class="inline-code">a=1</code>，<code class="inline-code">A=True</code>，结果就是 <code class="inline-code">True</code>。
+                        </p>
+
+                        <h4 class="knowledge-subtitle">练习题3 (写出 <code class="inline-code">print()</code> 语句的输出结果)：</h4>
+                        <div class="exercise-container" id="l7_saq_3_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">print(False != 0)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_3_1_solution')">查看答案/解析</button>
+                            <div id="l7_saq_3_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">False</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">False</code> 等于 <code class="inline-code">0</code>，所以 <code class="inline-code">False != 0</code> 是 <code class="inline-code">False</code>。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l7_saq_3_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">print(True > 0)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_3_2_solution')">查看答案/解析</button>
+                            <div id="l7_saq_3_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">True</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">True</code> 等于 <code class="inline-code">1</code>，<code class="inline-code">1 > 0</code> 是 <code class="inline-code">True</code>。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l7_saq_3_3_container">
+                            <h4 class="exercise-title">3. </h4>
+                            <div class="code-block-container mb-2">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">result = (5 > 2)   # result 的值是 True
+print(result == 1)</code></pre>
+                            </div>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_saq_3_3_solution')">查看答案/解析</button>
+                            <div id="l7_saq_3_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">True</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">result</code> 是 <code class="inline-code">True</code>，<code class="inline-code">True == 1</code> 是 <code class="inline-code">True</code>。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l7-logical-expressions" class="section-main-title first-in-section">
+                            <i class="fas fa-project-diagram section-title-icon"></i>四、 用比较来做判断：编写简单的逻辑表达式
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们现在可以用比较运算符来写一些简单的<strong class="highlight-key">逻辑表达式 (Logical Expressions)</strong>。逻辑表达式就是那些计算结果为 <code class="inline-code">True</code> 或 <code class="inline-code">False</code> 的式子。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            比如，我们要判断一个小朋友的年龄 <code class="inline-code">child_age</code> 是否达到了可以玩某个游戏的最低年龄 <code class="inline-code">min_age</code>，我们就可以写：<code class="inline-code">can_play = child_age >= min_age</code>。这个 <code class="inline-code">can_play</code> 变量就会存下 <code class="inline-code">True</code> (如果达到了) 或者 <code class="inline-code">False</code> (如果没达到)。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            这种简单的判断是我们后面学习更复杂的条件控制（比如 <code class="inline-code">if</code> 语句）的基础。
+                        </p>
+
+                        <h4 class="knowledge-subtitle">编程题1 (在IDLE中完成)：</h4>
+                        <div class="exercise-container" id="l7_prog1_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：身高检查器</strong><br>
+                                编写一个程序，首先提示用户输入他们的身高（单位：厘米），例如："请输入您的身高（厘米）："。
+                                将输入的身高转换为整数。
+                                判断用户身高是否大于或等于120厘米。
+                                输出一个布尔值，表示是否符合要求（例如，如果身高130，则输出 <code class="inline-code">True</code>）。
+                            </p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_prog1_solution')">查看参考答案</button>
+                            <div id="l7_prog1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">height_str = input("请输入您的身高（厘米）：")
+height_cm = int(height_str)
+is_tall_enough = height_cm >= 120
+print("身高是否符合要求（>=120cm）：", is_tall_enough)</code></pre>
+                                </div>
+                                <h5 class="mt-3">解析：</h5>
+                                <ul class="list-disc list-inside">
+                                    <li>程序获取输入并转为整数。</li>
+                                    <li>使用 <code class="inline-code">&gt;=</code> 比较身高和120。</li>
+                                    <li>将比较结果（布尔值）存入变量并输出。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">编程题2 (在IDLE中完成)：</h4>
+                        <div class="exercise-container" id="l7_prog2_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：数字相等判断器</strong><br>
+                                编写一个程序，提示用户连续输入两个整数。
+                                判断这两个整数是否相等。
+                                输出一个布尔值，表示它们是否相等。
+                            </p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l7_prog2_solution')">查看参考答案</button>
+                            <div id="l7_prog2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">num1_str = input("请输入第一个整数：")
+num1 = int(num1_str)
+num2_str = input("请输入第二个整数：")
+num2 = int(num2_str)
+are_equal = (num1 == num2) # 括号可以不加，但加上更清晰
+print("两个数字是否相等：", are_equal)</code></pre>
+                                </div>
+                                <h5 class="mt-3">解析：</h5>
+                                 <ul class="list-disc list-inside">
+                                    <li>程序获取两次输入并都转为整数。</li>
+                                    <li>使用 <code class="inline-code">==</code> 判断两个整数是否相等。</li>
+                                    <li>输出比较结果。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l7-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们认识了编程世界里的"对"与"错"——布尔值 <code class="inline-code">True</code> 和 <code class="inline-code">False</code>。我们还学会了使用各种比较运算符 (<code class="inline-code">==</code>, <code class="inline-code">!=</code>, <code class="inline-code">&gt;</code>, <code class="inline-code">&lt;</code>, <code class="inline-code">&gt;=</code>, <code class="inline-code">&lt;=</code>) 来比较数字和文字的大小或者是否相等，并且知道了这些比较的结果就是布尔值。我们还发现 <code class="inline-code">True</code> 和 <code class="inline-code">False</code> 有时候可以像数字 <code class="inline-code">1</code> 和 <code class="inline-code">0</code> 一样。这些比较判断的能力，是我们以后让程序变得更"聪明"、能根据不同情况做不同事情的关键哦！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 学习愉快！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const header = document.querySelector('header.main-header');
+            // Standardized: Get lessonUnitHeader and set its content
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            const lessonSpecificTitle = "第7课 逻辑表达式与比较运算符"; // Standardized title for Lesson 7
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+
+            // Standardized: Ensure removal of any unit title from main header (if mistakenly present)
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 110; 
+            if (header) {
+                headerHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) { 
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 60; 
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } 
+                    else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } 
+                    else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0 && sectionsToObserve[0]) {
+                    newActiveId = sectionsToObserve[0].id;
+                 }
+
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 10); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is handled by CSS
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const correctAnswerLabelElement = document.querySelector(`label[for="${questionId}_opt${correctAnswerLetter}"]`);
+                let correctAnswerText = correctAnswerLetter;
+                if (correctAnswerLabelElement) {
+                    correctAnswerText = correctAnswerLabelElement.innerHTML.split(/<br\s*\/?>/i)[0].trim();
+                }
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerText}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        // This function is kept for potential future TFQ with radio buttons
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const container = document.getElementById(`${questionId}_container`);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                const codeBlocks = solutionEl.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    Prism.highlightElement(block);
+                });
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

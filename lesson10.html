@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第10课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 标准化，确保所有页面一致 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            --lesson10-theme-color-rgb: 74, 85, 104; /* RGB for #4a5568 */
+        }
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 调整以适应新的粘性头部 */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 改为 row 以便按钮在右侧 */
+            justify-content: space-between; /* 使标题和按钮分开 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 标准化 padding */
+            position: fixed; /* 确保 main-header 是固定的 */
+            top: 0;
+            left: 0;
+            right: 0;
+            box-sizing: border-box;
+        }
+        .header-content-wrapper {
+            display: flex;
+            /* flex-direction: column; */ /* 移除，因为内容应水平排列 */
+            /* align-items: center; */   /* 移除，因为内容应水平排列 */
+            /* text-align: center; */   /* 移除 */
+            align-items: center; /* 标准：确保图标和系列标题垂直居中 */
+            flex-grow: 0; /* 标准 */
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.2rem; 
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.4rem; 
+        }
+        .course-unit-title { 
+            /* 这个样式不再直接用于 .main-header 内的课程单元标题，
+               因为课程单元标题会移到 #lesson-unit-header 中。
+               可以保留以防其他地方用到，或根据需要移除。
+               暂时注释掉以避免冲突。
+            */
+            /*
+            font-size: 1.15rem; 
+            color: #dbeafe; 
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            */
+        }
+        .header-icon { 
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); 
+            position: fixed;
+            top: var(--header-height); 
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title { /* For exercise titles within .exercise-container */
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        h5.sub-section-title { /* For sub-titles within a knowledge section */
+            font-size: 1.4rem;
+            color: var(--accent-color-dark);
+            margin-top: 1.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Consistent monospaced font stack */
+            background-color: #e2e8f0; /* Light gray background, Tailwind's gray-200 */
+            color: #2d3748; /* Dark gray text, Tailwind's gray-800 */
+            padding: 0.2em 0.4em; /* Slightly adjusted padding */
+            border-radius: 5px; /* Slightly more rounded corners */
+            font-size: 0.9em; /* Relative font size */
+            border: 1px solid #cbd5e0; /* Slightly darker border, Tailwind's gray-300 */
+            display: inline-block; /* Ensures proper block-like behavior for padding/border */
+            line-height: 1.4; /* Adjusted line height for better readability */
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* 返回主页按钮样式 */
+        .home-button {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .home-button:hover {
+            background-color: var(--accent-color-dark);
+            transform: translateY(-50%) translateY(-2px);
+        }
+        
+        .home-button .fa-house {
+            margin-right: 0.5rem;
+        }
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "10"; /* Specific to lesson 10 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw;
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            color: rgba(var(--lesson10-theme-color-rgb), 0.08); /* Using updated RGB variable */
+            opacity: 1;
+            z-index: -1;
+            pointer-events: none;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5),
+                         -1px -1px 0px rgba(0,0,0,0.02);
+            user-select: none;
+        }
+
+        /* BEGIN ADDED/MODIFIED CSS SECTION FOR HEADER ACTIONS AND LESSON UNIT HEADER */
+        /* Header Action Buttons - 与其他课程页一致 */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab {
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color);
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color);
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        /* Sticky Lesson Unit Header - 与其他课程页一致 */
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+        /* END ADDED/MODIFIED CSS SECTION */
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header shadow-lg">
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="main-title">Python一级训练营</h1>
+            </div>
+            <!-- 原有的 .course-unit-title 从这里移除，因为它会显示在 #lesson-unit-header 中 -->
+            <!-- <p class="course-unit-title">第10课：总复习与模拟备考</p> -->
+        </div>
+        <!-- 添加 header-actions-container -->
+        <div class="header-actions-container">
+            <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                <i class="fas fa-terminal"></i>开始编程
+            </a>
+            <a href="index.html" class="header-action-button home-button-style">
+                <i class="fas fa-house"></i>返回主页
+            </a>
+        </div>
+    </header>
+
+    <!-- 添加 #lesson-unit-header 的 HTML 结构 -->
+    <div id="lesson-unit-header">
+        <!-- 内容将通过JS动态填充 -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l10-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l10-knowledge-review" class="sidebar-link">一、知识点大回顾</a></li>
+                <li><a href="#section-l10-debugging" class="sidebar-link">二、小侦探修Bug</a></li>
+                <li><a href="#section-l10-problem-solving-strategy" class="sidebar-link">三、解决问题的"小套路"</a></li>
+                <li><a href="#section-l10-mock-exam" class="sidebar-link">四、模拟练习与备考</a></li>
+                <li><a href="#section-l10-summary" class="sidebar-link">本课总结</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l10-objectives-container" class="content-section">
+                        <h3 id="section-l10-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-bullseye section-title-icon"></i>本课目标：
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>全面复习 Python 一级考试所要求的所有<strong class="highlight-key">核心知识点</strong>。</li>
+                            <li>巩固在 <strong class="highlight-key">IDLE 环境</strong>中编写、运行和<strong class="highlight-key">调试</strong>程序的基本技能。</li>
+                            <li>学习识别和理解常见的 Python <strong class="highlight-key">错误信息</strong>。</li>
+                            <li>掌握简单的程序<strong class="highlight-key">调试方法</strong>（如使用 <code class="inline-code">print()</code> 语句）。</li>
+                            <li>培养基本的<strong class="highlight-key">问题解决策略</strong>，能够将实际问题分解为编程步骤。</li>
+                            <li>通过<strong class="highlight-key">模拟练习</strong>，熟悉考试题型和答题节奏。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l10-knowledge-review" class="section-main-title first-in-section">
+                            <i class="fas fa-book-reader section-title-icon"></i>一、 知识点大回顾：我们学了什么？
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，我们已经一起学习了9节课的Python知识啦！现在我们来一起回忆一下都学了哪些重要的内容，确保大家都牢牢记住了。
+                        </p>
+                        
+                        <h5 class="sub-section-title"><i class="fas fa-chalkboard-teacher"></i> 第1课：Python与IDLE初识</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>Python是什么？（一种高级编程语言）</li>
+                            <li>IDLE是什么？（Python自带的开发和学习环境）</li>
+                            <li>IDLE的两种模式：<strong class="highlight-key">交互模式</strong> (<code class="inline-code">&gt;&gt;&gt;</code>) 和<strong class="highlight-key">脚本模式</strong>。</li>
+                            <li>如何新建、保存 (<code class="inline-code">.py</code> 后缀)、打开和运行Python文件。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-stream"></i> 第2课：程序结构与基本输出</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>程序的基本流程：输入、处理、输出。</li>
+                            <li>Python代码格式：<strong class="highlight-key">缩进</strong>的重要性, <strong class="highlight-key">注释</strong> (<code class="inline-code">#</code>, <code class="inline-code">''' '''</code> 或 <code class="inline-code">""" """</code>), 字符串用引号。</li>
+                            <li><code class="inline-code">print()</code> 函数：输出文字、数字、表达式结果；默认换行；<code class="inline-code">end</code> 参数控制结尾。</li>
+                            <li><code class="inline-code">type()</code> 函数查看数据类型。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-box"></i> 第3课：变量与数值型</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">变量</strong>：存储数据的"小盒子"；命名规则（字母数字下划线，不能数字开头，区分大小写，不能用关键字）。</li>
+                            <li>赋值运算符 <code class="inline-code">=</code>。变量先赋值后使用。</li>
+                            <li>数值类型：<strong class="highlight-key">整数 (int)</strong>，<strong class="highlight-key">浮点数 (float)</strong>。</li>
+                            <li>Python<strong class="highlight-key">保留字（关键字）</strong>。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-font"></i> 第4课：字符串</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">字符串 (str)</strong>：用单引号或双引号创建。</li>
+                            <li>字符串操作：<strong class="highlight-key">连接 (+)</strong class="highlight-key">，<strong class="highlight-key">重复 (*)</strong>。</li>
+                            <li>不同类型不能直接用 <code class="inline-code">+</code> 连接（如字符串和数字）。</li>
+                            <li>三引号创建多行字符串。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-exchange-alt"></i> 第5课：输入与类型转换</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><code class="inline-code">input()</code> 函数获取用户输入（总是返回字符串）。</li>
+                            <li><strong class="highlight-key">类型转换</strong>：<code class="inline-code">int()</code>, <code class="inline-code">float()</code>, <code class="inline-code">str()</code>。</li>
+                            <li><code class="inline-code">int()</code> 转换特性：截断小数，不能转换含小数点的数字字符串。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-calculator"></i> 第6课：数学运算</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">算术运算符</strong>：<code class="inline-code">+</code>, <code class="inline-code">-</code>, <code class="inline-code">*</code>, <code class="inline-code">/</code> (结果为浮点数), <code class="inline-code">//</code> (整除), <code class="inline-code">%</code> (取余), <code class="inline-code">**</code> (幂)。</li>
+                            <li><strong class="highlight-key">运算优先级</strong>（括号 > 幂 > 乘除余整除 > 加减）。</li>
+                            <li><strong class="highlight-key">复合赋值运算符</strong>（<code class="inline-code">+=</code>, <code class="inline-code">*=</code> 等）。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-balance-scale-right"></i> 第7课：比较运算符</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">布尔值</strong>：<code class="inline-code">True</code>, <code class="inline-code">False</code>。</li>
+                            <li><strong class="highlight-key">比较运算符</strong>：<code class="inline-code">==</code>, <code class="inline-code">!=</code>, <code class="inline-code">></code>, <code class="inline-code"><</code>, <code class="inline-code">>=</code>, <code class="inline-code"><=</code> (结果为布尔值)。</li>
+                            <li><code class="inline-code">True</code> 相当于 <code class="inline-code">1</code>, <code class="inline-code">False</code> 相当于 <code class="inline-code">0</code> 在数值比较中。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas-solid fa-code-branch"></i> 第8课：逻辑运算符</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong class="highlight-key">逻辑运算符</strong>：<code class="inline-code">and</code>, <code class="inline-code">or</code>, <code class="inline-code">not</code>。</li>
+                            <li>运算规则和真值表。</li>
+                            <li><strong class="highlight-key">短路求值</strong>和返回值特性 (例如 <code class="inline-code">0 or 10</code> 输出 <code class="inline-code">10</code>, <code class="inline-code">True and 5</code> 输出 <code class="inline-code">5</code>)。</li>
+                            <li>优先级：算术 > 比较 > <code class="inline-code">not</code> > <code class="inline-code">and</code> > <code class="inline-code">or</code>。</li>
+                        </ul>
+
+                        <h5 class="sub-section-title"><i class="fas fa-paint-roller"></i> 第9课：Turtle图形库</h5>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><code class="inline-code">import turtle</code>。</li>
+                            <li>移动：<code class="inline-code">forward()</code>, <code class="inline-code">backward()</code>, <code class="inline-code">left()</code>, <code class="inline-code">right()</code>。</li>
+                            <li>笔控：<code class="inline-code">penup()</code>, <code class="inline-code">pendown()</code>。</li>
+                            <li>定位：<code class="inline-code">goto()</code>, <code class="inline-code">home()</code>。</li>
+                            <li>绘图：<code class="inline-code">circle()</code>, <code class="inline-code">dot()</code>。</li>
+                            <li>外观：<code class="inline-code">pensize()</code>, <code class="inline-code">pencolor()</code>, <code class="inline-code">fillcolor()</code>, <code class="inline-code">color()</code>。</li>
+                            <li>填充：<code class="inline-code">begin_fill()</code>, <code class="inline-code">end_fill()</code>。</li>
+                            <li>其他：<code class="inline-code">hideturtle()</code>, <code class="inline-code">speed()</code>, <code class="inline-code">done()</code>, <code class="inline-code">setup()</code>, <code class="inline-code">clear()</code>, <code class="inline-code">write()</code>。</li>
+                            <li>坐标系概念。</li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">快速问答/小测验（口头或书面）：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>Python中单行注释用什么符号？（ # ）</li>
+                            <li><code class="inline-code">print(10 // 3)</code> 的结果是什么？（ 3 ）</li>
+                            <li><code class="inline-code">input("请输入：")</code> 返回的数据是什么类型？（字符串 str ）</li>
+                            <li><code class="inline-code">True and False</code> 的结果是什么？（ False ）</li>
+                            <li>让Turtle画笔抬起的命令是什么？（ <code class="inline-code">turtle.penup()</code> 或 <code class="inline-code">turtle.pu()</code> ）</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l10-debugging" class="section-main-title first-in-section">
+                            <i class="fas fa-bug section-title-icon"></i>二、 小侦探修Bug：IDLE调试与程序分析
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，写程序的时候，就像我们做手工或者写作文一样，有时候会不小心出点小差错，这些小差错在编程里叫做 <strong class="highlight-key">Bug（虫子）</strong>。找到并修正这些Bug的过程，就叫做 <strong class="highlight-key">调试 (Debugging)</strong>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>IDLE 环境下的错误提示：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>当我们的Python代码有比较明显的语法错误时，比如写错了单词、括号不配对、缩进不对等等，IDLE 在我们尝试运行程序之前可能就会用红色突出显示有问题的地方。</li>
+                            <li>如果程序在运行时出现问题，IDLE的交互模式窗口（Shell窗口）通常会显示<strong class="highlight-key">错误信息 (Error Message)</strong>。这些信息看起来可能有点吓人，但它们其实是电脑在告诉我们哪里出错了，以及可能是什么原因。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>常见的错误类型（一级会遇到的）：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li><strong><code class="inline-code">SyntaxError</code> (语法错误)</strong>：通常是代码不符合Python的写法规则。
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>比如：<code class="inline-code">primt("你好")</code> (把 <code class="inline-code">print</code> 写成了 <code class="inline-code">primt</code>)</li>
+                                    <li>比如：<code class="inline-code">print("你好"</code> (括号少了一边)</li>
+                                    <li>比如：不正确的缩进 (<code class="inline-code">IndentationError</code>，它是 <code class="inline-code">SyntaxError</code> 的一种特殊情况)。</li>
+                                    <li>使用非法标识符作为变量名也会导致 <code class="inline-code">SyntaxError</code>。</li>
+                                </ul>
+                            </li>
+                            <li><strong><code class="inline-code">NameError</code> (名称错误)</strong>：通常是因为使用了一个还没有被定义（赋值）的变量或函数名。
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>比如：<code class="inline-code">print(my_age)</code>，但之前没有写过 <code class="inline-code">my_age = 10</code> 这样的赋值语句。</li>
+                                </ul>
+                            </li>
+                            <li><strong><code class="inline-code">TypeError</code> (类型错误)</strong>：通常是因为对不同类型的数据进行了不合适的操作。
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>比如：<code class="inline-code">print("年龄：" + 10)</code> (尝试把字符串和整数用 <code class="inline-code">+</code> 连接)。</li>
+                                    <li>比如：<code class="inline-code">len(123)</code> (尝试获取数字的长度，<code class="inline-code">len()</code> 通常用于序列如字符串、列表)。</li>
+                                </ul>
+                            </li>
+                            <li><strong><code class="inline-code">ValueError</code> (值错误)</strong>：通常是函数接收到的参数类型正确，但值不合适。
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>比如：<code class="inline-code">int("abc")</code> (尝试把不能表示数字的字符串转换为整数)。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>如何阅读错误信息？</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>错误信息通常会告诉我们错误发生在哪个文件的哪一行。</li>
+                            <li>它还会指出错误的类型（比如 <code class="inline-code">SyntaxError</code>, <code class="inline-code">NameError</code>）。</li>
+                            <li>有时还会有一句简短的描述说明可能的原因。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>简单的调试方法：使用 <code class="inline-code">print()</code> 语句</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>这是初学者最常用也最直接的调试方法。</li>
+                            <li>如果你不确定程序执行到某一步时，某个变量的值到底是多少，或者程序有没有执行到某一段，你可以在代码的关键位置加入 <code class="inline-code">print()</code> 语句来输出这些信息。</li>
+                            <li>例如，如果一个计算结果不对，你可以在计算的每一步都 <code class="inline-code">print()</code> 一下中间变量的值，看看是哪一步算错了。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">a = input("输入数字1: ")
+b = input("输入数字2: ")
+print("输入a后，a是：", a, "类型是：", type(a)) # 调试信息
+print("输入b后，b是：", b, "类型是：", type(b)) # 调试信息
+num_a = int(a)
+num_b = int(b)
+print("转换后，num_a是：", num_a, "num_b是：", num_b) # 调试信息
+result = num_a + num_b
+print("最终结果是：", result)</code></pre>
+                                </div>
+                            </li>
+                            <li>调试完成后，记得把这些临时的 <code class="inline-code">print()</code> 语句删除或注释掉。</li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题1 (找出错误并改正)：</h4>
+                        <div class="exercise-container" id="l10_ex1_1_container">
+                            <p class="text-gray-700 mb-2">1. 下面的代码想计算面积，但有错误，请指出并改正：</p>
+                            <div class="code-block-container">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">length = input("请输入长度：")
+width = "10"
+area = length * width # 预期：如果输入长度为5，面积应为50
+print(area)</code></pre>
+                            </div>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l10_ex1_1_solution')">查看错误与改正</button>
+                            <div id="l10_ex1_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>错误原因：</h5>
+                                <p class="text-gray-700"><code class="inline-code">length</code> 是通过 <code class="inline-code">input()</code> 获取的字符串，<code class="inline-code">width</code> 也是字符串 <code class="inline-code">"10"</code>。字符串之间用 <code class="inline-code">*</code> 是重复操作，而不是数学乘法。需要将它们都转换为数值类型（如整数或浮点数）才能进行乘法运算。</p>
+                                <h5>改正后：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">length_str = input("请输入长度：")
+length = int(length_str) # 或 float(length_str)
+width = 10 # 直接用数字10
+area = length * width
+print(area)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l10_ex1_2_container">
+                            <p class="text-gray-700 mb-2">2. 下面的代码想打招呼，但有错误：</p>
+                            <div class="code-block-container">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">name = "小华"
+age = 9
+print("你好，" + name + "你今年" + age + "岁了。")</code></pre>
+                            </div>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l10_ex1_2_solution')">查看错误与改正</button>
+                            <div id="l10_ex1_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>错误原因：</h5>
+                                <p class="text-gray-700"><code class="inline-code">age</code> 是整数类型，不能直接用 <code class="inline-code">+</code> 与字符串连接。需要用 <code class="inline-code">str()</code> 将其转换为字符串。</p>
+                                <h5>改正后：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">name = "小华"
+age = 9
+print("你好，" + name + "，你今年" + str(age) + "岁了。") # 注意逗号和str()的使用</code></pre>
+                                </div>
+                                <p class="text-gray-700 mt-2">或者使用 <code class="inline-code">print</code> 的多参数特性：</p>
+                                 <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">name = "小华"
+age = 9
+print("你好，", name, "，你今年", age, "岁了。")</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l10-problem-solving-strategy" class="section-main-title first-in-section">
+                            <i class="fas fa-lightbulb section-title-icon"></i>三、 解决问题的"小套路"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            当我们遇到一个编程问题时，特别是像编程题那样的要求，不要急着一上来就写代码。可以试试下面的步骤：
+                        </p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li><strong>仔细阅读题目，理解要求</strong>：明确程序需要做什么？需要哪些输入？最终要输出什么？有什么特殊条件？</li>
+                            <li><strong>分解问题</strong>：把一个大问题拆分成几个小步骤。比如"计算找零钱"可以分解成：获取总金额和商品价格 -> 计算差额 -> 计算各种面额的数量。</li>
+                            <li><strong>思考每个小步骤需要用到的Python知识</strong>：这一步需要输入吗？用 <code class="inline-code">input()</code>。需要计算吗？用什么运算符？需要判断吗？用什么比较和逻辑？需要画图吗？用Turtle的什么命令？</li>
+                            <li><strong>先写出主要逻辑的"骨架"</strong>：把大的步骤用注释或者简单的代码搭起来。</li>
+                            <li><strong>逐步填充细节代码</strong>：一步一步实现每个小功能。</li>
+                            <li><strong>测试和调试</strong>：写一部分就运行一下，看看有没有错误，结果对不对。利用我们刚才学的调试方法。</li>
+                        </ol>
+                        <p class="text-gray-700 leading-relaxed mb-2">实际问题举例：鸡妈妈数孩子问题</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>题目："从前向后数到鸡妈妈自己是7，从后往前数，数到鸡妈妈自己是9。鸡妈妈到底有几个孩子？"</li>
+                            <li>分解：
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>从前数，鸡妈妈是第7，说明她前面有 <code class="inline-code">7-1=6</code> 只。</li>
+                                    <li>从后数，鸡妈妈是第9，说明她后面有 <code class="inline-code">9-1=8</code> 只。</li>
+                                    <li>队伍总数 = 前面的 + 鸡妈妈自己 + 后面的 = <code class="inline-code">6 + 1 + 8 = 15</code> 只。</li>
+                                    <li>孩子数量 = 队伍总数 - 鸡妈妈自己 = <code class="inline-code">15 - 1 = 14</code> 只。</li>
+                                </ul>
+                            </li>
+                            <li>Python代码实现（如果需要的话）：
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">front_pos = 7
+back_pos = 9
+
+front_count = front_pos - 1
+back_count = back_pos - 1
+
+total_in_line = front_count + 1 + back_count # 1是鸡妈妈自己
+num_chicks = total_in_line - 1
+
+print("鸡妈妈有", num_chicks, "个孩子。")</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+                         <h4 class="knowledge-subtitle">练习题2 (思考与分解)：</h4>
+                        <div class="exercise-container" id="l10_ex2_1_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：</strong>小明想买一个玩具，玩具价格是50元。他有n元钱（由用户输入）。请判断小明的钱够不够买玩具，如果够，输出"可以买！"，如果不够，输出"钱不够哦。" </p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l10_ex2_1_solution')">查看分解步骤</button>
+                            <div id="l10_ex2_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>分解步骤（学生思考）：</h5>
+                                <ol class="list-decimal list-inside">
+                                    <li>需要什么输入？（小明有多少钱 <code class="inline-code">n</code>）</li>
+                                    <li>已知什么信息？（玩具价格 <code class="inline-code">toy_price = 50</code>）</li>
+                                    <li>怎么判断钱够不够？（比较 <code class="inline-code">n</code> 和 <code class="inline-code">toy_price</code>）</li>
+                                    <li>根据判断结果输出不同的话。</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l10-mock-exam" class="section-main-title first-in-section">
+                            <i class="fas fa-file-alt section-title-icon"></i>四、 模拟练习与备考
+                        </h3>
+                        <h4 class="knowledge-subtitle">活动安排：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li><strong>发放模拟试卷（或部分题目）</strong>：从之前处理过的三份JSON文件中挑选一些有代表性的题目（单选、判断、编程各几道），或者老师自己准备一些符合一级考纲的题目。</li>
+                            <li><strong>限时练习</strong>：模拟考试的紧张感，让学生在规定时间内完成。</li>
+                            <li><strong>答案讲解与分析</strong>：
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>针对选择题和判断题，逐题讲解正确答案和原因，澄清易错点。</li>
+                                    <li>针对编程题，分析解题思路，展示参考代码，并指出常见的错误和可以改进的地方。</li>
+                                </ul>
+                            </li>
+                            <li><strong>答疑环节</strong>：学生就复习内容和模拟练习中遇到的问题进行提问。</li>
+                            <li><strong>考试技巧提醒</strong>：
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>仔细审题，看清题目要求。</li>
+                                    <li>选择题先易后难，不确定的可以先跳过。</li>
+                                    <li>判断题注意辨别细节。</li>
+                                    <li>编程题先分解问题，一步步实现；注意输入输出格式；多用IDLE运行测试。</li>
+                                    <li>注意时间分配。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题3 (编程挑战 - 可选，或作为模拟题一部分)：</h4>
+                        <div class="exercise-container" id="l10_ex3_1_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：</strong>绘制一个彩色的同心圆。要求：</p>
+                            <ul class="list-disc list-inside ml-4 mb-2">
+                                <li>使用turtle库。</li>
+                                <li>绘制三个圆，它们的圆心都在画布中心(0,0)。</li>
+                                <li>第一个圆半径50，红色填充。</li>
+                                <li>第二个圆半径100，绿色填充，但它应该画在第一个圆的下面（先画大圆再画小圆，或者用抬笔定位）。</li>
+                                <li>第三个圆半径150，蓝色填充，画在第二个圆的下面。</li>
+                                <li>画笔粗细为3。</li>
+                                <li>完成后隐藏海龟。</li>
+                            </ul>
+                            <p class="text-sm text-gray-500"><strong>提示：</strong>如何让后画的圆不覆盖先画的圆？可以考虑绘制的顺序，或者每次画圆前抬笔到圆的最低点（例如 <code class="inline-code">goto(0, -radius)</code>），然后画圆。</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l10_ex3_1_solution')">查看参考答案</button>
+                            <div id="l10_ex3_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+
+turtle.speed(0) # 最快速度
+turtle.hideturtle()
+turtle.pensize(3)
+
+# 第三个圆 (最底层)
+turtle.penup()
+turtle.goto(0, -150) # 定位到圆的底部开始点
+turtle.pendown()
+turtle.color("blue", "blue") # 画笔和填充都为蓝色
+turtle.begin_fill()
+turtle.circle(150)
+turtle.end_fill()
+
+# 第二个圆
+turtle.penup()
+turtle.goto(0, -100)
+turtle.pendown()
+turtle.color("green", "green") # 画笔和填充都为绿色
+turtle.begin_fill()
+turtle.circle(100)
+turtle.end_fill()
+
+# 第一个圆 (最顶层)
+turtle.penup()
+turtle.goto(0, -50)
+turtle.pendown()
+turtle.color("red", "red") # 画笔和填充都为红色
+turtle.begin_fill()
+turtle.circle(50)
+turtle.end_fill()
+
+turtle.done()</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l10-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-flag-checkered section-title-icon"></i>本课总结：
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，10节课的Python一级探险之旅就要告一段落了！今天我们一起回顾了所有学过的知识，从Python和IDLE的基础操作，到变量、数据类型、各种运算符，再到神奇的Turtle画图。我们还学习了怎么像小侦探一样找出代码里的"小虫子"（Bug），以及解决编程问题的一些好方法。希望通过这些课程，大家不仅掌握了Python的基础知识，更重要的是培养了编程的兴趣和逻辑思考的能力。考试只是检验我们学习成果的一种方式，更重要的是享受编程带来的乐趣和创造力！祝大家在接下来的学习和考试中都能取得好成绩！继续加油，编程的世界还有更多精彩等着我们去探索！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 学习愉快！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const header = document.querySelector('header.main-header');
+            // 标准化: 获取 lessonUnitHeader 并设置其内容
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            const lessonSpecificTitle = "第10课：总复习与模拟备考"; // 第10课的特定标题
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+
+            // 标准化: 确保从主页眉中移除任何课程单元标题 (如果错误地存在)
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleElementInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleElementInHeader) {
+                 unitTitleElementInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 110; 
+            if (header) {
+                headerHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) { 
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 60; 
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } 
+                    else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } 
+                    else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0 && sectionsToObserve[0]) {
+                    newActiveId = sectionsToObserve[0].id;
+                 }
+
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 10); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is handled by CSS
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        // Note: MCQ and TFQ checking functions are not strictly needed for L10 as it's a review.
+        // Kept for consistency if interactive elements are added later.
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const correctAnswerLabelElement = document.querySelector(`label[for="${questionId}_opt${correctAnswerLetter}"]`);
+                let correctAnswerText = correctAnswerLetter;
+                if (correctAnswerLabelElement) {
+                    correctAnswerText = correctAnswerLabelElement.innerHTML.split(/<br\s*\/?>/i)[0].trim();
+                }
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerText}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const container = document.getElementById(`${questionId}_container`);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                const codeBlocks = solutionEl.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    Prism.highlightElement(block);
+                });
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

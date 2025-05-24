@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第2课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 新增：课程单元标题栏高度 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-rgb: 102, 126, 234;
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --text-color-dark-rgb: 26, 32, 44;
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            /* --lesson2-theme-color-rgb: 56, 178, 172; */ /* Can be removed or kept if specific to lesson2 styling elsewhere */
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 调整padding-top */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 确保是行布局 */
+            justify-content: space-between; /* 左右分布 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 调整内边距 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-sizing: border-box; /* 确保padding和border包含在高度内 */
+        }
+        .main-header .header-content-wrapper {
+            display: flex;
+            align-items: center;
+            flex-grow: 0; 
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* margin-bottom: 0.35rem; */ /* No longer needed as unit title is separate */
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; 
+        }
+        /* .course-unit-title is now handled by #lesson-unit-header styling */
+        
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); /* 只减去主页眉高度 */
+            position: fixed;
+            top: var(--header-height); /* 只贴在主页眉下方 */
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #dde3ea; 
+            color: var(--text-color-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid #cdd4db; 
+            display: inline-block;
+            line-height: 1.3;
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .header-icon { /* For Python logo */
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; /* Python yellow */
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "2"; /* For lesson 2 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw; 
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif; 
+            color: rgba(var(--primary-color-rgb, 102, 126, 234), 0.08); 
+            opacity: 1;
+            z-index: -1; 
+            pointer-events: none; 
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 
+                         -1px -1px 0px rgba(0,0,0,0.02); 
+            user-select: none; 
+        }
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header text-white shadow-lg">
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="text-3xl main-title">Python一级训练营</h1>
+            </div>
+             <!-- 右侧按钮容器 -->
+            <div class="header-actions-container">
+                <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                    <i class="fas fa-terminal"></i>开始编程
+                </a>
+                <a href="index.html" class="header-action-button home-button-style">
+                    <i class="fas fa-house"></i>返回主页
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="lesson-unit-header">
+        <!-- Content will be dynamically filled by JS -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l2-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l2-program-components" class="sidebar-link">一、程序的"三大件"</a></li>
+                <li><a href="#section-l2-python-syntax" class="sidebar-link">二、Python代码基本格式</a></li>
+                <li><a href="#section-l2-print-function" class="sidebar-link">三、超级有用的print()</a></li>
+                <li><a href="#section-l2-type-function" class="sidebar-link">四、认识type()函数</a></li>
+                <li><a href="#section-l2-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l2-objectives-container" class="content-section">
+                        <h3 id="section-l2-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>理解程序的基本组成部分：<strong class="highlight-key">输入</strong>、<strong class="highlight-key">处理</strong>、<strong class="highlight-key">输出</strong>。</li>
+                            <li>掌握 <strong class="highlight-key">Python</strong> 代码的基本格式，特别是<strong class="highlight-key">缩进</strong>的重要性和<strong class="highlight-key">注释</strong>的用法。</li>
+                            <li>学会使用 <code class="inline-code">print()</code> 函数进行各种内容的输出，包括<strong class="highlight-key">字符串</strong>、<strong class="highlight-key">数字</strong>和<strong class="highlight-key">表达式</strong>。</li>
+                            <li>了解 <code class="inline-code">print()</code> 函数的默认<strong class="highlight-key">换行</strong>特性以及如何使用 <code class="inline-code">end</code> 参数控制输出。</li>
+                            <li>知道如何使用 <code class="inline-code">type()</code> 函数查看<strong class="highlight-key">数据类型</strong>。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l2-program-components" class="section-main-title first-in-section">
+                            <i class="fas fa-cogs section-title-icon"></i>一、 程序的"三大件"：输入、处理、输出
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，我们写的每一个小程序，不管多简单或多复杂，通常都可以看作是由三个主要部分组成的，就像我们做饭有买菜（输入）、洗菜切菜炒菜（处理）、上菜（输出）一样。
+                        </p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong>输入 (Input)：</strong>就是程序从外部获取信息的过程。比如，让用户从键盘输入一个数字，或者程序从一个文件中读取数据。</li>
+                            <li><strong>处理 (Processing)：</strong>这是程序的核心部分，程序会根据我们写的指令对输入的信息进行计算、判断、转换等操作。</li>
+                            <li><strong>输出 (Output)：</strong>就是程序把处理的结果展示出来的过程。比如，在屏幕上显示一句话、一个数字，或者把结果保存到文件中。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们主要学习"输出"，也就是怎么让电脑把我们想显示的东西显示出来。
+                        </p>
+                        <h4 class="knowledge-subtitle">思考与讨论：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>如果我们想写一个程序来计算两个数字的和，那么这个程序的"输入"、"处理"和"输出"分别是什么呢？</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l2-python-syntax" class="section-main-title first-in-section">
+                            <i class="fas fa-ruler-combined section-title-icon"></i>二、 Python 代码的基本样子：格式很重要
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            写 Python 代码就像写作文一样，也有一些格式要求，电脑才能正确理解。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>缩进 (Indentation)：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>这是 Python 非常非常重要的一个特点！不像其他一些编程语言用括号或者特定的词来区分代码块，Python 用空格或者<strong class="highlight-key">制表符(Tab键)</strong>产生的"缩进"（就是代码行开头的空白）来表示哪些代码是一组的，或者说哪些代码是属于哪个部分的。</li>
+                            <li>通常，我们用 <strong class="highlight-key">4个空格</strong>作为一个缩进级别。</li>
+                            <li>如果缩进不对，程序就会出错，或者运行的结果不是我们想要的。我们会在后面的课程中更详细地学习什么时候需要缩进。现在大家先记住，Python 对开头的空格很"敏感"。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>注释 (Comments)：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>注释是写在代码中，但电脑不会执行的部分。它们是给我们自己或者其他看代码的人看的，用来解释这段代码是做什么的，或者为什么要这么写。好的注释能让代码更容易懂。</li>
+                            <li><strong>单行注释：</strong>以 <code class="inline-code">#</code> 号开始。从 <code class="inline-code">#</code> 号到这一行的末尾，都算是注释。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python"># 这是一行单行注释，电脑会忽略它</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>多行注释：</strong>可以用三个单引号 <code class="inline-code">'''</code> 或者三个双引号 <code class="inline-code">"""</code> 把一大段文字包起来，形成多行注释。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">
+"""
+这是
+一段多行
+注释。
+"""
+
+'''
+这也是
+一段多行
+注释。
+'''</code></pre>
+                                </div>
+                                注意：在之前的试卷中，有提到 <code class="inline-code">###</code> 不是多行注释的正确方式，大家要记住哦！
+                            </li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>字符串标识 (String Identification)：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>我们在上一节课用 <code class="inline-code">print("你好，世界！")</code> 的时候， <code class="inline-code">"你好，世界！"</code> 就是一个字符串，也就是一串文字。</li>
+                            <li>在 Python 中，字符串需要用单引号 <code class="inline-code">' '</code> 或者双引号 <code class="inline-code">" "</code> 包围起来，电脑才知道这是一段文字。例如：<code class="inline-code">'你好'</code> 和 <code class="inline-code">"你好"</code> 都是正确的字符串。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>(新补充) 语句分隔符 (Statement Separator)：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>通常，我们一行只写一条 Python 语句（一个完整的指令）。</li>
+                            <li>但如果需要在同一行写多条语句，可以用分号 <code class="inline-code">;</code> 把它们隔开。不过，为了代码清晰易读，一般不推荐在一行写太多语句。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("第一句"); print("第二句") # 不太推荐这样写，但语法是允许的</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题1 (判断对错)：</h4>
+                        <div class="exercise-container" id="l2_tfq_1_1_container">
+                            <h4 class="exercise-title">1. Python 代码的缩进只是为了好看，不影响程序运行。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_tfq_1_1_true" name="l2_tfq_1_1" value="true"><label for="l2_tfq_1_1_true">正确</label></div>
+                                <div><input type="radio" id="l2_tfq_1_1_false" name="l2_tfq_1_1" value="false"><label for="l2_tfq_1_1_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l2_tfq_1_1', 'false', '缩进是 Python 语法的一部分，用来定义代码块，非常重要。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l2_tfq_1_2_container">
+                             <h4 class="exercise-title">2. 以 # 开头的行是 Python 的单行注释。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_tfq_1_2_true" name="l2_tfq_1_2" value="true"><label for="l2_tfq_1_2_true">正确</label></div>
+                                <div><input type="radio" id="l2_tfq_1_2_false" name="l2_tfq_1_2" value="false"><label for="l2_tfq_1_2_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l2_tfq_1_2', 'true', '# 用于标记单行注释，解释器会忽略该行 # 之后的内容。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l2_tfq_1_3_container">
+                             <h4 class="exercise-title">3. 在 Python 中，可以在一行内写多条语句，用逗号 , 分隔它们。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_tfq_1_3_true" name="l2_tfq_1_3" value="true"><label for="l2_tfq_1_3_true">正确</label></div>
+                                <div><input type="radio" id="l2_tfq_1_3_false" name="l2_tfq_1_3" value="false"><label for="l2_tfq_1_3_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l2_tfq_1_3', 'false', '在一行内写多条语句时，应该用分号 `;` 分隔。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l2-print-function" class="section-main-title first-in-section">
+                            <i class="fas fa-print section-title-icon"></i>三、 超级有用的 print() 函数：让电脑"说话"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们已经用过 <code class="inline-code">print()</code> 函数来输出文字了。<code class="inline-code">print()</code> 是 Python 中一个非常基础也非常重要的内置函数，它的主要工作就是把我们想要显示的内容输出到屏幕（也叫控制台）上。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>print() 的基本用法：</strong></p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li><strong>输出字符串：</strong>把想输出的文字用引号包起来放在括号里。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("我爱Python！")
+print('Python真有趣！')</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>输出数字：</strong>可以直接把数字放在括号里。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print(123)
+print(3.14)</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>输出表达式的计算结果：</strong><code class="inline-code">print()</code> 可以直接计算括号里的数学表达式，并输出结果。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print(10 + 5)  # 会输出 15
+print(3 * 4)   # 会输出 12</code></pre>
+                                </div>
+                            </li>
+                            <li> 如果我们把数学表达式用引号包起来，<code class="inline-code">print()</code> 就会把它当作字符串原样输出，而不会计算。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("10 + 5") # 会输出 10 + 5</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>输出多个内容：</strong>可以在 <code class="inline-code">print()</code> 的括号里放多个东西，用逗号 <code class="inline-code">,</code> 把它们隔开。输出的时候，这些内容之间默认会用一个空格隔开。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">name = "小明"
+age = 8
+print(name, "今年", age, "岁了。") # 会输出：小明 今年 8 岁了。</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>默认换行：</strong>每次调用 <code class="inline-code">print()</code> 函数，输出完内容后，它默认会在末尾加上一个"换行符"，所以下一次 <code class="inline-code">print()</code> 的内容会显示在新的一行。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("第一行")
+print("第二行")
+# 输出会是：
+# 第一行
+# 第二行</code></pre>
+                                </div>
+                            </li>
+                            <li><strong> 控制结尾不换行 <code class="inline-code">end</code> 参数：</strong>如果我们不希望 <code class="inline-code">print()</code> 输出后换行，而是想让下一次的输出紧跟在后面，我们可以给 <code class="inline-code">print()</code> 函数传递一个特别的参数 <code class="inline-code">end</code>。<br>
+                            <code class="inline-code">end</code> 参数用来指定 <code class="inline-code">print()</code> 输出结束后用什么字符结尾，默认是换行符 <code class="inline-code">\n</code>。<br>
+                            如果我们想让它用空格结尾，可以写 <code class="inline-code">end=' '</code>。如果想什么都不加，就写 <code class="inline-code">end=''</code>。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("你好，", end="") # 输出后不换行，也不加空格
+print("世界！")      # 这句会紧跟在"你好，"后面
+# 输出会是：你好，世界！
+
+print("苹果", end="...") # 输出后加 "..." 而不是换行
+print("香蕉")
+# 输出会是：苹果...香蕉</code></pre>
+                                </div>
+                            </li>
+                            <li><strong> 使用三引号输出多行文本：</strong>如果想输出一大段包含换行的文字，可以直接用三个单引号 <code class="inline-code">''' '''</code> 或三个双引号 <code class="inline-code">""" """</code> 把文字包起来，放在 <code class="inline-code">print()</code> 函数里。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">print("""
+静夜思
+床前明月光，
+疑是地上霜。
+""")</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题2 (选择题)：</h4>
+                        <div class="exercise-container" id="l2_mcq_2_1">
+                            <h4 class="exercise-title">1. 执行 <code class="inline-code">print(5 * 2)</code> 的结果是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_mcq_2_1_opt1" name="l2_mcq_2_1" value="A"><label for="l2_mcq_2_1_opt1">A. 5 * 2</label></div>
+                                <div><input type="radio" id="l2_mcq_2_1_opt2" name="l2_mcq_2_1" value="B"><label for="l2_mcq_2_1_opt2">B. 52</label></div>
+                                <div><input type="radio" id="l2_mcq_2_1_opt3" name="l2_mcq_2_1" value="C"><label for="l2_mcq_2_1_opt3">C. 10</label></div>
+                                <div><input type="radio" id="l2_mcq_2_1_opt4" name="l2_mcq_2_1" value="D"><label for="l2_mcq_2_1_opt4">D. "10"</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l2_mcq_2_1', 'C', 'print() 会计算表达式 5 * 2 的结果 10，然后输出这个数字。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l2_mcq_2_2">
+                            <h4 class="exercise-title">2. 代码 <code class="inline-code">print("苹果"); print("香蕉")</code> 会如何显示？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_mcq_2_2_opt1" name="l2_mcq_2_2" value="A"><label for="l2_mcq_2_2_opt1">A. 苹果香蕉</label></div>
+                                <div><input type="radio" id="l2_mcq_2_2_opt2" name="l2_mcq_2_2" value="B"><label for="l2_mcq_2_2_opt2">B. 苹果 香蕉</label></div>
+                                <div><input type="radio" id="l2_mcq_2_2_opt3" name="l2_mcq_2_2" value="C"><label for="l2_mcq_2_2_opt3">C. 苹果<br>香蕉</label></div>
+                                <div><input type="radio" id="l2_mcq_2_2_opt4" name="l2_mcq_2_2" value="D"><label for="l2_mcq_2_2_opt4">D. 程序报错</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l2_mcq_2_2', 'C', '每次调用 print() 默认会在输出后换行。注意选项C中我用<br>表示换行效果。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l2_mcq_2_3">
+                            <h4 class="exercise-title">3. 如果想让 <code class="inline-code">print("Python", end="!")</code> 后面紧接着输出 <code class="inline-code">print("真棒")</code>，结果会是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l2_mcq_2_3_opt1" name="l2_mcq_2_3" value="A"><label for="l2_mcq_2_3_opt1">A. Python<br>!真棒</label></div>
+                                <div><input type="radio" id="l2_mcq_2_3_opt2" name="l2_mcq_2_3" value="B"><label for="l2_mcq_2_3_opt2">B. Python!真棒</label></div>
+                                <div><input type="radio" id="l2_mcq_2_3_opt3" name="l2_mcq_2_3" value="C"><label for="l2_mcq_2_3_opt3">C. Python ! 真棒</label></div>
+                                <div><input type="radio" id="l2_mcq_2_3_opt4" name="l2_mcq_2_3" value="D"><label for="l2_mcq_2_3_opt4">D. Python!<br>真棒</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l2_mcq_2_3', 'B', '第一个 print 以 ! 结尾且不换行，第二个 print 的内容会直接跟在 ! 后面。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l2-type-function" class="section-main-title first-in-section">
+                            <i class="fas fa-id-card section-title-icon"></i>四、 认识 type() 函数：查看数据的"身份证"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们在Python中处理的各种东西，比如数字 <code class="inline-code">123</code>、文字 <code class="inline-code">"你好"</code>，它们在Python里都有自己的"身份"，叫做<strong class="highlight-key">数据类型 (Data Type)</strong>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            想知道一个数据或者一个变量里存的是什么类型的数据，我们可以用 <code class="inline-code">type()</code> 函数来看它的"身份证"。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">把你想查看的东西放在 <code class="inline-code">type()</code> 的括号里，然后用 <code class="inline-code">print()</code> 把结果显示出来。</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">print(type(100))       # 100 是整数，会输出 <class 'int'>
+print(type(3.14))      # 3.14 是小数（浮点数），会输出 <class 'float'>
+print(type("你好"))    # "你好" 是文字（字符串），会输出 <class 'str'>
+print(type(True))      # True 是表示"真"的值（布尔型），会输出 <class 'bool'></code></pre>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-2 mt-4"> 即使是像 <code class="inline-code">"int"</code> 这样一个看起来像类型名字的文字，如果它被引号包起来了，那它本身也是一个字符串。</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">print(type("int"))     # "int" 是字符串，会输出 <class 'str'></code></pre>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">练习题3 (写出输出结果)：</h4>
+                        <div class="exercise-container" id="l2_saq_3_1_container"> <h4 class="exercise-title">1. <code class="inline-code">print(type(0.5))</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l2_saq_3_1_solution')">查看答案/解析</button>
+                            <div id="l2_saq_3_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">&lt;class 'float'&gt;</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 0.5 是一个带小数的数字，属于浮点数类型。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l2_saq_3_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">print(type("Python123"))</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l2_saq_3_2_solution')">查看答案/解析</button>
+                            <div id="l2_saq_3_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">&lt;class 'str'&gt;</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 用引号包围起来的都是字符串，即使里面包含数字。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l2_saq_3_3_container">
+                            <h4 class="exercise-title">3. </h4>
+                            <div class="code-block-container mb-2">
+                                <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                <pre><code class="language-python">x = 2025
+print(type(x))</code></pre>
+                            </div>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l2_saq_3_3_solution')">查看答案/解析</button>
+                            <div id="l2_saq_3_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">&lt;class 'int'&gt;</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 变量 x 存储的是整数 2025。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l2-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们学习了Python程序的基本样子，知道了<strong class="highlight-key">缩进</strong>和<strong class="highlight-key">注释</strong>的重要性。我们还重点练习了 <code class="inline-code">print()</code> 函数，学会了怎么让电脑输出各种信息，包括文字、数字、计算结果，以及怎么控制输出的结尾是不是换行。最后，我们还认识了 <code class="inline-code">type()</code> 函数，它可以帮我们看清数据到底是什么类型的。这些都是非常基础但非常重要的知识，打好基础，后面的学习就会更顺利！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 一把考过！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const mainHeader = document.querySelector('header.main-header');
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            
+            // Dynamically fill the lesson unit title
+            const lessonSpecificTitle = "第2课 程序结构与基本输出"; // Title for Lesson 2
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+            // Ensure any old unit title container in main header is gone (should be by HTML change)
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 80; // Default, will be overridden by actual offsetHeight
+
+            if (mainHeader) {
+                headerHeight = mainHeader.offsetHeight; 
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) {
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 40; // Uses main header height
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0) {
+                    newActiveId = sectionsToObserve[0].id;
+                }
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 1); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is CSS driven
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerLetter}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                Prism.highlightAllUnder(solutionEl); 
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

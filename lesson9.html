@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第9课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 标准化 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            --lesson9-theme-color-rgb: 113, 128, 150; /* RGB for #718096 - UPDATED */
+        }
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 标准化 */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 标准化 */
+            justify-content: space-between; /* 标准化 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 标准化 */
+            position: fixed; /* 标准化 */
+            top: 0; /* 标准化 */
+            left: 0; /* 标准化 */
+            right: 0; /* 标准化 */
+            box-sizing: border-box; /* 标准化 */
+        }
+        .main-header .header-content-wrapper {
+            display: flex;
+            /* flex-direction: column; */ /* Removed for standard layout */
+            align-items: center;   /* Standard: ensure items are vertically centered */
+            /* text-align: center; */   /* Removed for standard layout */
+            flex-grow: 0; /* Standard */
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.2rem; 
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; /* 标准化 */
+        }
+        /* .course-unit-title { */ /* Removed as unit title is now in #lesson-unit-header */
+            /* font-size: 1.15rem; */
+            /* color: #dbeafe; */
+            /* font-weight: 500; */
+            /* letter-spacing: 0.5px; */
+        /* } */
+        .header-icon { 
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); 
+            position: fixed;
+            top: var(--header-height); 
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Consistent monospaced font stack */
+            background-color: #e2e8f0; /* Light gray background, Tailwind's gray-200 */
+            color: #2d3748; /* Dark gray text, Tailwind's gray-800 */
+            padding: 0.2em 0.4em; /* Slightly adjusted padding */
+            border-radius: 5px; /* Slightly more rounded corners */
+            font-size: 0.9em; /* Relative font size */
+            border: 1px solid #cbd5e0; /* Slightly darker border, Tailwind's gray-300 */
+            display: inline-block; /* Ensures proper block-like behavior for padding/border */
+            line-height: 1.4; /* Adjusted line height for better readability */
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+        /* Styles for truth tables from lesson 8, if needed for future lessons with tables */
+        table.truth-table {
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-radius: 8px;
+            overflow: hidden; 
+        }
+        table.truth-table th, table.truth-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        table.truth-table th {
+            background-color: var(--primary-color-light);
+            color: white;
+            font-weight: 600;
+        }
+        table.truth-table td {
+            background-color: #fff;
+        }
+        table.truth-table tr:nth-child(even) td {
+            background-color: var(--bg-light);
+        }
+
+        /* 返回主页按钮样式 - 标准化 */
+        .home-button {
+            position: absolute;
+            right: 1.5rem; /* 标准化 */
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color); /* 标准化 */
+            color: white;
+            padding: 0.6rem 1.2rem; /* 标准化 */
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap; /* 标准化 */
+        }
+        
+        .home-button:hover {
+            background-color: var(--primary-color-dark); /* 标准化 */
+            transform: translateY(-50%) translateY(-2px); 
+        }
+        
+        .home-button .fa-house {
+            margin-right: 0.5rem;
+        }
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "9"; /* Specific to lesson 9 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw;
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            color: rgba(var(--lesson9-theme-color-rgb), 0.08); /* Ensure this uses the variable */
+            opacity: 1;
+            z-index: -1;
+            pointer-events: none;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5),
+                         -1px -1px 0px rgba(0,0,0,0.02);
+            user-select: none;
+        }
+
+        /* Added #lesson-unit-header based on lesson1.html standard */
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header shadow-lg">
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="main-title">Python一级训练营</h1>
+            </div>
+        </div>
+        <div class="header-actions-container">
+            <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                <i class="fas fa-terminal"></i>开始编程
+            </a>
+            <a href="index.html" class="header-action-button home-button-style">
+                <i class="fas fa-house"></i>返回主页
+            </a>
+        </div>
+    </header>
+
+    <div id="lesson-unit-header">Python一级训练营 - 第9课 Turtle图形库基础与应用 🐢🎨</div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l9-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l9-turtle-intro" class="sidebar-link">一、认识 Turtle 库</a></li>
+                <li><a href="#section-l9-movement-turning" class="sidebar-link">二、移动与转向</a></li>
+                <li><a href="#section-l9-pen-control-positioning" class="sidebar-link">三、抬笔、落笔与定位</a></li>
+                <li><a href="#section-l9-drawing-shapes" class="sidebar-link">四、画出形状：圆形与圆点</a></li>
+                <li><a href="#section-l9-pen-appearance-color" class="sidebar-link">五、画笔外观与颜色</a></li>
+                <li><a href="#section-l9-pen-display-speed" class="sidebar-link">六、控制画笔显示与速度</a></li>
+                <li><a href="#section-l9-canvas-coordinates" class="sidebar-link">七、Turtle画布与坐标系</a></li>
+                <li><a href="#section-l9-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l9-objectives-container" class="content-section">
+                        <h3 id="section-l9-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>了解什么是 Turtle 图形库以及如何<strong class="highlight-key">导入</strong>它 (<code class="inline-code">import turtle</code>)。</li>
+                            <li>学习控制<strong class="highlight-key">画笔移动</strong>的基本命令：<code class="inline-code">forward()</code>, <code class="inline-code">backward()</code>, <code class="inline-code">left()</code>, <code class="inline-code">right()</code>。</li>
+                            <li>学习控制<strong class="highlight-key">画笔状态</strong>的命令：<code class="inline-code">penup()</code> (抬笔) 和 <code class="inline-code">pendown()</code> (落笔)。</li>
+                            <li>学习<strong class="highlight-key">定位画笔</strong>的命令：<code class="inline-code">goto()</code> (移动到指定坐标) 和 <code class="inline-code">home()</code> (回到原点)。</li>
+                            <li>掌握绘制基本图形的命令：<code class="inline-code">circle()</code> (绘制圆或圆弧) 和 <code class="inline-code">dot()</code> (绘制圆点)。</li>
+                            <li>学习设置<strong class="highlight-key">画笔外观和颜色</strong>的命令：<code class="inline-code">pensize()</code> (粗细), <code class="inline-code">pencolor()</code> (画笔颜色), <code class="inline-code">fillcolor()</code> (填充颜色), <code class="inline-code">color()</code> (同时设置)。</li>
+                            <li>学会使用 <code class="inline-code">begin_fill()</code> 和 <code class="inline-code">end_fill()</code> 来<strong class="highlight-key">填充图形颜色</strong>。</li>
+                            <li>学习控制<strong class="highlight-key">画笔显示和速度</strong>的命令：<code class="inline-code">hideturtle()</code> (隐藏画笔), <code class="inline-code">showturtle()</code> (显示画笔), <code class="inline-code">speed()</code> (设置速度)。</li>
+                            <li>理解 Turtle 的<strong class="highlight-key">坐标系</strong>概念。</li>
+                            <li>能够综合运用所学命令绘制简单的组合图形。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-turtle-intro" class="section-main-title first-in-section">
+                            <i class="fas fa-paint-brush section-title-icon"></i>一、 神奇的画笔：认识 Turtle 库
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，我们之前用 <code class="inline-code">print()</code> 让电脑输出了文字和数字。今天，我们要学习一个更有趣的东西——让电脑帮我们画画！Python 有一个很棒的工具箱，叫做 <strong class="highlight-key">Turtle 图形库</strong>，它就像给了我们一支神奇的画笔（一只小海龟），我们可以通过编程来指挥这支画笔在屏幕上画出各种各样的图形。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>导入 Turtle 库</strong>：要想使用这个神奇的画笔，我们首先要告诉 Python 我们要用它。这就像你玩玩具前要先把玩具拿出来一样。在 Python 代码的最前面，我们需要写一行：</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">import turtle</code></pre>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed my-4">
+                            这行代码的意思是"导入 turtle 这个工具箱，我要用里面的工具啦！"
+                        </p>
+                        <h4 class="knowledge-subtitle">思考与讨论：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>你觉得用电脑画画和用手画画有什么不一样的地方？</li>
+                            <li>如果我们不写 <code class="inline-code">import turtle</code>，直接使用 <code class="inline-code">turtle.forward(100)</code> 会怎么样？（提示：电脑会不认识 <code class="inline-code">turtle</code> 是什么。）</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-movement-turning" class="section-main-title first-in-section">
+                            <i class="fas fa-directions section-title-icon"></i>二、 指挥小海龟：移动与转向
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            导入 <code class="inline-code">turtle</code> 库之后，我们就拥有了一支默认朝向右边（屏幕的右边）的小海龟画笔，它停在画布的中心，这个中心点我们叫做<strong class="highlight-key">原点</strong>，坐标是 <code class="inline-code">(0,0)</code>。
+                        </p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>向前移动 (<code class="inline-code">forward()</code> 或 <code class="inline-code">fd()</code>)</strong>：让小海龟向它当前朝向的方向前进指定的距离。距离的单位通常是<strong class="highlight-key">像素</strong> (屏幕上的小点点)。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+turtle.forward(100) # 小海龟向前走100个像素</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>向后移动 (<code class="inline-code">backward()</code> 或 <code class="inline-code">bk()</code>)</strong>：让小海龟向它当前朝向的<strong class="highlight-key">相反方向</strong>后退指定的距离。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+turtle.backward(50) # 小海龟向后退50个像素</code></pre>
+                                </div>
+                                <p class="text-gray-700 text-sm mt-1 ml-6"> <code class="inline-code">turtle.forward(-100)</code> 和 <code class="inline-code">turtle.backward(100)</code> 的效果是一样的，都是让海龟向后移动100像素。</p>
+                            </li>
+                            <li><strong>向左转 (<code class="inline-code">left()</code>)</strong>：让小海龟以它当前的位置为中心，向左边（逆时针方向）旋转指定的<strong class="highlight-key">角度</strong>。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+turtle.left(90) # 小海龟向左转90度</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>向右转 (<code class="inline-code">right()</code>)</strong>：让小海龟以它当前的位置为中心，向右边（顺时针方向）旋转指定的<strong class="highlight-key">角度</strong>。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+turtle.right(45) # 小海龟向右转45度</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题1 (选择题)：</h4>
+                        <div class="exercise-container" id="l9_mcq_1_1">
+                            <h4 class="exercise-title">1. <code class="inline-code">turtle.forward(50)</code> 命令中的 <code class="inline-code">50</code> 代表什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_mcq_1_1_optA" name="l9_mcq_1_1" value="A"><label for="l9_mcq_1_1_optA">A. 旋转50度</label></div>
+                                <div><input type="radio" id="l9_mcq_1_1_optB" name="l9_mcq_1_1" value="B"><label for="l9_mcq_1_1_optB">B. 前进50个格子</label></div>
+                                <div><input type="radio" id="l9_mcq_1_1_optC" name="l9_mcq_1_1" value="C"><label for="l9_mcq_1_1_optC">C. 前进50个像素</label></div>
+                                <div><input type="radio" id="l9_mcq_1_1_optD" name="l9_mcq_1_1" value="D"><label for="l9_mcq_1_1_optD">D. 后退50个像素</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l9_mcq_1_1', 'C', '`forward()` 的参数是前进的距离，单位是像素。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l9_mcq_1_2">
+                            <h4 class="exercise-title">2. 如果小海龟当前朝向右边，执行 <code class="inline-code">turtle.left(90)</code> 后，小海龟会朝向哪个方向？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_mcq_1_2_optA" name="l9_mcq_1_2" value="A"><label for="l9_mcq_1_2_optA">A. 上边</label></div>
+                                <div><input type="radio" id="l9_mcq_1_2_optB" name="l9_mcq_1_2" value="B"><label for="l9_mcq_1_2_optB">B. 下边</label></div>
+                                <div><input type="radio" id="l9_mcq_1_2_optC" name="l9_mcq_1_2" value="C"><label for="l9_mcq_1_2_optC">C. 左边</label></div>
+                                <div><input type="radio" id="l9_mcq_1_2_optD" name="l9_mcq_1_2" value="D"><label for="l9_mcq_1_2_optD">D. 还是右边</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l9_mcq_1_2', 'A', '从朝右开始，向左转90度，会变成朝上。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">练习题2 (操作题)：</h4>
+                        <div class="exercise-container" id="l9_op_2_1_container">
+                            <p class="text-gray-700 mb-2">在IDLE中编写代码，让小海龟画出一个边长为100的正方形。</p>
+                             <button class="btn btn-secondary mt-3" onclick="showSolution('l9_op_2_1_solution')">查看参考答案</button>
+                            <div id="l9_op_2_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+
+turtle.forward(100)
+turtle.left(90)
+turtle.forward(100)
+turtle.left(90)
+turtle.forward(100)
+turtle.left(90)
+turtle.forward(100)
+turtle.left(90) # 最后可以转回初始方向，也可以不转
+
+turtle.done() # 让窗口保持显示</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-pen-control-positioning" class="section-main-title first-in-section">
+                            <i class="fas fa-map-marker-alt section-title-icon"></i>三、 画笔的"隐身术"与"飞行术"：抬笔、落笔与定位
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            默认情况下，小海龟移动的时候，笔是落下的，所以会画出线条。但有时我们只想移动小海龟到新的位置，而不想留下痕迹。
+                        </p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>抬起画笔 (<code class="inline-code">penup()</code> 或 <code class="inline-code">pu()</code>)</strong>：执行这个命令后，小海龟再移动就不会画线了，就像把笔尖抬起来一样。</li>
+                            <li><strong>落下画笔 (<code class="inline-code">pendown()</code> 或 <code class="inline-code">pd()</code>)</strong>：执行这个命令后，小海龟移动时就会重新开始画线。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+turtle.forward(50)    # 画一条50像素的线
+turtle.penup()      # 抬起笔
+turtle.forward(50)    # 移动50像素，但不画线
+turtle.pendown()    # 放下笔
+turtle.forward(50)    # 又画了一条50像素的线</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>移动到指定坐标 (<code class="inline-code">goto(x, y)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>Turtle的画布是一个坐标系，中心点是原点 <code class="inline-code">(0,0)</code>。X轴向右为正，向左为负；Y轴向上为正，向下为负。</li>
+                                    <li><code class="inline-code">turtle.goto(x, y)</code> 命令可以直接把小海龟移动到坐标为 <code class="inline-code">(x, y)</code> 的位置。如果笔是落下的，移动过程会画线；如果笔是抬起的，就不会画线。</li>
+                                    <li> 例如，<code class="inline-code">turtle.goto(200, 150)</code> 会将海龟移动到x坐标200，y坐标150的位置。</li>
+                                </ul>
+                            </li>
+                            <li><strong>回到起点 (<code class="inline-code">home()</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li><code class="inline-code">turtle.home()</code> 命令可以让小海龟快速回到画布的中心原点 <code class="inline-code">(0,0)</code>，并且它的朝向也会恢复到初始的向右方向。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题3 (判断对错)：</h4>
+                        <div class="exercise-container" id="l9_tfq_3_1_container">
+                            <h4 class="exercise-title">1. 执行 <code class="inline-code">turtle.penup()</code> 后，小海龟就不能再移动了。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_tfq_3_1_true" name="l9_tfq_3_1" value="true"><label for="l9_tfq_3_1_true">正确</label></div>
+                                <div><input type="radio" id="l9_tfq_3_1_false" name="l9_tfq_3_1" value="false"><label for="l9_tfq_3_1_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l9_tfq_3_1', 'false', '`penup()` 只是让移动时不画线，小海龟仍然可以移动。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l9_tfq_3_2_container">
+                             <h4 class="exercise-title">2. <code class="inline-code">turtle.goto(0, 100)</code> 会让小海龟移动到画布的上方。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_tfq_3_2_true" name="l9_tfq_3_2" value="true"><label for="l9_tfq_3_2_true">正确</label></div>
+                                <div><input type="radio" id="l9_tfq_3_2_false" name="l9_tfq_3_2" value="false"><label for="l9_tfq_3_2_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l9_tfq_3_2', 'true', 'Y坐标为正表示上方。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l9_tfq_3_3_container">
+                             <h4 class="exercise-title">3. <code class="inline-code">turtle.home()</code> 不仅会让海龟回到原点，还会将海龟的方向重置为初始方向（通常是向右）。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_tfq_3_3_true" name="l9_tfq_3_3" value="true"><label for="l9_tfq_3_3_true">正确</label></div>
+                                <div><input type="radio" id="l9_tfq_3_3_false" name="l9_tfq_3_3" value="false"><label for="l9_tfq_3_3_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('l9_tfq_3_3', 'true', '这是 `home()` 命令的完整功能。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-drawing-shapes" class="section-main-title first-in-section">
+                            <i class="fas fa-shapes section-title-icon"></i>四、 画出形状：圆形与圆点
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>画圆或圆弧 (<code class="inline-code">circle(radius, extent=None, steps=None)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li><code class="inline-code">radius</code>：圆的半径。如果 <code class="inline-code">radius</code> 是正数，圆心在小海龟左边；如果是负数，圆心在小海龟右边。</li>
+                                    <li><code class="inline-code">extent</code> (可选参数)：绘制圆弧的角度。如果省略或者设为360，就画一个完整的圆。例如 <code class="inline-code">turtle.circle(50, 180)</code> 会画一个半径为50的半圆。</li>
+                                    <li><code class="inline-code">steps</code> (可选参数)：如果指定了 <code class="inline-code">steps</code>，Turtle会画一个内切于半径为 <code class="inline-code">radius</code> 的圆的正 <code class="inline-code">steps</code> 边形。例如，<code class="inline-code">turtle.circle(50, steps=6)</code> 会画一个正六边形。</li>
+                                    <li> 例如，画直径为100的圆，需要用 <code class="inline-code">turtle.circle(50)</code>。</li>
+                                </ul>
+                            </li>
+                            <li><strong>画圆点 (<code class="inline-code">dot(size=None, color)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>在当前海龟的位置画一个实心圆点。</li>
+                                    <li><code class="inline-code">size</code> (可选参数)：圆点的<strong class="highlight-key">直径</strong>。如果省略或者为 <code class="inline-code">None</code>，圆点的直径会根据画笔的粗细来决定（通常是 <code class="inline-code">pensize + 4</code> 和 <code class="inline-code">2 * pensize</code> 中的较大值）。</li>
+                                    <li><code class="inline-code">color</code> (可选参数)：圆点的颜色。</li>
+                                    <li> 例如，<code class="inline-code">turtle.dot(20, "red")</code> 会画一个直径为20的红色圆点。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题4 (选择题)：</h4>
+                        <div class="exercise-container" id="l9_mcq_4_1">
+                            <h4 class="exercise-title">1. <code class="inline-code">turtle.circle(100, 90)</code> 会画出什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_mcq_4_1_optA" name="l9_mcq_4_1" value="A"><label for="l9_mcq_4_1_optA">A. 一个完整的圆</label></div>
+                                <div><input type="radio" id="l9_mcq_4_1_optB" name="l9_mcq_4_1" value="B"><label for="l9_mcq_4_1_optB">B. 一个四分之一圆弧（90度）</label></div>
+                                <div><input type="radio" id="l9_mcq_4_1_optC" name="l9_mcq_4_1" value="C"><label for="l9_mcq_4_1_optC">C. 一个半圆（180度）</label></div>
+                                <div><input type="radio" id="l9_mcq_4_1_optD" name="l9_mcq_4_1" value="D"><label for="l9_mcq_4_1_optD">D. 一个半径为90的圆</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l9_mcq_4_1', 'B', '半径为100，绘制90度的圆弧。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l9_mcq_4_2">
+                            <h4 class="exercise-title">2. 如果想用 <code class="inline-code">turtle.dot()</code> 画一个直径为30的蓝色圆点，可以怎么写？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l9_mcq_4_2_optA" name="l9_mcq_4_2" value="A"><label for="l9_mcq_4_2_optA">A. <code class="inline-code">turtle.dot(30, "blue")</code></label></div>
+                                <div><input type="radio" id="l9_mcq_4_2_optB" name="l9_mcq_4_2" value="B"><label for="l9_mcq_4_2_optB">B. <code class="inline-code">turtle.dot("blue", 30)</code></label></div>
+                                <div><input type="radio" id="l9_mcq_4_2_optC" name="l9_mcq_4_2" value="C"><label for="l9_mcq_4_2_optC">C. <code class="inline-code">turtle.dot(15, "blue")</code></label></div>
+                                <div><input type="radio" id="l9_mcq_4_2_optD" name="l9_mcq_4_2" value="D"><label for="l9_mcq_4_2_optD">D. <code class="inline-code">turtle.circle(30, "blue")</code></label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l9_mcq_4_2', 'A', '`dot` 的第一个参数是直径，第二个是颜色。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                     <section class="content-section">
+                        <h3 id="section-l9-pen-appearance-color" class="section-main-title first-in-section">
+                            <i class="fas fa-palette section-title-icon"></i>五、 给画笔"化妆"：外观与颜色
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>设置画笔粗细 (<code class="inline-code">pensize(width)</code> 或 <code class="inline-code">width(width)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>参数 <code class="inline-code">width</code> 是一个数字，表示线条的宽度（像素）。数字越大，线条越粗。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">turtle.pensize(5) # 设置画笔粗细为5像素</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>设置画笔颜色 (<code class="inline-code">pencolor(colorstring)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li><code class="inline-code">colorstring</code> 可以是颜色的英文名（如 <code class="inline-code">"red"</code>, <code class="inline-code">"blue"</code>, <code class="inline-code">"green"</code>），也可以是其他颜色表示方法（我们暂时先用英文名）。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">turtle.pencolor("red") # 把画笔的颜色设为红色</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>设置填充颜色 (<code class="inline-code">fillcolor(colorstring)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>这个命令设置的是当我们画一个封闭图形并想要给它填色时，用什么颜色来填充。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">turtle.fillcolor("yellow") # 设置填充颜色为黄色</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>同时设置画笔和填充颜色 (<code class="inline-code">color(pencolor, fillcolor)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>这个命令更方便，可以一次性设置两个颜色。第一个参数是画笔颜色，第二个是填充颜色。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">turtle.color("black", "lightgreen") # 画笔黑色，填充浅绿色</code></pre>
+                                        </div>
+                                    </li>
+                                    <li> 如果 <code class="inline-code">color()</code> 函数只传入一个颜色参数，比如 <code class="inline-code">turtle.color('red')</code>，那么它会<strong class="highlight-key">同时</strong>将画笔颜色和填充颜色都设置为红色。</li>
+                                </ul>
+                            </li>
+                            <li><strong>开始填充 (<code class="inline-code">begin_fill()</code>) 和结束填充 (<code class="inline-code">end_fill()</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>要给一个图形填充颜色，必须在这两个命令之间绘制这个图形。</li>
+                                    <li><code class="inline-code">turtle.begin_fill()</code>：告诉电脑："我要开始记录接下来画的图形，准备填充了！"</li>
+                                    <li>（在这里画你的封闭图形，比如一个圆或正方形）</li>
+                                    <li><code class="inline-code">turtle.end_fill()</code>：告诉电脑："图形画完了，现在用之前设置好的 <code class="inline-code">fillcolor</code> (或者 <code class="inline-code">color</code> 函数设置的填充色) 把它填满吧！"</li>
+                                    <li> 这两个命令必须<strong class="highlight-key">成对使用</strong>。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">import turtle
+turtle.color("red", "yellow") # 画笔红色，填充黄色
+turtle.begin_fill()
+turtle.circle(50)        # 画一个圆
+turtle.end_fill()          # 用黄色填充这个圆</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题5 (填空题)：</h4>
+                        <div class="exercise-container" id="l9_fb_5_1_container">
+                            <p class="text-gray-700 mb-2">1. 要将画笔的线条宽度设置为10像素，应该使用命令 <code class="inline-code">turtle.</code><input type="text" id="l9_fb_5_1_ans" class="inline-code mx-1 text-center w-24 border-b-2 border-gray-400 focus:border-blue-500 outline-none" style="font-size: 1.1em; background-color: var(--bg-light);">(10)。</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l9_fb_5_1_solution')">查看答案</button>
+                            <div id="l9_fb_5_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">pensize</code> (或 <code class="inline-code">width</code>)</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l9_fb_5_2_container">
+                            <p class="text-gray-700 mb-2">2. 如果想画一个蓝色的线条，红色的填充，可以写 <code class="inline-code">turtle.color("</code><input type="text" id="l9_fb_5_2_ans1" class="inline-code mx-1 text-center w-20 border-b-2 border-gray-400 focus:border-blue-500 outline-none" style="font-size: 1.1em; background-color: var(--bg-light);">", "</code><input type="text" id="l9_fb_5_2_ans2" class="inline-code mx-1 text-center w-20 border-b-2 border-gray-400 focus:border-blue-500 outline-none" style="font-size: 1.1em; background-color: var(--bg-light);"><code class="inline-code">")</code>。</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l9_fb_5_2_solution')">查看答案</button>
+                            <div id="l9_fb_5_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">"blue"</code>, <code class="inline-code">"red"</code></p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l9_fb_5_3_container">
+                            <p class="text-gray-700 mb-2">3. 在调用 <code class="inline-code">turtle.end_fill()</code> 之前，必须先调用 <code class="inline-code">turtle.</code><input type="text" id="l9_fb_5_3_ans" class="inline-code mx-1 text-center w-28 border-b-2 border-gray-400 focus:border-blue-500 outline-none" style="font-size: 1.1em; background-color: var(--bg-light);">()。</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l9_fb_5_3_solution')">查看答案</button>
+                            <div id="l9_fb_5_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">begin_fill</code></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-pen-display-speed" class="section-main-title first-in-section">
+                            <i class="fas fa-tachometer-alt section-title-icon"></i>六、 控制画笔的"出场"与"速度"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>隐藏画笔图标 (<code class="inline-code">hideturtle()</code> 或 <code class="inline-code">ht()</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>默认情况下，画布上会显示一个小箭头（或海龟形状）来表示画笔当前的位置和方向。如果我们不希望看到这个图标，可以用这个命令把它藏起来。</li>
+                                    <li> <code class="inline-code">hideturtle()</code> 只是隐藏图标，并<strong class="highlight-key">不会</strong>将画笔移动到起始位置。</li>
+                                </ul>
+                            </li>
+                            <li><strong>显示画笔图标 (<code class="inline-code">showturtle()</code> 或 <code class="inline-code">st()</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>如果之前隐藏了画笔，可以用这个命令让它重新显示出来。</li>
+                                </ul>
+                            </li>
+                            <li><strong>设置画笔速度 (<code class="inline-code">speed(speed_value)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li><code class="inline-code">speed_value</code> 可以是一个从 0 到 10 的整数，或者特定的速度字符串。</li>
+                                    <li><code class="inline-code">0</code> 表示<strong class="highlight-key">最快</strong> (几乎没有动画效果，瞬间完成)。</li>
+                                    <li><code class="inline-code">1</code> 表示最慢。</li>
+                                    <li><code class="inline-code">10</code> 表示较快。</li>
+                                    <li>数字越大（1-10之间），速度越快。</li>
+                                    <li>也可以用字符串：<code class="inline-code">'fastest'</code> (最快, 相当于0), <code class="inline-code">'fast'</code> (较快, 相当于10), <code class="inline-code">'normal'</code> (普通, 相当于6), <code class="inline-code">'slow'</code> (较慢, 相当于3), <code class="inline-code">'slowest'</code> (最慢, 相当于1)。
+                                        <div class="code-block-container">
+                                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                            <pre><code class="language-python">turtle.speed(1) # 设置为最慢速度
+turtle.speed('fastest') # 设置为最快速度</code></pre>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                             <li><strong>结束并保持窗口 (<code class="inline-code">turtle.done()</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                     <li>当我们的turtle程序画完图后，图形窗口通常会马上关闭。如果我们想让窗口保持打开状态，直到我们手动关闭它，可以在程序的最后加上这行代码。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题6 (操作题)：</h4>
+                        <div class="exercise-container" id="l9_op_6_1_container">
+                            <p class="text-gray-700 mb-2">编写一个程序，用turtle画一个边长为80的红色实心正方形（画笔和填充都是红色），画完后隐藏小海龟图标，并让图形窗口保持显示。设置绘制速度为中等。</p>
+                            <p class="text-sm text-gray-500">(这是一个操作任务，请在你的IDLE环境中完成。)</p>
+                             <button class="btn btn-secondary mt-3" onclick="showSolution('l9_op_6_1_solution')">查看参考答案</button>
+                            <div id="l9_op_6_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">import turtle
+
+turtle.speed('normal') # 设置速度为中等 (或者 turtle.speed(6))
+turtle.color("red", "red") # 画笔和填充都为红色
+
+turtle.begin_fill()
+for _ in range(4): # 重复4次画边和转向
+    turtle.forward(80)
+    turtle.left(90)
+turtle.end_fill()
+
+turtle.hideturtle() # 隐藏小海龟
+turtle.done()       # 保持窗口显示</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-canvas-coordinates" class="section-main-title first-in-section">
+                            <i class="fas fa-ruler-combined section-title-icon"></i>七、  Turtle 的画布和坐标系
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>画布设置 (<code class="inline-code">turtle.setup(width, height, startx, starty)</code>)</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>我们可以用这个命令来设置Turtle绘图窗口（画布）的大小和它在电脑屏幕上的初始位置。</li>
+                                    <li><code class="inline-code">width</code>：画布的宽度（像素）。</li>
+                                    <li><code class="inline-code">height</code>：画布的高度（像素）。</li>
+                                    <li><code class="inline-code">startx</code> (可选)：画布左上角相对于屏幕左边缘的x坐标。如果是 <code class="inline-code">None</code>，窗口会在屏幕上水平居中。</li>
+                                    <li><code class="inline-code">starty</code> (可选)：画布左上角相对于屏幕上边缘的y坐标。如果是 <code class="inline-code">None</code>，窗口会在屏幕上垂直居中。</li>
+                                    <li>画布的位置是可以调整的，并非固定。</li>
+                                    <li>当 <code class="inline-code">width</code> 和 <code class="inline-code">height</code> 参数是0到1.0之间的小数时，它们表示画布宽度和高度分别占屏幕宽度和高度的百分比。</li>
+                                </ul>
+                            </li>
+                            <li><strong>坐标系</strong>：
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>Turtle的画布可以看作是一个笛卡尔坐标系。</li>
+                                    <li>原点 <code class="inline-code">(0,0)</code> 默认在画布的正中心。</li>
+                                    <li>X轴 水平方向，向右为正，向左为负。</li>
+                                    <li>Y轴 垂直方向，向上为正，向下为负。</li>
+                                    <li>小海龟的初始位置就在原点 <code class="inline-code">(0,0)</code>，朝向X轴正方向（右边）。</li>
+                                </ul>
+                            </li>
+                             <li><strong> 清空画布 (<code class="inline-code">turtle.clear()</code>)</strong>:
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>这个命令会清除当前Turtle画笔在窗口上绘制的所有图形和文本，但是画笔本身的位置、方向、颜色等状态会保持不变。</li>
+                                </ul>
+                            </li>
+                            <li><strong> <code class="inline-code">turtle.write()</code></strong>:
+                                <ul class="list-disc list-inside ml-6 space-y-1 mt-1">
+                                    <li>可以在画布的当前画笔位置添加文字。</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4 class="knowledge-subtitle">练习题7 (思考题)：</h4>
+                        <div class="exercise-container" id="l9_think_7_1_container">
+                            <p class="text-gray-700 mb-2">1. 如果我想让Turtle窗口的宽度是600像素，高度是400像素，应该怎么写 <code class="inline-code">setup</code> 命令？</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l9_think_7_1_solution')">查看答案</button>
+                            <div id="l9_think_7_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">turtle.setup(600, 400)</code> (后面两个位置参数可以省略，默认居中)</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l9_think_7_2_container">
+                            <p class="text-gray-700 mb-2">2. 如果海龟在 <code class="inline-code">(50, 50)</code>，执行 <code class="inline-code">turtle.goto(-50, 50)</code>，海龟会向哪个方向移动？</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l9_think_7_2_solution')">查看答案</button>
+                            <div id="l9_think_7_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p>向左移动。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l9-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们学会了指挥神奇的小海龟画画，我们掌握了让它前进、后退、转弯的口令，还知道了怎么让它"飞起来"（抬笔）再"降落"（落笔）到指定地点。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们不仅能画出线条，还能画出圆形和圆点，并且给它们涂上漂亮的颜色，甚至还能填充颜色！我们还学习了怎么控制小海龟的出场（隐藏/显示）和它的"跑步"速度。Turtle库非常有趣，多练习就能画出更复杂、更漂亮的图案啦！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 学习愉快！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const header = document.querySelector('header.main-header');
+            // Standardized: Get lessonUnitHeader and set its content
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            const lessonSpecificTitle = "第9课 Turtle图形库基础与应用 🐢🎨"; // Standardized title for Lesson 9
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+
+            // Standardized: Ensure removal of any unit title from main header (if mistakenly present)
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 110; 
+            if (header) {
+                headerHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) { 
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 60; 
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } 
+                    else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } 
+                    else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0 && sectionsToObserve[0]) {
+                    newActiveId = sectionsToObserve[0].id;
+                 }
+
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 10); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is handled by CSS
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const correctAnswerLabelElement = document.querySelector(`label[for="${questionId}_opt${correctAnswerLetter}"]`);
+                let correctAnswerText = correctAnswerLetter;
+                if (correctAnswerLabelElement) {
+                    correctAnswerText = correctAnswerLabelElement.innerHTML.split(/<br\s*\/?>/i)[0].trim();
+                }
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerText}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const container = document.getElementById(`${questionId}_container`);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                const codeBlocks = solutionEl.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    Prism.highlightElement(block);
+                });
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

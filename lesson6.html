@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第6课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 标准化 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            --lesson6-theme-color-rgb: 72, 187, 120; /* RGB for #48bb78 */
+        }
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 标准化 */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 标准化 */
+            justify-content: space-between; /* 标准化 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 标准化 */
+            position: fixed; /* 标准化 */
+            top: 0; /* 标准化 */
+            left: 0; /* 标准化 */
+            right: 0; /* 标准化 */
+            box-sizing: border-box; /* 标准化 */
+        }
+        .main-header .header-content-wrapper {
+            display: flex;
+            /* flex-direction: column; */ /* Removed for standard layout */
+            align-items: center;   /* Standard: ensure items are vertically centered */
+            /* text-align: center; */   /* Removed for standard layout */
+            flex-grow: 0; /* Standard */
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.2rem; 
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; /* 标准化 */
+        }
+        .header-icon { 
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; 
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        /* Added #lesson-unit-header based on lesson1.html standard */
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; 
+            color: var(--primary-color-dark); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); 
+            margin-left: var(--sidebar-width); 
+        }
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); 
+            position: fixed;
+            top: var(--header-height); 
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: #ffffff;
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Consistent monospaced font stack */
+            background-color: #e2e8f0; /* Light gray background, Tailwind's gray-200 */
+            color: #2d3748; /* Dark gray text, Tailwind's gray-800 */
+            padding: 0.2em 0.4em; /* Slightly adjusted padding */
+            border-radius: 5px; /* Slightly more rounded corners */
+            font-size: 0.9em; /* Relative font size */
+            border: 1px solid #cbd5e0; /* Slightly darker border, Tailwind's gray-300 */
+            display: inline-block; /* Ensures proper block-like behavior for padding/border */
+            line-height: 1.4; /* Adjusted line height for better readability */
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "6"; /* Specific to lesson 6 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 35vw;
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            color: rgba(var(--lesson6-theme-color-rgb), 0.08);
+            opacity: 1;
+            z-index: -1;
+            pointer-events: none;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5),
+                         -1px -1px 0px rgba(0,0,0,0.02);
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header shadow-lg"> <!-- Removed Tailwind classes -->
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="main-title">Python一级训练营</h1>
+            </div>
+            <!-- <p class="course-unit-title">第6课：基本的数学运算</p> --> <!-- Removed from here -->
+        </div>
+        <div class="header-actions-container">
+            <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                <i class="fas fa-terminal"></i>开始编程
+            </a>
+            <a href="index.html" class="header-action-button home-button-style">
+                <i class="fas fa-house"></i>返回主页
+            </a>
+        </div>
+    </header>
+
+    <!-- New Sticky Lesson Unit Header - Added based on lesson1 standard -->
+    <div id="lesson-unit-header">
+        <!-- Content will be dynamically filled by JS -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-l6-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-l6-arithmetic-operators" class="sidebar-link">一、Python的算术运算符</a></li>
+                <li><a href="#section-l6-operator-precedence" class="sidebar-link">二、运算的顺序</a></li>
+                <li><a href="#section-l6-compound-assignment" class="sidebar-link">三、复合赋值运算符</a></li>
+                <li><a href="#section-l6-problem-solving" class="sidebar-link">四、用数学解决问题</a></li>
+                <li><a href="#section-l6-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto">
+                <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none">
+                    <section id="section-l6-objectives-container" class="content-section">
+                        <h3 id="section-l6-objectives" class="section-main-title first-in-section">
+                            <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>熟练掌握Python中常用的<strong class="highlight-key">算术运算符</strong>：加 (<code class="inline-code">+</code>)、减 (<code class="inline-code">-</code>)、乘 (<code class="inline-code">*</code>)、除 (<code class="inline-code">/</code>)、整除 (<code class="inline-code">//</code>)、取余 (<code class="inline-code">%</code>)、幂 (<code class="inline-code">**</code>)。</li>
+                            <li>理解不同算术运算符的运算规则和结果类型（特别是 <code class="inline-code">/</code> 结果为浮点数，<code class="inline-code">//</code> 结果为整数）。</li>
+                            <li>掌握Python中的<strong class="highlight-key">运算优先级</strong>规则（先乘除后加减，幂运算优先，括号改变优先级）。</li>
+                            <li>学会使用<strong class="highlight-key">复合赋值运算符</strong>（如 <code class="inline-code">+=</code>, <code class="inline-code">-=</code>, <code class="inline-code">*=</code>, <code class="inline-code">/=</code>) 来简化代码。</li>
+                            <li>能够运用所学知识解决简单的实际数学问题。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l6-arithmetic-operators" class="section-main-title first-in-section">
+                            <i class="fas fa-calculator section-title-icon"></i>一、 电脑也会算术：Python的算术运算符
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            同学们，我们平时在数学课上会做加减乘除，电脑用Python也可以帮我们做这些计算，而且速度非常快，还不容易出错！Python提供了一些特殊的符号，叫做<strong class="highlight-key">算术运算符 (Arithmetic Operators)</strong>，来执行这些数学运算。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">我们来认识一下它们：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-3 mb-4 ml-6">
+                            <li><strong>加法 (<code class="inline-code">+</code>)</strong>：和我们数学里的一样，用来计算两个数相加。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result = 10 + 5
+print(result)  # 输出：15</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>减法 (<code class="inline-code">-</code>)</strong>：用来计算一个数减去另一个数。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result = 10 - 5
+print(result)  # 输出：5</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>乘法 (<code class="inline-code">*</code>)</strong>：用来计算两个数相乘。 <strong class="highlight-key">Python中3乘以5写作 <code class="inline-code">3*5</code>)</strong>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result = 10 * 5
+print(result)  # 输出：50</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>除法 (<code class="inline-code">/</code>)</strong>：用来计算一个数除以另一个数。 <strong class="highlight-key">特别注意：在Python中，<code class="inline-code">/</code> 进行的除法运算，即使两个数都是整数并且能整除，结果也总是浮点数（带小数点的数）。</strong>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result1 = 10 / 5 
+print(result1) # 输出：2.0 
+result2 = 7 / 2
+print(result2) # 输出：3.5</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>整除 (<code class="inline-code">//</code>)</strong>：这个运算符只保留除法结果的<strong class="highlight-key">整数部分</strong>，把小数部分去掉（不是四舍五入，是直接去掉）。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result1 = 10 // 5 
+print(result1) # 输出：2 
+result2 = 7 // 2 
+print(result2) # 输出：3 (因为7除以2等于3余1，整数部分是3) 
+result3 = 12 // 5 # 12除以5等于2余2
+print(result3) # 输出：2</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>取余 (取模) (<code class="inline-code">%</code>)</strong>：这个运算符计算的是除法的<strong class="highlight-key">余数</strong>。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result1 = 10 % 3 # 10除以3等于3余1 
+print(result1)   # 输出：1 
+result2 = 7 % 2  # 7除以2等于3余1 
+print(result2)   # 输出：1 
+result3 = 123 % 100 # 123除以100等于1余23
+print(result3)    # 输出：23</code></pre>
+                                </div>
+                            </li>
+                            <li><strong>幂运算 (<code class="inline-code">**</code>)</strong>：用来计算一个数的多少次方。比如 <code class="inline-code">a ** b</code> 就是计算 a 的 b 次方。
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">result1 = 2 ** 3  # 2的3次方，即 2 * 2 * 2 
+print(result1)    # 输出：8 
+result2 = 10 ** 2 # 10的2次方，即 10 * 10
+print(result2)    # 输出：100</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h4 class="knowledge-subtitle">练习题1 (写出 <code class="inline-code">print()</code> 语句的输出结果)：</h4>
+                        <div class="exercise-container" id="l6_saq_1_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">print(15 + 7)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_saq_1_1_solution')">查看答案/解析</button>
+                            <div id="l6_saq_1_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">22</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 简单的加法运算。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_saq_1_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">print(20 / 4)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_saq_1_2_solution')">查看答案/解析</button>
+                            <div id="l6_saq_1_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">5.0</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">/</code> 除法结果是浮点数。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_saq_1_3_container">
+                            <h4 class="exercise-title">3. <code class="inline-code">print(20 // 4)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_saq_1_3_solution')">查看答案/解析</button>
+                            <div id="l6_saq_1_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">5</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> <code class="inline-code">//</code> 整除只取整数部分。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_saq_1_4_container">
+                            <h4 class="exercise-title">4. <code class="inline-code">print(17 % 5)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_saq_1_4_solution')">查看答案/解析</button>
+                            <div id="l6_saq_1_4_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">2</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 17除以5商3余2。</p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_saq_1_5_container">
+                            <h4 class="exercise-title">5. <code class="inline-code">print(3 ** 4)</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_saq_1_5_solution')">查看答案/解析</button>
+                            <div id="l6_saq_1_5_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案与解析：</h5>
+                                <p class="text-gray-700"><strong>答案：</strong> <code class="inline-code">81</code></p>
+                                <p class="text-gray-700"><strong>解析：</strong> 3的4次方，即 3 * 3 * 3 * 3。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l6-operator-precedence" class="section-main-title first-in-section">
+                            <i class="fas fa-sort-amount-down section-title-icon"></i>二、 先算哪个？运算的顺序很重要！
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            当一个数学式子里有很多不同的运算符时，Python会按照一定的顺序来进行计算，这个顺序叫做<strong class="highlight-key">运算优先级 (Operator Precedence)</strong>。这和我们数学课上学的"先乘除后加减，有括号先算括号里的"规则很像。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">Python中的运算优先级（从高到低）：</p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong>括号 <code class="inline-code">()</code></strong>：括号里的运算最先进行。</li>
+                            <li><strong>幂运算 <code class="inline-code">**</code></strong>：比乘除法优先级高。</li>
+                            <li><strong>乘法 <code class="inline-code">*</code>、除法 <code class="inline-code">/</code>、整除 <code class="inline-code">//</code>、取余 <code class="inline-code">%</code></strong>：这些运算符优先级相同。如果它们同时出现，一般会<strong class="highlight-key">从左到右</strong>依次计算。</li>
+                            <li><strong>加法 <code class="inline-code">+</code>、减法 <code class="inline-code">-</code></strong>：这些运算符优先级相同，也比上面的低。如果它们同时出现，也是<strong class="highlight-key">从左到右</strong>计算。</li>
+                        </ol>
+                        <p class="text-gray-700 leading-relaxed mb-2">举例：</p>
+                        <div class="code-block-container">
+                            <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                            <pre><code class="language-python">result = 5 + 3 * 2
+# 先算乘法 3 * 2 = 6
+# 再算加法 5 + 6 = 11
+print(result) # 输出：11
+
+result_with_brackets = (5 + 3) * 2
+# 先算括号里的 5 + 3 = 8
+# 再算乘法 8 * 2 = 16
+print(result_with_brackets) # 输出：16
+
+# 幂运算优先于乘法
+print(10 * 2 ** 3) # 先算 2**3 = 8，再算 10 * 8 = 80
+
+# 比较运算符优先级低于算术运算符，逻辑运算符优先级最低
+# 例如： 3*5 > 2 and 6 >= 6.0，会先算 3*5</code></pre>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">练习题2 (选择题)：</h4>
+                        <div class="exercise-container" id="l6_mcq_2_1">
+                            <h4 class="exercise-title">1. 表达式 <code class="inline-code">10 - 2 * 3</code> 的结果是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l6_mcq_2_1_optA" name="l6_mcq_2_1" value="A"><label for="l6_mcq_2_1_optA">A. 24</label></div>
+                                <div><input type="radio" id="l6_mcq_2_1_optB" name="l6_mcq_2_1" value="B"><label for="l6_mcq_2_1_optB">B. 4</label></div>
+                                <div><input type="radio" id="l6_mcq_2_1_optC" name="l6_mcq_2_1" value="C"><label for="l6_mcq_2_1_optC">C. -16</label></div>
+                                <div><input type="radio" id="l6_mcq_2_1_optD" name="l6_mcq_2_1" value="D"><label for="l6_mcq_2_1_optD">D. 8</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l6_mcq_2_1', 'B', '先算乘法 `2 * 3 = 6`，再算减法 `10 - 6 = 4`。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l6_mcq_2_2">
+                            <h4 class="exercise-title">2. 执行 <code class="inline-code">print(20 / 2 ** 2)</code> 的结果是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l6_mcq_2_2_optA" name="l6_mcq_2_2" value="A"><label for="l6_mcq_2_2_optA">A. 100.0</label></div>
+                                <div><input type="radio" id="l6_mcq_2_2_optB" name="l6_mcq_2_2" value="B"><label for="l6_mcq_2_2_optB">B. 2.5</label></div>
+                                <div><input type="radio" id="l6_mcq_2_2_optC" name="l6_mcq_2_2" value="C"><label for="l6_mcq_2_2_optC">C. 5.0</label></div>
+                                <div><input type="radio" id="l6_mcq_2_2_optD" name="l6_mcq_2_2" value="D"><label for="l6_mcq_2_2_optD">D. 10.0</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l6_mcq_2_2', 'C', '先算幂运算 `2 ** 2 = 4`，再算除法 `20 / 4 = 5.0`。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="l6_mcq_2_3">
+                            <h4 class="exercise-title">3. <code class="inline-code">print((6 % 12 + 2) / 2)</code> 的结果是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="l6_mcq_2_3_optA" name="l6_mcq_2_3" value="A"><label for="l6_mcq_2_3_optA">A. 4</label></div>
+                                <div><input type="radio" id="l6_mcq_2_3_optB" name="l6_mcq_2_3" value="B"><label for="l6_mcq_2_3_optB">B. 4.0</label></div>
+                                <div><input type="radio" id="l6_mcq_2_3_optC" name="l6_mcq_2_3" value="C"><label for="l6_mcq_2_3_optC">C. 1</label></div>
+                                <div><input type="radio" id="l6_mcq_2_3_optD" name="l6_mcq_2_3" value="D"><label for="l6_mcq_2_3_optD">D. 1.0</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('l6_mcq_2_3', 'B', '先算括号内：`6 % 12 = 6`，然后 `6 + 2 = 8`。最后 `8 / 2 = 4.0`。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l6-compound-assignment" class="section-main-title first-in-section">
+                            <i class="fas fa-plus-square section-title-icon"></i>三、 写代码更简洁：复合赋值运算符
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            在编程中，我们经常会遇到这样的情况：把一个变量原来的值取出来，进行一些运算，然后再把结果存回到这个变量自己身上。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            比如，我们要给变量 <code class="inline-code">score</code> 加上10分，可能会写： <code class="inline-code">score = score + 10</code>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2">Python提供了一种更简洁的写法，叫做<strong class="highlight-key">复合赋值运算符 (Compound Assignment Operators)</strong>。</p>
+                        <p class="text-gray-700 leading-relaxed mb-2">常见的复合赋值运算符：</p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><code class="inline-code">+=</code>：加法赋值 (例如 <code class="inline-code">x += 5</code> 等价于 <code class="inline-code">x = x + 5</code>)</li>
+                            <li><code class="inline-code">-=</code>：减法赋值 (例如 <code class="inline-code">y -= 3</code> 等价于 <code class="inline-code">y = y - 3</code>)</li>
+                            <li><code class="inline-code">*=</code>：乘法赋值 (例如 <code class="inline-code">z *= 2</code> 等价于 <code class="inline-code">z = z * 2</code>)</li>
+                            <li><code class="inline-code">/=</code>：除法赋值 (例如 <code class="inline-code">w /= 4</code> 等价于 <code class="inline-code">w = w / 4</code>)</li>
+                            <li><code class="inline-code">//=</code>：整除赋值 (例如 <code class="inline-code">u //= 2</code> 等价于 <code class="inline-code">u = u // 2</code>)</li>
+                            <li><code class="inline-code">%=</code>：取余赋值 (例如 <code class="inline-code">v %= 3</code> 等价于 <code class="inline-code">v = v % 3</code>)</li>
+                            <li><code class="inline-code">**=</code>：幂赋值 (例如 <code class="inline-code">p **= 2</code> 等价于 <code class="inline-code">p = p ** 2</code>)</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            例如题目中的 <code class="inline-code">a*=a-b</code> 就等价于 <code class="inline-code">a = a * (a-b)</code>。要注意 <code class="inline-code">a-b</code> 会先被计算。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            使用复合赋值运算符可以让我们的代码看起来更简短，也更容易读懂一些常见的操作。
+                        </p>
+
+                        <h4 class="knowledge-subtitle">练习题3 (将下列语句改写成使用复合赋值运算符的等效语句)：</h4>
+                        <div class="exercise-container" id="l6_ex3_1_container">
+                            <h4 class="exercise-title">1. <code class="inline-code">count = count + 1</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_ex3_1_solution')">查看答案</button>
+                            <div id="l6_ex3_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">count += 1</code></p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_ex3_2_container">
+                            <h4 class="exercise-title">2. <code class="inline-code">total_price = total_price * 0.9</code> (打九折)</h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_ex3_2_solution')">查看答案</button>
+                            <div id="l6_ex3_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">total_price *= 0.9</code></p>
+                            </div>
+                        </div>
+                        <div class="exercise-container" id="l6_ex3_3_container">
+                            <h4 class="exercise-title">3. <code class="inline-code">remaining_items = remaining_items - sold_items</code></h4>
+                            <input type="text" class="student-answer-input mt-2 mb-3 p-2 border border-gray-300 rounded-md w-full" placeholder="在此输入你的答案">
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_ex3_3_solution')">查看答案</button>
+                            <div id="l6_ex3_3_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>答案：</h5>
+                                <p><code class="inline-code">remaining_items -= sold_items</code></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                     <section class="content-section">
+                        <h3 id="section-l6-problem-solving" class="section-main-title first-in-section">
+                            <i class="fas fa-lightbulb section-title-icon"></i>四、 用数学解决问题：编程实践
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们学习了这么多算术运算符，就是为了能用程序来帮助我们解决生活中的数学问题。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            比如计算购物总价、计算平均分、或者像之前题目里计算小孩排队、计算正方形周长、计算两数的和与积的乘积等等。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            关键在于把问题分解成一步一步的计算，然后用Python代码把这些计算步骤写出来。
+                        </p>
+
+                        <h4 class="knowledge-subtitle">编程题1 (在IDLE中完成)：</h4>
+                        <div class="exercise-container" id="l6_prog1_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：</strong>小明有20颗糖果，他想平均分给他的3个好朋友，剩下的糖果自己留着。请编写一个程序，计算每个好朋友能分到多少颗糖果，以及小明自己能剩下多少颗糖果。</p>
+                            <p class="text-sm text-gray-500 mb-2"><strong>提示：</strong>你需要用到整除 <code class="inline-code">//</code> 和取余 <code class="inline-code">%</code> 运算符。</p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_prog1_solution')">查看参考答案</button>
+                            <div id="l6_prog1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">total_candies = 20
+num_friends = 3
+
+candies_per_friend = total_candies // num_friends
+remaining_candies_for_ming = total_candies % num_friends
+
+print("每个好朋友可以分到：", candies_per_friend, "颗糖果")
+print("小明自己剩下：", remaining_candies_for_ming, "颗糖果")</code></pre>
+                                </div>
+                                <h5 class="mt-3">解析：</h5>
+                                <ul class="list-disc list-inside">
+                                    <li><code class="inline-code">total_candies // num_friends</code> 计算了每人分到的整数颗糖。</li>
+                                    <li><code class="inline-code">total_candies % num_friends</code> 计算了分完后剩下的糖果数。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4 class="knowledge-subtitle">编程题2 (在IDLE中完成)：</h4>
+                        <div class="exercise-container" id="l6_prog2_container">
+                            <p class="text-gray-700 mb-2"><strong>题目：</strong>一个长方形的操场，长是85米，宽是40米。请编写一个程序计算这个操场的周长和面积。</p>
+                            <p class="text-sm text-gray-500 mb-2"><strong>公式提示：</strong><br>
+                                长方形周长 = (长 + 宽) * 2<br>
+                                长方形面积 = 长 * 宽
+                            </p>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('l6_prog2_solution')">查看参考答案</button>
+                            <div id="l6_prog2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>参考答案：</h5>
+                                <div class="code-block-container">
+                                    <div class="code-window-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                                    <pre><code class="language-python">length = 85
+width = 40
+
+perimeter = (length + width) * 2
+area = length * width
+
+print("操场的周长是：", perimeter, "米")
+print("操场的面积是：", area, "平方米")</code></pre>
+                                </div>
+                                <h5 class="mt-3">解析：</h5>
+                                 <ul class="list-disc list-inside">
+                                    <li>程序定义了长和宽。</li>
+                                    <li>根据公式分别计算了周长和面积。</li>
+                                    <li>使用 <code class="inline-code">print()</code> 输出了结果。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section">
+                        <h3 id="section-l6-summary" class="section-main-title first-in-section">
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们变成了小小数学家，学习了Python中进行加、减、乘、除、整除、取余和幂运算的各种符号（运算符）。我们还知道了当一个算式里有很多符号时，电脑会按照"先乘除后加减，有括号先算括号，幂运算更优先"的顺序来计算。最后，我们还学会了一种让代码变简洁的写法——复合赋值运算符。现在，我们可以用Python来帮我们做很多数学计算啦！
+                        </p>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 祝学习愉快！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const header = document.querySelector('header.main-header');
+            // Standardized: Get lessonUnitHeader and set its content
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            const lessonSpecificTitle = "第6课：基本的数学运算"; // Standardized title for Lesson 6
+            if (lessonUnitHeader && lessonSpecificTitle) {
+                lessonUnitHeader.textContent = lessonSpecificTitle;
+            }
+
+            // Standardized: Ensure removal of any unit title from main header (if mistakenly present)
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 110; 
+            if (header) {
+                headerHeight = header.offsetHeight;
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) { 
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 60; 
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } 
+                    else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } 
+                    else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0 && sectionsToObserve[0]) {
+                    newActiveId = sectionsToObserve[0].id;
+                 }
+
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            let topMargin = -headerHeight;
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 10); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is handled by CSS
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const correctAnswerLabelElement = document.querySelector(`label[for="${questionId}_opt${correctAnswerLetter}"]`);
+                let correctAnswerText = correctAnswerLetter;
+                if (correctAnswerLabelElement) {
+                    correctAnswerText = correctAnswerLabelElement.innerHTML.split(/<br\s*\/?>/i)[0].trim();
+                }
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerText}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        // This function is kept for potential future TFQ with radio buttons
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const container = document.getElementById(`${questionId}_container`);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                const codeBlocks = solutionEl.querySelectorAll('pre code');
+                codeBlocks.forEach(block => {
+                    Prism.highlightElement(block);
+                });
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python一级训练营 - 第1课</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --header-height: 110px; 
+            --lesson-unit-header-height: 50px; /* 新增：课程单元标题栏高度 */
+            --sidebar-width: 300px; 
+            
+            --primary-color: #667eea; 
+            --primary-color-rgb: 102, 126, 234; /* Added RGB version for primary color */
+            --primary-color-light: #7f9cf5; 
+            --primary-color-dark: #5a67d8; 
+            --accent-color: #9f7aea; 
+            --accent-color-light: #b794f4; 
+            --accent-color-dark: #805ad5; 
+
+            --text-color-dark: #1a202c; 
+            --text-color-medium: #4a5568; 
+            --text-color-light: #718096; 
+            --bg-light: #f7fafc; 
+            --bg-medium: #edf2f7; 
+            --border-color: #e2e8f0; 
+            --text-color-dark-rgb: 26, 32, 44; /* Added RGB version */
+        }
+
+        html {
+            scroll-behavior: smooth; 
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            font-size: 1.3rem; 
+            line-height: 1.75; 
+            padding-top: calc(var(--header-height) + var(--lesson-unit-header-height)); /* 调整padding-top */
+            color: var(--text-color-medium);
+        }
+        .main-header { 
+            height: var(--header-height);
+            z-index: 1000; 
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--primary-color), var(--accent-color-dark)); 
+            display: flex; 
+            flex-direction: row; /* 确保是行布局 */
+            justify-content: space-between; /* 左右分布 */
+            align-items: center; 
+            padding: 0 1.5rem; /* 调整内边距，垂直方向0，水平方向1.5rem */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-sizing: border-box; /* 新增：确保padding和border包含在高度内 */
+        }
+        .main-header .header-content-wrapper {
+            /* 这个wrapper现在只包裹左侧内容：图标和主标题 */
+            display: flex; /*使其内部元素可以水平排列*/
+            align-items: center;
+            flex-grow: 0; /* 不需要占据额外空间，由其内容决定宽度 */
+        }
+        .course-series-title-container { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.35rem; 
+        }
+        h1.main-title { 
+             font-family: 'ZCOOL XiaoWei', sans-serif;
+             font-weight: bold;
+             letter-spacing: 2px; 
+             color: #ffffff; 
+             text-shadow: 1px 1px 4px rgba(0,0,0,0.25); 
+             font-size: 2.6rem; 
+        }
+        .course-unit-title { 
+            font-size: 1.3rem; 
+            color: #dbeafe; 
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            width: 100%; /* 新增：确保其父元素居中时，它能正确延展 */
+            text-align: center; /* 新增：确保文字本身居中 */
+        }
+
+
+        .page-container {
+            display: flex;
+            margin-top: 0; 
+        }
+
+        #lesson-sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height)); /* 改回只减去主页眉高度 */
+            position: fixed;
+            top: var(--header-height); /* 改回只贴在主页眉下方 */
+            left: 0;
+            background-color: #ffffff; 
+            padding: 2rem 0; 
+            overflow-y: auto; 
+            border-right: 1px solid var(--border-color); 
+            box-shadow: 3px 0 12px -2px rgba(0,0,0,0.06); 
+            z-index: 900; 
+        }
+        #lesson-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #lesson-sidebar .sidebar-title {
+            font-size: 1.6rem; 
+            font-weight: 700;
+            color: var(--primary-color-dark); 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: left;
+        }
+        #lesson-sidebar .sidebar-title .fa-compass { 
+            color: var(--primary-color); 
+            margin-right: 0.8rem; 
+        }
+
+        #lesson-sidebar li a {
+            display: flex; 
+            align-items: center; 
+            padding: 1rem 2.2rem; 
+            margin-bottom: 0.3rem; 
+            color: var(--text-color-medium); 
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.15rem; 
+            transition: all 0.2s ease-in-out;
+            border-left: 5px solid transparent; 
+        }
+
+        #lesson-sidebar li a:hover {
+            background-color: var(--bg-medium); 
+            color: var(--primary-color-dark);
+            border-left-color: var(--accent-color-light); 
+        }
+
+        #lesson-sidebar li a.active {
+            background-color: var(--primary-color); 
+            color: white;
+            font-weight: 600; 
+            border-left-color: var(--accent-color); 
+            box-shadow: inset 4px 0 10px -3px rgba(0,0,0,0.1); 
+        }
+
+
+        .main-content-area { 
+            margin-left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width));
+            padding: 0; 
+        }
+        .main-content-area .container { 
+            padding-left: 3rem; 
+            padding-right: 3rem;
+            padding-top: 2rem; 
+            padding-bottom: 2rem;
+        }
+
+
+        .content-section {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 3rem; 
+            margin-bottom: 3rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px -8px rgba(0,0,0,0.09), 0 5px 15px -8px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border-color); 
+            border-left: 8px solid var(--primary-color); 
+        }
+        h2.page-lesson-title { 
+            font-size: 2.2rem; 
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.8rem; 
+            margin-bottom: 2.2rem; 
+        }
+        h3.section-main-title { 
+            font-size: 1.9rem; 
+            color: var(--primary-color); 
+            margin-top: 2rem; 
+            scroll-margin-top: calc(var(--header-height) + 30px); 
+        }
+        h3.section-main-title.first-in-section { 
+            margin-top: 0;
+        }
+
+        h4.knowledge-subtitle {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            font-weight: 600; 
+        }
+         h4.exercise-title {
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            margin-bottom: 1.2rem; 
+            font-weight: 600; 
+        }
+        p.text-gray-700 { 
+            color: var(--text-color-medium); 
+            font-size: 1.3rem; 
+            line-height: 1.8;
+        }
+        ul.list-disc li {
+            font-size: 1.25rem; 
+            line-height: 1.75; 
+            margin-left: 0.8rem; 
+        }
+
+        /* Code Block Styling with macOS dots */
+        .code-block-container {
+            position: relative;
+            margin-top: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.11); 
+        }
+        .code-window-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 18px; 
+            background-color: #2d2d2d; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+        }
+        .code-window-header .dot {
+            height: 15px; 
+            width: 15px; 
+            border-radius: 50%;
+            margin-right: 9px; 
+        }
+        .code-window-header .dot.red { background-color: #ff5f57; border: 1px solid #e0443e;}
+        .code-window-header .dot.yellow { background-color: #ffbd2e; border: 1px solid #dea123;}
+        .code-window-header .dot.green { background-color: #28c940; border: 1px solid #1DAD2B;}
+
+        .code-block-container pre[class*="language-"] {
+            margin: 0; 
+            border-radius: 0 0 12px 12px; 
+            box-shadow: none; 
+            border: 1px solid #2d2d2d; 
+            border-top: none; 
+            font-size: 1.15rem; 
+            padding: 1.5em 1.2em; 
+        }
+        /* End Code Block Styling */
+
+        .exercise-container {
+            border: 1px solid var(--border-color); 
+            padding: 2.2rem; 
+            border-radius: 12px; 
+            margin-top: 3rem; 
+            margin-bottom: 2.5rem; 
+            background-color: var(--bg-light); 
+            position: relative; 
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05); 
+        }
+        .exercise-container::before { 
+            font-family: "Font Awesome 6 Free";
+            content: '\f044'; 
+            font-weight: 900;
+            font-size: 1.6rem; 
+            position: absolute;
+            top: -18px; 
+            left: 25px; 
+            background-color: var(--bg-light);
+            padding: 0 8px; 
+            color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 1.2rem; 
+            padding: 1.2rem; 
+            border-radius: 10px; 
+            font-weight: 500;
+            font-size: 1.15rem; 
+        }
+        .feedback.correct {
+            background-color: #e6f4ea; 
+            color: #1e4620; 
+            border-left: 6px solid #38a169; 
+        }
+        .feedback.incorrect {
+            background-color: #feedec; 
+            color: #742a2a; 
+            border-left: 6px solid #e53e3e; 
+        }
+        .btn {
+            padding: 0.9rem 1.9rem; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent; 
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.11); 
+            text-transform: none; 
+            letter-spacing: 0.3px; 
+            font-size: 1.15rem; 
+        }
+        .btn:active {
+            transform: translateY(1px) scale(0.98); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.11); 
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        .btn-secondary {
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color-dark); 
+        }
+        .btn-secondary:hover {
+            background-color: var(--accent-color-dark); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.16); 
+        }
+        
+        .custom-radio-horizontal {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 1rem; 
+            margin-top: 0.8rem; 
+        }
+        .custom-radio-horizontal input[type="radio"] {
+            opacity: 0;
+            position: fixed;
+            width: 0;
+        }
+        .custom-radio-horizontal label {
+            display: inline-block;
+            background-color: var(--bg-medium); 
+            padding: 0.9rem 1.8rem; 
+            font-size: 1.2rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: var(--text-color-dark); 
+            font-weight: 500; 
+        }
+        .custom-radio-horizontal input[type="radio"]:checked + label {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color-dark); 
+            color: white;
+            box-shadow: 0 4px 9px rgba(102, 126, 234, 0.32); 
+            transform: translateY(0px) scale(1); 
+        }
+        .custom-radio-horizontal label:hover {
+            background-color: #d1d5db; 
+            border-color: #9ca3af; 
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,40,50,0.75); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .message-box-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-box-content {
+            background-color: #ffffff; 
+            padding: 45px; 
+            border-radius: 10px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); 
+            text-align: center;
+            width: 90%;
+            max-width: 520px; 
+            border-top: 6px solid var(--primary-color); 
+        }
+        .message-box-content p {
+            margin-bottom: 30px; 
+            font-size: 1.5rem; 
+            color: var(--text-color-dark); 
+            font-weight: 500;
+        }
+        .message-box-button {
+            padding: 15px 35px; 
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.2rem; 
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.11); 
+        }
+        .message-box-button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.22); 
+        }
+        .inline-code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #dde3ea; 
+            color: var(--text-color-dark);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid #cdd4db; 
+            display: inline-block;
+            line-height: 1.3;
+        }
+        .section-divider {
+            height: 3px; 
+            background-color: var(--border-color); 
+            border-radius: 2px; 
+            margin-top: 4rem; 
+            margin-bottom: 4rem; 
+            width: 85%;
+        }
+        .centered-divider {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        .header-icon { /* For Python logo */
+            font-size: 3rem; 
+            margin-right: 0.8rem; 
+            color: #ffd43b; /* Python yellow */
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+        .section-title-icon {
+            font-size: 1.8em; 
+            margin-right: 1rem; 
+            color: var(--primary-color); 
+            vertical-align: -0.15em; 
+        }
+        .list-disc li::marker { 
+            color: var(--primary-color);
+            font-size: 1.5em; 
+        }
+        .text-gray-500 {
+            color: var(--text-color-light); 
+            font-size: 1.15rem; 
+        }
+         .solution-box {
+            background-color: #ebf4ff; 
+            border: 1px solid #bee3f8; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            margin-top: 1.2rem; 
+        }
+        .solution-box h5 {
+            color: #2b6cb0; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+        }
+        .highlight-key { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+        }
+
+        /* BEGIN MODIFIED CSS SECTION: Replaces old .home-button CSS with new .header-actions-container and related button styles */
+        /* Header Action Buttons */
+        .header-actions-container {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-action-button {
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .header-action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-action-button .fas,
+        .header-action-button .fab { /* For FontAwesome Solid & Brand icons */
+            margin-right: 0.5rem;
+        }
+        .coding-button-style {
+            background-color: var(--accent-color); /* Purple */
+        }
+        .coding-button-style:hover {
+            background-color: var(--accent-color-dark);
+        }
+        .home-button-style {
+            background-color: var(--primary-color); /* Blue */
+        }
+        .home-button-style:hover {
+            background-color: var(--primary-color-dark);
+        }
+        /* END MODIFIED CSS SECTION */
+
+        /* 新的粘性课程单元标题栏样式 */
+        #lesson-unit-header {
+            position: sticky;
+            top: var(--header-height);
+            height: var(--lesson-unit-header-height);
+            background-color: #e9edf2; /* 调整背景色为更柔和的浅灰蓝 */
+            color: var(--primary-color-dark); /* 文字颜色调整为深色以保证对比度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 950; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0 1rem;
+            box-sizing: border-box;
+            font-size: 1.5rem; /* 增大字号 */
+            font-weight: 600; /* 加粗字体 */
+            text-shadow: 0 1px 1px rgba(255,255,255,0.5); /* 轻微的顶部高光文本阴影 */
+            margin-left: var(--sidebar-width); 
+        }
+
+        /* Lesson Background Watermark */
+        body.lesson-background-watermark::before {
+            content: "1"; /* Specific to lesson 1 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg); /* Center and rotate */
+            font-size: 35vw; /* Responsive font size based on viewport width */
+            font-weight: bold;
+            font-family: 'ZCOOL XiaoWei', sans-serif; /* Using one of your existing cool fonts */
+            color: rgba(var(--primary-color-rgb, 102, 126, 234), 0.08); /* Use primary color with opacity */
+            opacity: 1; /* Opacity is handled by rgba color above */
+            z-index: -1; /* Behind all content */
+            pointer-events: none; /* Make it unclickable */
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5), /* Subtle top-left highlight for engraving */
+                         -1px -1px 0px rgba(0,0,0,0.02); /* Subtle bottom-right shadow for engraving */
+            user-select: none; /* Prevent text selection */
+        }
+
+    </style>
+</head>
+<body class="lesson-background-watermark">
+
+    <div id="customMessageBox" class="message-box-overlay">
+        <div class="message-box-content">
+            <p id="messageBoxText">这是一条消息！</p>
+            <button id="messageBoxOkButton" class="message-box-button">确定</button>
+        </div>
+    </div>
+
+    <header class="main-header text-white shadow-lg fixed top-0 left-0 right-0">
+        <div class="header-content-wrapper">
+            <div class="course-series-title-container"> 
+                <i class="fab fa-python header-icon"></i>
+                <h1 class="text-3xl main-title">Python一级训练营</h1>
+            </div>
+            <!-- 右侧按钮容器 -->
+            <div class="header-actions-container">
+                <a href="https://www.jyshare.com/compile/9/" target="_blank" class="header-action-button coding-button-style">
+                    <i class="fas fa-terminal"></i>开始编程
+                </a>
+                <a href="index.html" class="header-action-button home-button-style">
+                    <i class="fas fa-house"></i>返回主页
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="lesson-unit-header" class="lesson-unit-header-dynamic-content">
+        <!-- 课程单元标题将通过JS动态填充或直接在此处硬编码 -->
+        <!-- 暂时留空，稍后决定如何填充 -->
+    </div>
+
+    <div class="page-container">
+        <nav id="lesson-sidebar">
+            <div class="sidebar-title"><i class="fas fa-compass"></i> 课程导航</div>
+            <ul>
+                <li><a href="#section-objectives" class="sidebar-link">本课目标</a></li>
+                <li><a href="#section-what-is-python" class="sidebar-link">一、什么是Python？</a></li>
+                <li><a href="#section-python-versions" class="sidebar-link">二、Python的版本</a></li>
+                <li><a href="#section-tool-idle" class="sidebar-link">三、认识我们的工具：IDLE</a></li>
+                <li><a href="#section-first-program" class="sidebar-link">四、第一个Python程序</a></li>
+                <li><a href="#section-file-operations" class="sidebar-link">五、IDLE基本文件操作</a></li>
+                <li><a href="#section-summary" class="sidebar-link">本课总结回顾</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content-area">
+             <div class="container mx-auto"> <section id="lesson-content-wrapper" class="bg-transparent p-0 m-0 shadow-none border-none"> <section id="section-objectives-container" class="content-section">
+                        <h3 id="section-objectives" class="section-main-title first-in-section"> <i class="fas fa-star section-title-icon text-yellow-500"></i>本课目标
+                        </h3>
+                        <ul class="list-disc list-inside leading-relaxed space-y-2 mb-6 ml-4">
+                            <li>初步了解什么是<strong class="highlight-key">Python</strong>编程语言及其用途。</li>
+                            <li>知道<strong class="highlight-key">Python</strong>有不同的版本，并且了解我们常用的是哪个版本。</li>
+                            <li>认识<strong class="highlight-key">Python</strong>的官方开发工具<strong class="highlight-key">IDLE</strong>，并学会打开和使用它的两种模式：<strong class="highlight-key">交互模式</strong>和<strong class="highlight-key">脚本模式</strong>。</li>
+                            <li>能够在<strong class="highlight-key">IDLE</strong>中成功编写并运行第一行<strong class="highlight-key">Python</strong>代码。</li>
+                            <li>掌握在<strong class="highlight-key">IDLE</strong>中新建、保存和打开<strong class="highlight-key">Python</strong>程序文件（<code class="inline-code">.py</code>文件）的基本操作。</li>
+                            <li>了解<strong class="highlight-key">Python</strong>程序文件的扩展名是 <code class="inline-code">.py</code>。</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-what-is-python" class="section-main-title first-in-section">
+                            <i class="fas fa-book-open section-title-icon"></i>一、什么是Python？
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong class="highlight-key">Python</strong>是一种计算机编程语言。什么是编程语言呢？就像我们和不同国家的人说话，需要用他们能听懂的语言（比如英语、法语）一样，我们想让电脑帮我们做事，也需要用电脑能"听懂"的语言来告诉它怎么做。<strong class="highlight-key">Python</strong>就是这样一种电脑能"听懂"的语言。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong class="highlight-key">Python</strong>非常受欢迎，因为它有很多优点： 
+                        </p>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li><strong>简单易学：</strong><strong class="highlight-key">Python</strong>的语法（就是写代码的规则）设计得比较简单，读起来也比较容易明白，很适合初学者。</li>
+                            <li><strong>功能强大：</strong>虽然简单，但<strong class="highlight-key">Python</strong>能做很多事情，比如制作网站、分析数据、开发游戏，甚至控制机器人！</li>
+                            <li><strong>应用广泛：</strong>很多大公司和科研机构都在使用<strong class="highlight-key">Python</strong>。</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们学习<strong class="highlight-key">Python</strong>，就像学习一门新的技能，可以让我们更好地与电脑沟通，创造出有用的程序。
+                        </p>
+                        <h4 class="knowledge-subtitle">思考与讨论：</h4>
+                        <ul class="list-disc list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>你能说说我们为什么要学习编程吗？</li>
+                            <li>你觉得电脑能帮我们做哪些事情？</li>
+                        </ul>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-python-versions" class="section-main-title first-in-section">
+                            <i class="fas fa-code-branch section-title-icon"></i>二、 Python的版本
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            就像我们玩的游戏或者用的软件会更新升级一样，<strong class="highlight-key">Python</strong>语言也在不断发展，会有不同的版本。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们主要会学习和使用 <strong class="highlight-key">Python 3.x 版本</strong>（比如 Python 3.8, 3.9, 3.10 等等）。"x"表示这个数字会变，代表更细致的小版本更新。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            还有一个比较老的版本叫 <strong class="highlight-key">Python 2</strong>，但是现在大家主要都用 <strong class="highlight-key">Python 3</strong> 了，因为 <strong class="highlight-key">Python 3</strong> 有更多新功能，也修复了一些老版本的问题。需要注意的是，<strong class="highlight-key">Python 3</strong> 的代码不一定能直接在 <strong class="highlight-key">Python 2</strong> 上运行，它们之间有一些区别。
+                        </p>
+                        <div class="exercise-container" id="tfq1_1">
+                            <h4 class="exercise-title">练习 2.1 (判断题)：Python只有一个版本，永远不会变。</h4>
+                            <div class="custom-radio-horizontal">
+                                 <div>
+                                    <input type="radio" id="tfq1_1_opt1" name="tfq1_1" value="true">
+                                    <label for="tfq1_1_opt1">正确</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="tfq1_1_opt2" name="tfq1_1" value="false">
+                                    <label for="tfq1_1_opt2">错误</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('tfq1_1', 'false', 'Python像很多软件一样，会不断更新和改进，所以有很多不同的版本。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="tfq1_2">
+                            <h4 class="exercise-title">练习 2.2 (判断题)：我们学习的是Python 3版本。</h4>
+                            <div class="custom-radio-horizontal">
+                                 <div>
+                                    <input type="radio" id="tfq1_2_opt1" name="tfq1_2" value="true">
+                                    <label for="tfq1_2_opt1">正确</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="tfq1_2_opt2" name="tfq1_2" value="false">
+                                    <label for="tfq1_2_opt2">错误</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('tfq1_2', 'true', 'Python 3是目前主流和推荐学习的版本。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-tool-idle" class="section-main-title first-in-section">
+                             <i class="fas fa-laptop-code section-title-icon"></i>三、 认识我们的工具：IDLE
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            要写<strong class="highlight-key">Python</strong>代码，我们需要一个专门的工具，就像写作文需要用笔和纸，或者用电脑上的文档软件一样。这个工具叫做<strong class="highlight-key">集成开发环境</strong> (Integrated Development Environment)，简称 <strong class="highlight-key">IDE</strong>。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong class="highlight-key">Python</strong>自带了一个官方的<strong class="highlight-key">IDE</strong>，叫做 <strong class="highlight-key">IDLE</strong>。它的名字来源于<strong class="highlight-key">Python</strong>的一个创始人的名字，也暗含"集成开发和学习环境"的意思。<strong class="highlight-key">IDLE</strong>简单好用，特别适合我们初学者。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            除了<strong class="highlight-key">IDLE</strong>，还有很多其他的<strong class="highlight-key">Python</strong>开发环境，比如Visual Studio Code (VS Code)、PyCharm、Jupyter Notebook等等。<strong class="highlight-key">Python</strong>程序不仅能在<strong class="highlight-key">IDLE</strong>上运行，也支持这些其他的环境。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong>打开IDLE：</strong>通常安装好<strong class="highlight-key">Python</strong>后，你可以在电脑的程序列表里找到<strong class="highlight-key">IDLE</strong>并打开它。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>IDLE的两种模式：</strong></p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-2 mb-4 ml-6">
+                            <li>
+                                <strong><span class="highlight-key">交互模式</span> (Interactive Mode / Shell Mode)：</strong>
+                                <ul class="list-disc list-inside ml-6 space-y-1">
+                                    <li>打开<strong class="highlight-key">IDLE</strong>后，首先看到的窗口就是<strong class="highlight-key">交互模式</strong>窗口，也叫Python Shell。</li>
+                                    <li>你会看到一个提示符 <code class="inline-code">&gt;&gt;&gt;</code>。 这就像电脑在问你："你想让我做什么呀？"
+                                    </li>
+                                    <li>你可以在 <code class="inline-code">&gt;&gt;&gt;</code> 后面输入一行<strong class="highlight-key">Python</strong>代码，按回车键，电脑就会马上执行这行代码，并显示结果。这很像和电脑"对话"。</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong><span class="highlight-key">脚本模式</span> (Script Mode / Editor Mode)：</strong>
+                                <ul class="list-disc list-inside ml-6 space-y-1">
+                                    <li>如果想写比较长的程序，或者想把代码保存下来以后再用，就需要用到<strong class="highlight-key">脚本模式</strong>。</li>
+                                    <li>在<strong class="highlight-key">IDLE</strong>的<strong class="highlight-key">交互模式</strong>窗口中，点击菜单栏的 <code class="inline-code">File</code> (文件)，然后选择 <code class="inline-code">New File</code> (新建文件)，就会打开一个新的窗口，这就是<strong class="highlight-key">脚本模式</strong>的编辑器窗口。</li>
+                                    <li>这个编辑器窗口没有特定的行提示符（比如<code class="inline-code">&gt;&gt;&gt;</code>）。 你可以在这里写很多行代码。</li>
+                                    <li>写完代码后，需要先保存文件，然后再运行。</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <div class="exercise-container" id="mcq2_1">
+                            <h4 class="exercise-title">练习 3.1 (选择题)：Python自带的官方IDE叫做什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="mcq2_1_opt1" name="mcq2_1" value="A"><label for="mcq2_1_opt1">A. MyPython</label></div>
+                                <div><input type="radio" id="mcq2_1_opt2" name="mcq2_1" value="B"><label for="mcq2_1_opt2">B. IDLE</label></div>
+                                <div><input type="radio" id="mcq2_1_opt3" name="mcq2_1" value="C"><label for="mcq2_1_opt3">C. PyEditor</label></div>
+                                <div><input type="radio" id="mcq2_1_opt4" name="mcq2_1" value="D"><label for="mcq2_1_opt4">D. Code Master</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('mcq2_1', 'B', 'IDLE是Python安装时通常会一起安装的官方集成开发和学习环境。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="mcq2_2">
+                            <h4 class="exercise-title">练习 3.2 (选择题)：IDLE的交互模式窗口中，等待你输入命令的提示符是什么？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="mcq2_2_opt1" name="mcq2_2" value="A"><label for="mcq2_2_opt1">A. $$$</label></div>
+                                <div><input type="radio" id="mcq2_2_opt2" name="mcq2_2" value="B"><label for="mcq2_2_opt2">B. ###</label></div>
+                                <div><input type="radio" id="mcq2_2_opt3" name="mcq2_2" value="C"><label for="mcq2_2_opt3">C. &gt;&gt;&gt;</label></div>
+                                <div><input type="radio" id="mcq2_2_opt4" name="mcq2_2" value="D"><label for="mcq2_2_opt4">D. ---</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('mcq2_2', 'C', '交互模式的提示符是三个大于号 >>>。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                        <div class="exercise-container" id="mcq2_3">
+                            <h4 class="exercise-title">练习 3.3 (选择题)：要在IDLE中编写一个可以保存的多行Python程序，你应该使用哪种模式？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="mcq2_3_opt1" name="mcq2_3" value="A"><label for="mcq2_3_opt1">A. 交互模式</label></div>
+                                <div><input type="radio" id="mcq2_3_opt2" name="mcq2_3" value="B"><label for="mcq2_3_opt2">B. 脚本模式</label></div>
+                                <div><input type="radio" id="mcq2_3_opt3" name="mcq2_3" value="C"><label for="mcq2_3_opt3">C. 调试模式</label></div>
+                                <div><input type="radio" id="mcq2_3_opt4" name="mcq2_3" value="D"><label for="mcq2_3_opt4">D. 输出模式</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('mcq2_3', 'B', '脚本模式允许你编写多行代码，并将其保存为文件，方便以后运行和修改。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-first-program" class="section-main-title first-in-section">
+                            <i class="fas fa-rocket section-title-icon"></i>四、 我们的第一个Python程序："你好，世界！"
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            学习任何编程语言，通常第一个程序都是让电脑输出"Hello, World!"（你好，世界！）。这是一个传统，代表我们成功地让电脑执行了我们的指令。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            在<strong class="highlight-key">Python</strong>中，要让电脑在屏幕上显示文字，我们会用到一个叫做 <code class="inline-code">print()</code> 的"命令"（专业术语叫<strong class="highlight-key">函数</strong>）。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            你需要在 <code class="inline-code">print()</code> 后面的括号里，用引号（单引号 <code class="inline-code">' '</code> 或双引号 <code class="inline-code">" "</code> 都可以）把你想显示的文字包起来。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>在IDLE<span class="highlight-key">交互模式</span>中尝试：</strong></p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>在 <code class="inline-code">&gt;&gt;&gt;</code> 提示符后输入：<code class="inline-code">print("你好，世界！")</code></li>
+                            <li>按下回车键。</li>
+                            <li>你会看到电脑在下一行输出了：你好，世界！</li>
+                        </ol>
+                        <div class="code-block-container">
+                            <div class="code-window-header">
+                                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div>
+                            <pre><code class="language-python">
+&gt;&gt;&gt; print("你好，世界！")
+你好，世界！
+                            </code></pre>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-2 mt-4"><strong>在IDLE<span class="highlight-key">脚本模式</span>中尝试：</strong></p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>打开一个新的脚本文件 (<code class="inline-code">File -> New File</code>)。</li>
+                            <li>在打开的编辑器窗口中输入：<code class="inline-code">print("我的第一个Python脚本程序！")</code></li>
+                            <div class="code-block-container">
+                                <div class="code-window-header">
+                                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                </div>
+                                <pre><code class="language-python">
+# 在脚本编辑器中输入:
+print("我的第一个Python脚本程序！")
+                                </code></pre>
+                            </div>
+                            <li>保存文件：点击菜单栏的 <code class="inline-code">File -> Save</code> (保存) 或 <code class="inline-code">Save As</code> (另存为)。</li>
+                            <li>给文件取个名字，比如 <code class="inline-code">my_first_program</code>。</li>
+                            <li>重要的是，<strong class="highlight-key">Python</strong>程序文件的扩展名（就是文件名中点后面的部分）必须是 <code class="inline-code">.py</code>。 所以文件名应该是 <code class="inline-code">my_first_program.py</code>。</li>
+                            <li>选择一个你找得到的位置保存。</li>
+                            <li>运行程序：点击菜单栏的 <code class="inline-code">Run -> Run Module</code> (或者直接按键盘上的 <code class="inline-code">F5</code> 键)。</li>
+                            <li>你会看到<strong class="highlight-key">交互模式</strong>窗口中出现了你写的文字：我的第一个Python脚本程序！</li>
+                        </ol>
+                        
+                        <div class="exercise-container" id="mcq4_1">
+                            <h4 class="exercise-title">练习 4.1 (选择题)：在Python中，哪个函数通常用来在屏幕上显示文字或信息？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="mcq4_1_opt1" name="mcq4_1" value="A"><label for="mcq4_1_opt1">A. <code class="inline-code">input()</code></label></div>
+                                <div><input type="radio" id="mcq4_1_opt2" name="mcq4_1" value="B"><label for="mcq4_1_opt2">B. <code class="inline-code">display()</code></label></div>
+                                <div><input type="radio" id="mcq4_1_opt3" name="mcq4_1" value="C"><label for="mcq4_1_opt3">C. <code class="inline-code">print()</code></label></div>
+                                <div><input type="radio" id="mcq4_1_opt4" name="mcq4_1" value="D"><label for="mcq4_1_opt4">D. <code class="inline-code">show()</code></label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('mcq4_1', 'C', 'print() 函数是Python中用于将信息输出到控制台或屏幕的标准函数。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+
+                        <div class="exercise-container" id="tfq4_2">
+                            <h4 class="exercise-title">练习 4.2 (判断题)：Python程序文件通常以 ".python" 作为其标准扩展名。</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="tfq4_2_true" name="tfq4_2" value="true"><label for="tfq4_2_true">正确</label></div>
+                                <div><input type="radio" id="tfq4_2_false" name="tfq4_2" value="false"><label for="tfq4_2_false">错误</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkTFQ('tfq4_2', 'false', 'Python程序文件的标准扩展名是 &quot;.py&quot;。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+
+                        <div class="exercise-container" id="op4_1">
+                            <h4 class="exercise-title">练习 4.3 (操作题)：</h4>
+                            <p class="mb-2 text-gray-700">请在IDLE的<strong class="highlight-key">交互模式</strong>下，让电脑输出你自己的名字。</p>
+                            <p class="text-sm text-gray-500">(这是一个操作任务，请在你的IDLE环境中完成。)</p>
+                            <textarea id="op4_1_code" class="w-full h-20 p-3 border border-gray-300 rounded-lg font-mono text-base focus:ring-2 focus:ring-orange-500 focus:border-transparent mt-2" placeholder="你可以在这里记录你的代码（可选）... e.g., print('你的名字')"></textarea>
+                             <button class="btn btn-secondary mt-3" onclick="showSolution('op4_1_solution')">查看提示/示例代码</button>
+                            <div id="op4_1_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>提示/示例代码：</h5>
+                                <p class="text-gray-700">在IDLE<strong class="highlight-key">交互模式</strong>的 <code class="inline-code">&gt;&gt;&gt;</code> 提示符后输入，例如：</p>
+                                <div class="code-block-container">
+                                    <div class="code-window-header">
+                                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div>
+                                    <pre><code class="language-python">
+print("张三") # 将 张三 替换为你的名字
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="exercise-container" id="op4_2">
+                            <h4 class="exercise-title">练习 4.4 (操作题)：</h4>
+                            <p class="mb-2 text-gray-700">请在IDLE的<strong class="highlight-key">脚本模式</strong>下，编写一个程序，让电脑输出你最喜欢的动物的名称，保存文件并运行。</p>
+                            <p class="text-sm text-gray-500">(这是一个操作任务，请在你的IDLE环境中完成。)</p>
+                            <textarea id="op4_2_code" class="w-full h-28 p-3 border border-gray-300 rounded-lg font-mono text-base focus:ring-2 focus:ring-orange-500 focus:border-transparent mt-2" placeholder="你可以在这里记录你的代码（可选）... e.g., print('熊猫')"></textarea>
+                            <button class="btn btn-secondary mt-3" onclick="showSolution('op4_2_solution')">查看提示/示例代码</button>
+                            <div id="op4_2_solution" class="solution-box mt-3" style="display:none;">
+                                <h5>提示/示例代码：</h5>
+                                <p class="text-gray-700">1. 打开IDLE，选择 <code class="inline-code">File -> New File</code>。</p>
+                                <p class="text-gray-700">2. 在新窗口中输入代码，例如：</p>
+                                <div class="code-block-container">
+                                    <div class="code-window-header">
+                                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div>
+                                    <pre><code class="language-python">
+# my_favorite_animal.py
+print("猫咪") # 将 猫咪 替换为你最喜欢的动物
+                                    </code></pre>
+                                </div>
+                                <p class="text-gray-700">3. 保存文件 (e.g., <code class="inline-code">my_animal.py</code>)。</p>
+                                <p class="text-gray-700">4. 运行程序 (<code class="inline-code">Run -> Run Module</code> 或 <code class="inline-code">F5</code>)。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="section-divider centered-divider"></div>
+                    
+                    <section class="content-section">
+                        <h3 id="section-file-operations" class="section-main-title first-in-section">
+                            <i class="fas fa-folder-open section-title-icon"></i>五、 IDLE的基本文件操作
+                        </h3>
+                        <h4 class="knowledge-subtitle">知识讲解：</h4>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            我们已经接触了新建文件 (<code class="inline-code">File -> New File</code>) 和保存文件 (<code class="inline-code">File -> Save / Save As</code>)。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>打开已有的Python文件：</strong> 如果你之前保存了一个<strong class="highlight-key">Python</strong>程序，想再次打开它进行修改或运行，可以这样做：</p>
+                        <ol class="list-decimal list-inside leading-relaxed space-y-1 mb-4 ml-6">
+                            <li>打开<strong class="highlight-key">IDLE</strong>。</li>
+                            <li>点击菜单栏的 <code class="inline-code">File -> Open...</code> (打开)。</li>
+                            <li>在弹出的对话框中，找到你之前保存的 <code class="inline-code">.py</code> 文件，选中它，然后点击"打开"。</li>
+                        </ol>
+                        <p class="text-gray-700 leading-relaxed mb-2"><strong>运行已打开的脚本文件：</strong> 打开脚本文件后，其内容会显示在编辑器窗口中。要运行它，和之前一样，点击菜单栏的 <code class="inline-code">Run -> Run Module</code> (或按 <code class="inline-code">F5</code>)。</p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong>"另存为"功能：</strong> 如果你想把当前打开的文件保存成另一个名字，或者保存在另一个地方，可以使用 <code class="inline-code">File -> Save As...</code>。<strong class="highlight-key">IDLE</strong>中"另存为"功能在 <code class="inline-code">File</code> 菜单下。
+                        </p>
+                        <div class="exercise-container" id="mcq5_1">
+                            <h4 class="exercise-title">练习 5.1 (选择题)：在IDLE中，如果你想打开一个之前保存的Python脚本，应该选择哪个菜单操作？</h4>
+                            <div class="custom-radio-horizontal">
+                                <div><input type="radio" id="mcq5_1_opt1" name="mcq5_1" value="A"><label for="mcq5_1_opt1">A. File -> New File</label></div>
+                                <div><input type="radio" id="mcq5_1_opt2" name="mcq5_1" value="B"><label for="mcq5_1_opt2">B. File -> Open...</label></div>
+                                <div><input type="radio" id="mcq5_1_opt3" name="mcq5_1" value="C"><label for="mcq5_1_opt3">C. File -> Save</label></div>
+                                <div><input type="radio" id="mcq5_1_opt4" name="mcq5_1" value="D"><label for="mcq5_1_opt4">D. Run -> Run Module</label></div>
+                            </div>
+                            <button class="btn btn-primary mt-4" onclick="checkMCQ('mcq5_1', 'B', 'File -> Open... 用于打开已存在的文件。')">检查答案</button>
+                            <div class="feedback" style="display: none;"></div>
+                        </div>
+                    </section>
+                    
+                    <div class="section-divider centered-divider"></div>
+
+                    <section class="content-section"> 
+                        <h3 id="section-summary" class="section-main-title first-in-section"> 
+                            <i class="fas fa-clipboard-check section-title-icon"></i>本课总结回顾
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            今天我们认识了<strong class="highlight-key">Python</strong>这门神奇的编程语言和它的好帮手<strong class="highlight-key">IDLE</strong>。我们学会了怎么打开<strong class="highlight-key">IDLE</strong>，区分了它的两种工作模式，并且成功地让电脑通过 <code class="inline-code">print()</code> 函数和我们"说话"。我们还知道了<strong class="highlight-key">Python</strong>程序要保存成 <code class="inline-code">.py</code> 文件，并练习了文件的基本操作。第一步已经迈出啦，继续加油！
+                        </p>
+                    </section>
+                </section> </div> </main> 
+    </div> 
+
+    <footer class="text-center p-8 mt-10 bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-white shadow-md">
+        <p class="font-semibold text-base">&copy; 2024 Python一级训练营. 一把考过！</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Prism.highlightAll();
+
+            const mainHeader = document.querySelector('header.main-header');
+            const lessonUnitHeader = document.getElementById('lesson-unit-header');
+            const originalUnitTitleElement = document.querySelector('.main-header .course-series-title-container + div'); // 这假设原始标题是这个结构
+            
+            // 动态填充课程单元标题
+            const originalUnitTitleText = "第1课 Python与IDLE初识"; // 从HTML中硬编码获取或通过更可靠的选择器
+            if (lessonUnitHeader && originalUnitTitleText) {
+                lessonUnitHeader.textContent = originalUnitTitleText;
+            }
+             // 清理主页眉中残留的（现在空的）课程单元标题容器
+            const headerContentWrapper = document.querySelector('.main-header .header-content-wrapper');
+            const unitTitleContainerInHeader = headerContentWrapper ? headerContentWrapper.querySelector('.course-unit-title') : null;
+            if (unitTitleContainerInHeader) {
+                 unitTitleContainerInHeader.remove();
+            }
+
+            const sidebarLinks = document.querySelectorAll('#lesson-sidebar a.sidebar-link');
+            const sectionsToObserve = []; 
+            
+            let headerHeight = 80; // 默认值
+            // let combinedHeaderHeight = 160; // 不再需要组合高度用于此处的计算
+
+            if (mainHeader) {
+                headerHeight = mainHeader.offsetHeight; // JS中的headerHeight现在指主页眉高度
+                // const lessonUnitHeaderHeightValue = lessonUnitHeader ? lessonUnitHeader.offsetHeight : 0;
+                // combinedHeaderHeight = mainHeaderHeight + lessonUnitHeaderHeightValue;
+                
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+            }
+
+            sidebarLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionsToObserve.push(sectionElement);
+                }
+            });
+            
+            const intersectingStatus = new Map();
+
+            const handleIntersection = (entries) => {
+                entries.forEach(entry => {
+                    intersectingStatus.set(entry.target.id, entry.isIntersecting);
+                });
+
+                let newActiveId = null;
+                for (const section of sectionsToObserve) {
+                    if (intersectingStatus.get(section.id)) {
+                        newActiveId = section.id;
+                        break; 
+                    }
+                }
+                
+                if (!newActiveId) {
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const viewportHeight = window.innerHeight;
+                    const pageHeight = document.documentElement.scrollHeight;
+                    const activationOffset = headerHeight + 40; // 使用主页眉高度
+
+                    if (scrollY <= activationOffset / 2 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[0].id;
+                    } else if ((scrollY + viewportHeight) >= pageHeight - 30 && sectionsToObserve.length > 0) { 
+                        newActiveId = sectionsToObserve[sectionsToObserve.length - 1].id;
+                    } else {
+                        for (let i = sectionsToObserve.length - 1; i >= 0; i--) {
+                            if (sectionsToObserve[i].offsetTop <= scrollY + activationOffset) {
+                                newActiveId = sectionsToObserve[i].id;
+                                break;
+                            }
+                        }
+                    }
+                }
+                 if (!newActiveId && sectionsToObserve.length > 0 && (window.pageYOffset || document.documentElement.scrollTop) > 0) {
+                    newActiveId = sectionsToObserve[0].id;
+                }
+
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (newActiveId && link.getAttribute('href') === `#${newActiveId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            // Corrected rootMargin calculation
+            let topMargin = -headerHeight; // 使用主页眉高度
+            // Ensure bottomMarginCalculation is not negative before making it negative for rootMargin
+            let bottomMarginCalculation = Math.max(0, window.innerHeight - headerHeight - 1); 
+            let bottomMarginForObserver = -bottomMarginCalculation; 
+
+            const observerOptions = {
+                root: null, 
+                rootMargin: `${topMargin}px 0px ${bottomMarginForObserver}px 0px`,
+                threshold: 0 
+            };
+            const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+            sectionsToObserve.forEach(section => {
+                observer.observe(section);
+            });
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Smooth scroll is handled by CSS html { scroll-behavior: smooth; }
+                    // We just ensure the active state updates correctly if needed, though IntersectionObserver handles most of it.
+                });
+            });
+        });
+
+        const messageBox = document.getElementById('customMessageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxOkButton = document.getElementById('messageBoxOkButton');
+
+        function showCustomMessage(message) {
+            messageBoxText.textContent = message;
+            messageBox.classList.add('visible');
+        }
+
+        messageBoxOkButton.addEventListener('click', () => {
+            messageBox.classList.remove('visible');
+        });
+
+        // Helper function to escape HTML special characters for use in attributes or JS strings
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/[&<>"']/g, function (match) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&apos;' // HTML entity for single quote
+                }[match];
+            });
+        }
+
+        function checkMCQ(questionId, correctAnswerLetter, explanation) {
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+
+            if (selectedOption.value === correctAnswerLetter) {
+                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 回答正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const correctAnswerLabelElement = document.querySelector(`label[for="${questionId}_opt${correctAnswerLetter}"]`);
+                let correctAnswerText = correctAnswerLetter;
+                if (correctAnswerLabelElement) {
+                    correctAnswerText = correctAnswerLabelElement.innerHTML.split(/<br\s*\/?>/i)[0].trim();
+                }
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 回答错误。</strong>正确答案是：${correctAnswerText}.<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+            if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        function checkTFQ(questionId, correctAnswer, explanation) { 
+            const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+            const container = document.getElementById(`${questionId}_container`); // Corrected to get container for TFQ
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
+
+            if (!selectedOption) {
+                showCustomMessage("请先选择一个答案！");
+                 if(feedbackEl) feedbackEl.style.display = 'none';
+                return;
+            }
+            
+            const selectedValue = selectedOption.value; 
+            if (selectedValue === correctAnswer) {
+                feedbackEl.innerHTML = `<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback correct';
+            } else {
+                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                feedbackEl.className = 'feedback incorrect';
+            }
+             if(feedbackEl) feedbackEl.style.display = 'block';
+        }
+        
+        function showSolution(solutionId) {
+            const solutionEl = document.getElementById(solutionId);
+            if (!solutionEl) return;
+
+            if (solutionEl.style.display === 'none' || solutionEl.style.display === '') {
+                solutionEl.style.display = 'block';
+                Prism.highlightAllUnder(solutionEl); 
+            } else {
+                solutionEl.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
