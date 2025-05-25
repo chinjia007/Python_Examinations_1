@@ -1,43 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <!-- 黑色背景圆形 -->
-  <circle cx="50" cy="50" r="45" fill="#1a1a1a" stroke="#333333" stroke-width="2"/>
+  <!-- 白色矩形底 -->
+  <rect x="5" y="5" width="90" height="90" rx="8" ry="8" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
   
-  <!-- 猫爪印 - 主爪垫 -->
-  <ellipse cx="50" cy="55" rx="12" ry="15" fill="#ffffff" transform="rotate(-5 50 55)"/>
-  
-  <!-- 猫爪印 - 四个小趾垫 -->
-  <!-- 左上趾垫 -->
-  <ellipse cx="38" cy="40" rx="5" ry="7" fill="#ffffff" transform="rotate(-20 38 40)"/>
-  
-  <!-- 右上趾垫 -->
-  <ellipse cx="62" cy="40" rx="5" ry="7" fill="#ffffff" transform="rotate(20 62 40)"/>
-  
-  <!-- 左下趾垫 -->
-  <ellipse cx="42" cy="48" rx="4" ry="6" fill="#ffffff" transform="rotate(-10 42 48)"/>
-  
-  <!-- 右下趾垫 -->
-  <ellipse cx="58" cy="48" rx="4" ry="6" fill="#ffffff" transform="rotate(10 58 48)"/>
-  
-  <!-- 可爱的小装饰星星 -->
-  <g fill="#ffffff" opacity="0.3">
-    <!-- 小星星 1 -->
-    <polygon points="25,25 26,28 29,28 27,30 28,33 25,31 22,33 23,30 21,28 24,28" transform="scale(0.8)"/>
-    
-    <!-- 小星星 2 -->
-    <polygon points="75,75 76,78 79,78 77,80 78,83 75,81 72,83 73,80 71,78 74,78" transform="scale(0.6)"/>
-    
-    <!-- 小星星 3 -->
-    <polygon points="80,25 81,27 83,27 82,29 83,31 80,30 78,31 79,29 77,27 79,27" transform="scale(0.5)"/>
-  </g>
-  
-  <!-- 边缘发光效果 -->
-  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#glow)" stroke-width="1" opacity="0.6"/>
-  
-  <!-- 渐变定义 -->
-  <defs>
-    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
-      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.1" />
-    </radialGradient>
-  </defs>
+  <!-- 黑色大写字母C -->
+  <path d="M 65 25
+           L 40 25
+           Q 25 25 25 40
+           L 25 60
+           Q 25 75 40 75
+           L 65 75
+           Q 70 75 70 70
+           L 70 68
+           Q 70 63 65 63
+           L 40 63
+           Q 37 63 37 60
+           L 37 40
+           Q 37 37 40 37
+           L 65 37
+           Q 70 37 70 32
+           L 70 30
+           Q 70 25 65 25
+           Z" 
+        fill="#1a1a1a"/>
 </svg> 
