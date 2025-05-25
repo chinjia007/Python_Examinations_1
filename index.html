@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python一级训练营 - 课程主页</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -25,8 +27,8 @@
         }
         body {
             font-family: 'Noto Sans SC', 'Inter', sans-serif;
-            /* New background: soft, ethereal gradient */
-            background-image: linear-gradient(135deg, #f5f7fa, #e8edf2); 
+            /* background-color: #111827; */ /* Removed very dark, desaturated blue */
+            background-color: var(--bg-light); /* Using a defined light background color */
             color: var(--text-color-medium);
             margin: 0;
             position: relative; /* Context for potential future absolute positioned children if any */
@@ -313,11 +315,12 @@
             max-width: 450px; /* Maximum size */
             max-height: 450px;
             border-radius: 50%;
-            background-color: rgba(127, 156, 245, 0.12); /* very transparent primary-color-light */
+            background-color: rgba(102, 126, 234, 0.06); /* very transparent primary-color */
             top: 10vh; /* Position relative to viewport height */
             left: -10vw; /* Partially off-screen */
             z-index: -1; /* Behind content */
-            filter: blur(50px); /* Soften the shape significantly */
+            filter: blur(70px); /* Soften the shape significantly */
+            animation: subtlePulseBefore 25s ease-in-out infinite; /* Added animation */
         }
 
         body::after {
@@ -331,12 +334,36 @@
             max-height: 350px;
             /* Asymmetrical radius for a more organic shape */
             border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; 
-            background-color: rgba(183, 148, 244, 0.08); /* very transparent accent-color-light */
+            background-color: rgba(159, 122, 234, 0.05); /* very transparent accent-color */
             bottom: 5vh;
             right: -15vw;
             z-index: -1; /* Behind content */
-            filter: blur(60px); /* Soften the shape */
+            filter: blur(80px); /* Soften the shape */
             transform: rotate(15deg); /* Slight rotation for dynamism */
+            animation: subtleDriftAfter 30s ease-in-out infinite; /* Added animation */
+        }
+
+        /* New keyframes for subtle halo animations */
+        @keyframes subtlePulseBefore {
+            0%, 100% {
+                opacity: 0.06;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.08;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes subtleDriftAfter {
+            0%, 100% {
+                opacity: 0.05;
+                transform: rotate(15deg) scale(1) translate(0, 0);
+            }
+            50% {
+                opacity: 0.07;
+                transform: rotate(12deg) scale(1.03) translate(5px, -5px);
+            }
         }
 
         /* New styles for sidebar layout and reminder card */
@@ -692,7 +719,7 @@
 
             badge.style.backgroundColor = hexToRgba(themeColorHex, 0.3); // Frosted background
             badge.style.borderColor = hexToRgba(themeColorHex, 0.45);    // Slightly more opaque border
-            badge.style.color = getContrastTextColor(themeColorHex);    // Dynamic text color
+            badge.style.color = '#FFFFFF';    // Dynamic text color -  FORCED TO WHITE
 
             const badgeIcon = document.createElement('i');
             badgeIcon.className = 'fas fa-paw badge-icon'; // Changed to paw icon

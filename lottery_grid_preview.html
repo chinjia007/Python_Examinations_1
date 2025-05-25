@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能抽题系统 - Python训练营</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-color-light: #7f9cf5;
+            --primary-color-dark: #5a67d8;
+            --accent-color: #9f7aea;
+            --accent-color-light: #b794f4;
+            --accent-color-dark: #805ad5;
+            --text-color-dark: #1a202c;
+            --text-color-medium: #4a5568;
+            --text-color-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-medium: #edf2f7;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color-medium);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(159, 122, 234, 0.05));
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .main-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.05);
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .main-title {
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--text-color-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-color-medium);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .lottery-arena {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto 2.5rem auto;
+            background: var(--bg-medium);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        .grid-system {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .prize-cell {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-color-dark);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .prize-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .prize-cell:hover::before {
+            left: 100%;
+        }
+
+        .prize-cell.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border: 3px solid var(--primary-color-light);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 20px rgba(102, 126, 234, 0.6),
+                0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .prize-cell.active::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color), var(--primary-color-light), var(--accent-color-light));
+            background-size: 400% 400%;
+            border-radius: 13px;
+            z-index: -1;
+            animation: borderFlow 2s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+                         .prize-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color-dark);
+            letter-spacing: -1px;
+        }
+
+        .prize-cell.active .prize-number {
+            color: white;
+        }
+
+        .control-center {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border: 3px solid var(--primary-color-light);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .control-center:hover:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .control-center:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .control-center:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            z-index: 1;
+        }
+
+        .control-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .result-panel {
+            background: var(--bg-medium);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-content {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color-dark);
+            line-height: 1.6;
+        }
+
+        .action-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .action-button:hover {
+            background: var(--accent-color-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 特殊效果 */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .lottery-arena {
+                width: 400px;
+                height: 400px;
+                padding: 15px;
+            }
+            
+                         .main-title {
+                 font-size: 2.2rem;
+             }
+             
+             .prize-number {
+                 font-size: 2.2rem;
+             }
+             
+             .control-icon {
+                 font-size: 2rem;
+             }
+         }
+
+         @media (max-width: 480px) {
+             .lottery-arena {
+                 width: 320px;
+                 height: 320px;
+                 padding: 10px;
+             }
+             
+             .main-title {
+                 font-size: 1.8rem;
+             }
+             
+             .prize-number {
+                 font-size: 1.8rem;
+             }
+         }
+    </style>
+</head>
+<body>
+    <!-- 浮动粒子效果 -->
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="main-container">
+        <div class="header">
+            <h1 class="main-title">🐍 Python训练场</h1>
+            <p class="subtitle">随机测验 · 挑战你的编程技能</p>
+        </div>
+        
+        <div class="lottery-arena">
+            <div class="grid-system" id="lotteryGrid">
+                <!-- 第一行 -->
+                <div class="prize-cell" data-index="0">
+                    <div class="prize-number">😵‍💫</div>
+                </div>
+                <div class="prize-cell" data-index="1">
+                    <div class="prize-number">5</div>
+                </div>
+                <div class="prize-cell" data-index="2">
+                    <div class="prize-number">10</div>
+                </div>
+                <div class="prize-cell" data-index="3">
+                    <div class="prize-number">15</div>
+                </div>
+                
+                <!-- 第二行 -->
+                <div class="prize-cell" data-index="11">
+                    <div class="prize-number">20</div>
+                </div>
+                
+                <!-- 中央控制按钮 -->
+                <button class="control-center" id="startButton" onclick="startLottery()">
+                    <div class="control-icon">🎲</div>
+                    <div class="control-text">开始抽题</div>
+                </button>
+                
+                <div class="prize-cell" data-index="4">
+                    <div class="prize-number">10</div>
+                </div>
+                
+                <!-- 第三行 -->
+                <div class="prize-cell" data-index="10">
+                    <div class="prize-number">15</div>
+                </div>
+                
+                <div class="prize-cell" data-index="5">
+                    <div class="prize-number">10</div>
+                </div>
+                
+                <!-- 第四行 -->
+                <div class="prize-cell" data-index="9">
+                    <div class="prize-number">5</div>
+                </div>
+                <div class="prize-cell" data-index="8">
+                    <div class="prize-number">10</div>
+                </div>
+                <div class="prize-cell" data-index="7">
+                    <div class="prize-number">10</div>
+                </div>
+                <div class="prize-cell" data-index="6">
+                    <div class="prize-number">20</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel" id="resultDisplay">
+            <div class="result-content">
+                准备好接受挑战了吗？点击中央按钮开始您的Python学习之旅！
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建浮动粒子效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 创建闪烁效果
+        function createSparkles(element) {
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                element.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+
+        const grid = document.getElementById('lotteryGrid');
+        const startButton = document.getElementById('startButton');
+        const resultDisplay = document.getElementById('resultDisplay');
+        
+        // 12个外围格子的顺序（顺时针）
+        const cellOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        
+                 // 奖品配置 - 按照格子顺序排列
+         const prizes = [
+             { questions: 0, title: '幸运免题', desc: '恭喜！这次不用做题了！', icon: '😵‍💫' },    // 0
+             { questions: 5, title: '基础挑战', desc: '5道基础题等待您的挑战！', icon: '5' },        // 1
+             { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 2
+             { questions: 15, title: '高级挑战', desc: '15道高级题检验您的实力！', icon: '15' },      // 3
+             { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 4
+             { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 5
+             { questions: 20, title: '专家挑战', desc: '20道专家级题目等您征服！', icon: '20' },      // 6
+             { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 7
+             { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 8
+             { questions: 5, title: '基础挑战', desc: '5道基础题等待您的挑战！', icon: '5' },        // 9
+             { questions: 15, title: '高级挑战', desc: '15道高级题检验您的实力！', icon: '15' },      // 10
+             { questions: 20, title: '专家挑战', desc: '20道专家级题目等您征服！', icon: '20' }       // 11
+         ];
+
+        let isRunning = false;
+        let currentIndex = 0;
+
+        function startLottery() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            startButton.disabled = true;
+            startButton.innerHTML = '<div class="control-icon">⚡</div><div class="control-text">抽题中...</div>';
+            
+            // 更新结果显示
+            resultDisplay.innerHTML = '<div class="result-content">🎯 智能系统正在为您匹配最适合的题目...</div>';
+            
+            // 清除之前的高亮
+            document.querySelectorAll('.prize-cell').forEach(cell => {
+                cell.classList.remove('active');
+            });
+            
+            // 随机选择最终停止位置
+            const finalIndex = Math.floor(Math.random() * 12);
+            
+            // 计算总转动次数（至少转3圈，最多5圈）
+            const minRounds = 3;
+            const maxRounds = 5;
+            const rounds = minRounds + Math.random() * (maxRounds - minRounds);
+            const totalSteps = Math.floor(rounds * 12) + finalIndex;
+            
+            let currentStep = 0;
+            let speed = 60; // 初始速度
+            
+            function runStep() {
+                // 移除上一个高亮
+                document.querySelectorAll('.prize-cell').forEach(cell => {
+                    cell.classList.remove('active');
+                });
+                
+                // 添加当前高亮
+                const currentCellIndex = cellOrder[currentIndex];
+                const currentCell = document.querySelector(`[data-index="${currentCellIndex}"]`);
+                if (currentCell) {
+                    currentCell.classList.add('active');
+                    // 添加闪烁效果
+                    if (currentStep > totalSteps - 12) {
+                        createSparkles(currentCell);
+                    }
+                }
+                
+                currentStep++;
+                currentIndex = (currentIndex + 1) % 12;
+                
+                if (currentStep < totalSteps) {
+                    // 计算减速
+                    const remaining = totalSteps - currentStep;
+                    if (remaining <= 12) {
+                        speed = 60 + (12 - remaining) * 30; // 逐渐减速
+                    }
+                    
+                    setTimeout(runStep, speed);
+                } else {
+                    // 停止，显示结果
+                    setTimeout(() => {
+                        // 获取最终停止的格子的实际data-index
+                        // 注意：currentIndex已经+1了，所以要-1
+                        const actualFinalIndex = (currentIndex - 1 + 12) % 12;
+                        const finalCellIndex = cellOrder[actualFinalIndex];
+                        const prize = prizes[finalCellIndex];
+                        
+
+                        
+                        showResult(prize, finalCellIndex);
+                        
+                        isRunning = false;
+                        startButton.disabled = false;
+                        startButton.innerHTML = '<div class="control-icon">🎲</div><div class="control-text">再次抽题</div>';
+                    }, 800);
+                }
+            }
+            
+            runStep();
+        }
+
+        function showResult(prize, cellIndex) {
+            // 使用传入的cellIndex而不是重新计算
+            const finalCell = document.querySelector(`[data-index="${cellIndex}"]`);
+            if (finalCell) {
+                createSparkles(finalCell);
+                console.log('最终格子:', finalCell.textContent.trim(), 'data-index:', cellIndex);
+            }
+
+
+            
+            if (prize.questions === 0) {
+                // 幸运免题
+                resultDisplay.innerHTML = `
+                    <div class="result-content">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">${prize.icon} ${prize.title}</div>
+                        <div style="color: var(--text-secondary); margin-bottom: 1rem;">${prize.desc}</div>
+
+                        <button class="action-button" onclick="askRetry()">
+                            <i class="fas fa-dice"></i> 再试一次
+                        </button>
+                    </div>
+                `;
+            } else {
+                // 抽到题目
+                resultDisplay.innerHTML = `
+                    <div class="result-content">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">${prize.icon} ${prize.title}</div>
+                        <div style="color: var(--text-secondary); margin-bottom: 0.5rem;">${prize.desc}</div>
+                        <div style="font-size: 0.9rem; color: var(--text-light);">
+                            系统已为您准备好${prize.questions}道精选题目
+                        </div>
+
+                    </div>
+                `;
+            }
+        }
+
+        function askRetry() {
+            if (confirm('🎯 想要重新挑战吗？')) {
+                resultDisplay.innerHTML = '<div class="result-content">准备好接受挑战了吗？点击中央按钮开始您的Python学习之旅！</div>';
+                startButton.innerHTML = '<div class="control-icon">🎲</div><div class="control-text">开始抽题</div>';
+                // 清除高亮
+                document.querySelectorAll('.prize-cell').forEach(cell => {
+                    cell.classList.remove('active');
+                });
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机测验转盘 - 预览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-color-light: #7f9cf5;
+            --primary-color-dark: #5a67d8;
+            --accent-color: #9f7aea;
+            --accent-color-light: #b794f4;
+            --accent-color-dark: #805ad5;
+            --text-color-dark: #1a202c;
+            --text-color-medium: #4a5568;
+            --text-color-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-medium: #edf2f7;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color-medium);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .roulette-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .roulette-title {
+            font-family: 'ZCOOL XiaoWei', sans-serif;
+            font-size: 2.5rem;
+            color: var(--text-color-dark);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .roulette-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-color-medium);
+            margin-bottom: 3rem;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 0 6px #ffffff,
+                0 0 0 8px var(--primary-color),
+                0 0 0 12px #ffffff,
+                0 0 0 16px var(--accent-color),
+                0 0 30px rgba(0,0,0,0.3),
+                inset 0 0 0 3px rgba(255,255,255,0.2),
+                inset 0 0 50px rgba(0,0,0,0.1);
+            transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                rgba(255,255,255,0.3) 0deg,
+                transparent 30deg,
+                rgba(255,255,255,0.1) 60deg,
+                transparent 90deg,
+                rgba(255,255,255,0.3) 120deg,
+                transparent 150deg,
+                rgba(255,255,255,0.1) 180deg,
+                transparent 210deg,
+                rgba(255,255,255,0.3) 240deg,
+                transparent 270deg,
+                rgba(255,255,255,0.1) 300deg,
+                transparent 330deg,
+                rgba(255,255,255,0.3) 360deg
+            );
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .wheel-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .wheel-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg, 
+                rgba(255,255,255,0.25) 0%, 
+                rgba(255,255,255,0.05) 30%,
+                transparent 50%, 
+                rgba(0,0,0,0.1) 70%,
+                rgba(0,0,0,0.2) 100%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .wheel-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                ellipse at 30% 30%, 
+                rgba(255,255,255,0.4) 0%, 
+                rgba(255,255,255,0.1) 40%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .section-1 { 
+            background: linear-gradient(135deg, #667eea 0%, #4c63d2 50%, #3b4ec7 100%);
+            transform: rotate(0deg);
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+        }
+        .section-2 { 
+            background: linear-gradient(135deg, #38b2ac 0%, #2d9a94 50%, #22827c 100%);
+            transform: rotate(72deg);
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+        }
+        .section-3 { 
+            background: linear-gradient(135deg, #ed8936 0%, #d4751f 50%, #bb6108 100%);
+            transform: rotate(144deg);
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+        }
+        .section-4 { 
+            background: linear-gradient(135deg, #9f7aea 0%, #8b5fd6 50%, #7747c2 100%);
+            transform: rotate(216deg);
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+        }
+        .section-5 { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 50%, #2f855a 100%);
+            transform: rotate(288deg);
+            clip-path: polygon(50% 50%, 50% 0%, 95.1% 30.9%, 50% 50%);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+        }
+
+        .wheel-pointer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -20px;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #1a202c;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+        }
+
+        .wheel-pointer::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: -16px;
+            width: 0;
+            height: 0;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 28px solid var(--accent-color);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a67d8 100%);
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 
+                0 0 0 4px #ffffff,
+                0 0 0 8px var(--primary-color-light),
+                0 0 0 10px #ffffff,
+                0 8px 20px rgba(0,0,0,0.3),
+                inset 0 0 0 2px rgba(255,255,255,0.3),
+                inset 0 -8px 16px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .wheel-center::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 30%;
+            height: 30%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .wheel-center::after {
+            content: '⚡';
+            font-size: 1.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            z-index: 2;
+            position: relative;
+        }
+
+        .section-content {
+            position: absolute;
+            top: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 120px;
+            z-index: 4;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            margin-bottom: 0.2rem;
+            display: block;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5));
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            font-weight: 900;
+        }
+
+        .section-text {
+            font-size: 0.9rem;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+        }
+
+        .section-1 .section-content { transform: translateX(-50%) rotate(0deg); }
+        .section-2 .section-content { transform: translateX(-50%) rotate(-72deg); }
+        .section-3 .section-content { transform: translateX(-50%) rotate(-144deg); }
+        .section-4 .section-content { transform: translateX(-50%) rotate(-216deg); }
+        .section-5 .section-content { transform: translateX(-50%) rotate(-288deg); }
+
+        .spin-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            margin-bottom: 2rem;
+        }
+
+        .spin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .spin-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-display {
+            background: var(--bg-medium);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color-dark);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinning {
+            pointer-events: none;
+        }
+
+        .spinning .wheel {
+            animation: spinGlow 4s ease-out;
+        }
+
+        @keyframes spinGlow {
+            0% {
+                box-shadow: 
+                    0 0 0 6px #ffffff,
+                    0 0 0 8px var(--primary-color),
+                    0 0 0 12px #ffffff,
+                    0 0 0 16px var(--accent-color),
+                    0 0 30px rgba(0,0,0,0.3),
+                    inset 0 0 0 3px rgba(255,255,255,0.2),
+                    inset 0 0 50px rgba(0,0,0,0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 0 6px #ffffff,
+                    0 0 0 8px var(--accent-color),
+                    0 0 0 12px #ffffff,
+                    0 0 0 16px var(--primary-color),
+                    0 0 50px rgba(102, 126, 234, 0.6),
+                    inset 0 0 0 3px rgba(255,255,255,0.4),
+                    inset 0 0 80px rgba(102, 126, 234, 0.2);
+            }
+            100% {
+                box-shadow: 
+                    0 0 0 6px #ffffff,
+                    0 0 0 8px var(--primary-color),
+                    0 0 0 12px #ffffff,
+                    0 0 0 16px var(--accent-color),
+                    0 0 30px rgba(0,0,0,0.3),
+                    inset 0 0 0 3px rgba(255,255,255,0.2),
+                    inset 0 0 50px rgba(0,0,0,0.1);
+            }
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="roulette-container">
+        <h1 class="roulette-title">🎯 随机测验转盘</h1>
+        <p class="roulette-subtitle">点击转盘，看看今天要做几道题吧！</p>
+        
+        <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-section section-1">
+                    <div class="section-content">
+                        <div class="section-icon">🎉</div>
+                        <div class="section-text">不用<br>做题</div>
+                    </div>
+                </div>
+                <div class="wheel-section section-2">
+                    <div class="section-content">
+                        <div class="section-icon">5</div>
+                        <div class="section-text">5道题</div>
+                    </div>
+                </div>
+                <div class="wheel-section section-3">
+                    <div class="section-content">
+                        <div class="section-icon">10</div>
+                        <div class="section-text">10道题</div>
+                    </div>
+                </div>
+                <div class="wheel-section section-4">
+                    <div class="section-content">
+                        <div class="section-icon">15</div>
+                        <div class="section-text">15道题</div>
+                    </div>
+                </div>
+                <div class="wheel-section section-5">
+                    <div class="section-content">
+                        <div class="section-icon">20</div>
+                        <div class="section-text">20道题</div>
+                    </div>
+                </div>
+            </div>
+            <div class="wheel-center"></div>
+        </div>
+
+        <button class="spin-button" id="spinButton" onclick="spinWheel()">
+            <i class="fas fa-play"></i> 开始转盘
+        </button>
+
+        <div class="result-display" id="resultDisplay">
+            点击按钮开始转盘吧！
+        </div>
+    </div>
+
+    <script>
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const resultDisplay = document.getElementById('resultDisplay');
+        
+        const sections = [
+            { name: '不用做题', questions: 0 },
+            { name: '5道题', questions: 5 },
+            { name: '10道题', questions: 10 },
+            { name: '15道题', questions: 15 },
+            { name: '20道题', questions: 20 }
+        ];
+
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        function spinWheel() {
+            if (isSpinning) return;
+            
+            isSpinning = true;
+            spinButton.disabled = true;
+            spinButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 转盘中...';
+            resultDisplay.textContent = '转盘正在旋转...';
+            
+            // 添加旋转发光效果
+            wheel.parentElement.classList.add('spinning');
+            
+            // 随机选择一个区域 (0-4)
+            const selectedSection = Math.floor(Math.random() * 5);
+            
+            // 计算目标角度
+            // 每个区域占72度，指针指向区域中心需要额外的角度调整
+            const sectionAngle = 72;
+            const targetAngle = selectedSection * sectionAngle + (sectionAngle / 2);
+            
+            // 添加多圈旋转 (3-5圈) + 目标角度
+            const spins = 3 + Math.random() * 2; // 3-5圈
+            const finalRotation = currentRotation + (spins * 360) + (360 - targetAngle);
+            
+            // 应用旋转
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            currentRotation = finalRotation % 360;
+            
+            // 4秒后显示结果
+            setTimeout(() => {
+                const result = sections[selectedSection];
+                showResult(result);
+                
+                // 移除旋转发光效果
+                wheel.parentElement.classList.remove('spinning');
+                
+                isSpinning = false;
+                spinButton.disabled = false;
+                spinButton.innerHTML = '<i class="fas fa-redo"></i> 再转一次';
+            }, 4000);
+        }
+
+        function showResult(result) {
+            if (result.questions === 0) {
+                // 转到"不用做题"
+                resultDisplay.innerHTML = `
+                    <div>
+                        🎉 恭喜！您抽中了"${result.name}"！
+                        <button class="retry-button" onclick="askRetry()">
+                            <i class="fas fa-dice"></i> 要再转一次吗？
+                        </button>
+                    </div>
+                `;
+            } else {
+                // 转到需要做题
+                resultDisplay.innerHTML = `
+                    <div>
+                        📝 您抽中了"${result.name}"！准备开始答题吧！
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text-color-medium);">
+                            (在实际应用中，这里会跳转到${result.questions}道题的测验)
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function askRetry() {
+            if (confirm('您确定要再转一次吗？')) {
+                resultDisplay.textContent = '点击按钮开始转盘吧！';
+                spinButton.innerHTML = '<i class="fas fa-play"></i> 开始转盘';
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽题组件</title>
+    <style>
+        /* 抽题组件样式 - 可直接复制到目标页面 */
+        .lottery-arena {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 2rem auto;
+            background: var(--bg-medium, #edf2f7);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color, #e2e8f0);
+        }
+
+        .grid-system {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .prize-cell {
+            background: white;
+            border: 2px solid var(--border-color, #e2e8f0);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-color-dark, #1a202c);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .prize-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .prize-cell:hover::before {
+            left: 100%;
+        }
+
+        .prize-cell.active {
+            background: linear-gradient(135deg, var(--primary-color, #667eea), var(--accent-color, #9f7aea));
+            border: 3px solid var(--primary-color-light, #7f9cf5);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 20px rgba(102, 126, 234, 0.6),
+                0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .prize-cell.active::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, 
+                var(--primary-color, #667eea), 
+                var(--accent-color, #9f7aea), 
+                var(--primary-color-light, #7f9cf5), 
+                var(--accent-color-light, #b794f4));
+            background-size: 400% 400%;
+            border-radius: 13px;
+            z-index: -1;
+            animation: borderFlow 2s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .prize-number {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color-dark, #1a202c);
+            letter-spacing: -1px;
+        }
+
+        .prize-cell.active .prize-number {
+            color: white;
+        }
+
+        .control-center {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            background: linear-gradient(135deg, var(--primary-color, #667eea), var(--accent-color, #9f7aea));
+            border: 3px solid var(--primary-color-light, #7f9cf5);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .control-center:hover:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .control-center:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .control-center:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            z-index: 1;
+        }
+
+        .control-text {
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        /* 特殊效果 */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .lottery-arena {
+                width: 320px;
+                height: 320px;
+                padding: 12px;
+            }
+            
+            .prize-number {
+                font-size: 1.6rem;
+            }
+            
+            .control-icon {
+                font-size: 1.6rem;
+            }
+            
+            .control-text {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body style="padding: 2rem; background: #f7fafc; font-family: 'Noto Sans SC', sans-serif;">
+    
+    <!-- 抽题组件 - 可直接复制到目标页面 -->
+    <div class="lottery-arena">
+        <div class="grid-system" id="lotteryGrid">
+            <!-- 第一行 -->
+            <div class="prize-cell" data-index="0">
+                <div class="prize-number">😭</div>
+            </div>
+            <div class="prize-cell" data-index="1">
+                <div class="prize-number">5</div>
+            </div>
+            <div class="prize-cell" data-index="2">
+                <div class="prize-number">10</div>
+            </div>
+            <div class="prize-cell" data-index="3">
+                <div class="prize-number">15</div>
+            </div>
+            
+            <!-- 第二行 -->
+            <div class="prize-cell" data-index="11">
+                <div class="prize-number">20</div>
+            </div>
+            
+            <!-- 中央控制按钮 -->
+            <button class="control-center" id="startButton" onclick="startLottery()">
+                <div class="control-icon">📝</div>
+                <div class="control-text">开始抽题</div>
+            </button>
+            
+            <div class="prize-cell" data-index="4">
+                <div class="prize-number">15</div>
+            </div>
+            
+            <!-- 第三行 -->
+            <div class="prize-cell" data-index="10">
+                <div class="prize-number">15</div>
+            </div>
+            
+            <div class="prize-cell" data-index="5">
+                <div class="prize-number">10</div>
+            </div>
+            
+            <!-- 第四行 -->
+            <div class="prize-cell" data-index="9">
+                <div class="prize-number">5</div>
+            </div>
+            <div class="prize-cell" data-index="8">
+                <div class="prize-number">10</div>
+            </div>
+            <div class="prize-cell" data-index="7">
+                <div class="prize-number">😭</div>
+            </div>
+            <div class="prize-cell" data-index="6">
+                <div class="prize-number">20</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 抽题组件JavaScript - 可直接复制到目标页面
+        
+        // 创建闪烁效果
+        function createSparkles(element) {
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                element.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+
+        const grid = document.getElementById('lotteryGrid');
+        const startButton = document.getElementById('startButton');
+        
+        // 12个外围格子的顺序（顺时针）
+        const cellOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        
+        // 奖品配置 - 按照格子顺序排列
+        const prizes = [
+            { questions: 0, title: '幸运免题', desc: '恭喜！这次不用做题了！', icon: '😭' },        // 0
+            { questions: 5, title: '基础挑战', desc: '5道基础题等待您的挑战！', icon: '5' },        // 1
+            { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 2
+            { questions: 15, title: '高级挑战', desc: '15道高级题检验您的实力！', icon: '15' },      // 3
+            { questions: 15, title: '高级挑战', desc: '15道高级题检验您的实力！', icon: '15' },      // 4
+            { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 5
+            { questions: 20, title: '专家挑战', desc: '20道专家级题目等您征服！', icon: '20' },      // 6
+            { questions: 0, title: '幸运免题', desc: '恭喜！这次不用做题了！', icon: '😭' },        // 7
+            { questions: 10, title: '进阶挑战', desc: '10道进阶题助您提升技能！', icon: '10' },      // 8
+            { questions: 5, title: '基础挑战', desc: '5道基础题等待您的挑战！', icon: '5' },        // 9
+            { questions: 15, title: '高级挑战', desc: '15道高级题检验您的实力！', icon: '15' },      // 10
+            { questions: 20, title: '专家挑战', desc: '20道专家级题目等您征服！', icon: '20' }       // 11
+        ];
+
+        let isRunning = false;
+        let currentIndex = 0;
+
+        function startLottery() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            startButton.disabled = true;
+            startButton.innerHTML = '<div class="control-icon">⚡</div><div class="control-text">抽题中...</div>';
+            
+            // 清除之前的高亮
+            document.querySelectorAll('.prize-cell').forEach(cell => {
+                cell.classList.remove('active');
+            });
+            
+            // 随机选择最终停止位置
+            const finalIndex = Math.floor(Math.random() * 12);
+            
+            // 计算总转动次数（至少转3圈，最多5圈）
+            const minRounds = 3;
+            const maxRounds = 5;
+            const rounds = minRounds + Math.random() * (maxRounds - minRounds);
+            const totalSteps = Math.floor(rounds * 12) + finalIndex;
+            
+            let currentStep = 0;
+            let speed = 60; // 初始速度
+            
+            function runStep() {
+                // 移除上一个高亮
+                document.querySelectorAll('.prize-cell').forEach(cell => {
+                    cell.classList.remove('active');
+                });
+                
+                // 添加当前高亮
+                const currentCellIndex = cellOrder[currentIndex];
+                const currentCell = document.querySelector(`[data-index="${currentCellIndex}"]`);
+                if (currentCell) {
+                    currentCell.classList.add('active');
+                    // 添加闪烁效果
+                    if (currentStep > totalSteps - 12) {
+                        createSparkles(currentCell);
+                    }
+                }
+                
+                currentStep++;
+                currentIndex = (currentIndex + 1) % 12;
+                
+                if (currentStep < totalSteps) {
+                    // 计算减速
+                    const remaining = totalSteps - currentStep;
+                    if (remaining <= 12) {
+                        speed = 60 + (12 - remaining) * 30; // 逐渐减速
+                    }
+                    
+                    setTimeout(runStep, speed);
+                } else {
+                    // 停止，显示结果
+                    setTimeout(() => {
+                        // 获取最终停止的格子的实际data-index
+                        const actualFinalIndex = (currentIndex - 1 + 12) % 12;
+                        const finalCellIndex = cellOrder[actualFinalIndex];
+                        const prize = prizes[finalCellIndex];
+                        
+                        // 这里可以调用回调函数或触发自定义事件
+                        onLotteryResult(prize, finalCellIndex);
+                        
+                        isRunning = false;
+                        startButton.disabled = false;
+                        startButton.innerHTML = '<div class="control-icon">📝</div><div class="control-text">再次抽题</div>';
+                    }, 800);
+                }
+            }
+            
+            runStep();
+        }
+
+        // 抽奖结果回调函数 - 可在目标页面中重写此函数
+        function onLotteryResult(prize, cellIndex) {
+            console.log('抽奖结果:', prize);
+            
+            // 添加最终闪烁效果
+            const finalCell = document.querySelector(`[data-index="${cellIndex}"]`);
+            if (finalCell) {
+                createSparkles(finalCell);
+            }
+            
+            // 默认的结果处理 - 在实际应用中可以替换为跳转到测验页面
+            if (prize.questions === 0) {
+                alert(`${prize.icon} ${prize.title}\n${prize.desc}`);
+            } else {
+                alert(`${prize.icon} ${prize.title}\n${prize.desc}`);
+                // 在实际应用中，这里可以跳转到对应题目数量的测验页面
+                // window.location.href = `quiz.html?questions=${prize.questions}`;
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字体效果测试 - 开始答题</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@800;900&family=Comfortaa:wght@700&family=Quicksand:wght@700&family=Poppins:wght@800;900&family=Rubik:wght@800;900&family=Varela+Round:wght@400&family=Baloo+2:wght@800&family=Dosis:wght@800&family=Raleway:wght@800;900&family=Montserrat:wght@800;900&family=Source+Sans+Pro:wght@900&family=Open+Sans:wght@800&family=Lato:wght@900&family=Ubuntu:wght@700&family=Roboto:wght@900&family=Inter:wght@800;900&family=Work+Sans:wght@800;900&family=Manrope:wght@800&family=DM+Sans:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .font-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .font-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .font-item:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .font-number {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .font-text {
+            font-size: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .font-text:hover {
+            transform: scale(1.05);
+        }
+
+        /* 字体样式 1-20 - 圆润粗体无阴影 */
+        .font-1 {
+            font-family: 'Fredoka One', cursive;
+            font-weight: 400;
+            color: #ff6b6b;
+            font-size: 2.2rem;
+        }
+
+        .font-2 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            color: #4ecdc4;
+            border-radius: 10px;
+        }
+
+        .font-3 {
+            font-family: 'Comfortaa', cursive;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 1px;
+        }
+
+        .font-4 {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            color: #ff9ff3;
+            font-size: 2.1rem;
+        }
+
+        .font-5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            color: #feca57;
+            letter-spacing: 0.5px;
+        }
+
+        .font-6 {
+            font-family: 'Rubik', sans-serif;
+            font-weight: 900;
+            color: #54a0ff;
+            font-size: 2.1rem;
+        }
+
+        .font-7 {
+            font-family: 'Varela Round', sans-serif;
+            font-weight: 400;
+            color: #96ceb4;
+            font-size: 2.3rem;
+        }
+
+        .font-8 {
+            font-family: 'Baloo 2', cursive;
+            font-weight: 800;
+            color: #ff6b6b;
+            font-size: 2.2rem;
+        }
+
+        .font-9 {
+            font-family: 'Dosis', sans-serif;
+            font-weight: 800;
+            color: #764ba2;
+            letter-spacing: 1px;
+        }
+
+        .font-10 {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 900;
+            color: #45b7d1;
+            font-size: 2.1rem;
+        }
+
+        .font-11 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: #ff9a9e;
+            letter-spacing: 0.5px;
+        }
+
+        .font-12 {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            color: #5f27cd;
+            font-size: 2.1rem;
+        }
+
+        .font-13 {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 800;
+            color: #00d4ff;
+            letter-spacing: 1px;
+        }
+
+        .font-14 {
+            font-family: 'Lato', sans-serif;
+            font-weight: 900;
+            color: #341f97;
+            font-size: 2.1rem;
+        }
+
+        .font-15 {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            color: #ff6348;
+            letter-spacing: 0.5px;
+        }
+
+        .font-16 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 900;
+            color: #2ed573;
+            font-size: 2.1rem;
+        }
+
+        .font-17 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            color: #ff4757;
+            letter-spacing: 0.5px;
+        }
+
+        .font-18 {
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 900;
+            color: #3742fa;
+            font-size: 2.1rem;
+        }
+
+        .font-19 {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            color: #ff6b35;
+            letter-spacing: 1px;
+        }
+
+        .font-20 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            color: #7bed9f;
+            font-size: 2.1rem;
+        }
+
+        /* 动画效果 */
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes wave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes tech {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .description {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 字体效果测试 - "开始答题"</h1>
+        
+        <div class="font-grid">
+            <div class="font-item">
+                <div class="font-number">样式 1 - 超级圆润</div>
+                <div class="font-text font-1">开始答题</div>
+                <div class="description">Fredoka One - 经典圆润字体</div>
+                <button class="copy-btn" onclick="copyStyle(1)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 2 - 现代圆润</div>
+                <div class="font-text font-2">开始答题</div>
+                <div class="description">Nunito 900 - 现代圆润粗体</div>
+                <button class="copy-btn" onclick="copyStyle(2)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 3 - 舒适圆润</div>
+                <div class="font-text font-3">开始答题</div>
+                <div class="description">Comfortaa - 舒适圆润设计</div>
+                <button class="copy-btn" onclick="copyStyle(3)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 4 - 快速圆润</div>
+                <div class="font-text font-4">开始答题</div>
+                <div class="description">Quicksand - 快速圆润字体</div>
+                <button class="copy-btn" onclick="copyStyle(4)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 5 - 流行粗体</div>
+                <div class="font-text font-5">开始答题</div>
+                <div class="description">Poppins 900 - 流行粗体设计</div>
+                <button class="copy-btn" onclick="copyStyle(5)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 6 - 立方粗体</div>
+                <div class="font-text font-6">开始答题</div>
+                <div class="description">Rubik 900 - 立方圆润粗体</div>
+                <button class="copy-btn" onclick="copyStyle(6)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 7 - 圆形字体</div>
+                <div class="font-text font-7">开始答题</div>
+                <div class="description">Varela Round - 完美圆形</div>
+                <button class="copy-btn" onclick="copyStyle(7)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 8 - 气球字体</div>
+                <div class="font-text font-8">开始答题</div>
+                <div class="description">Baloo 2 - 气球般圆润</div>
+                <button class="copy-btn" onclick="copyStyle(8)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 9 - 剂量粗体</div>
+                <div class="font-text font-9">开始答题</div>
+                <div class="description">Dosis 800 - 剂量感粗体</div>
+                <button class="copy-btn" onclick="copyStyle(9)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 10 - 优雅粗体</div>
+                <div class="font-text font-10">开始答题</div>
+                <div class="description">Raleway 900 - 优雅粗体</div>
+                <button class="copy-btn" onclick="copyStyle(10)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 11 - 蒙特粗体</div>
+                <div class="font-text font-11">开始答题</div>
+                <div class="description">Montserrat 900 - 蒙特粗体</div>
+                <button class="copy-btn" onclick="copyStyle(11)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 12 - 源码粗体</div>
+                <div class="font-text font-12">开始答题</div>
+                <div class="description">Source Sans Pro 900 - 源码粗体</div>
+                <button class="copy-btn" onclick="copyStyle(12)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 13 - 开放粗体</div>
+                <div class="font-text font-13">开始答题</div>
+                <div class="description">Open Sans 800 - 开放式粗体</div>
+                <button class="copy-btn" onclick="copyStyle(13)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 14 - 拉丁粗体</div>
+                <div class="font-text font-14">开始答题</div>
+                <div class="description">Lato 900 - 拉丁粗体</div>
+                <button class="copy-btn" onclick="copyStyle(14)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 15 - 乌班图粗体</div>
+                <div class="font-text font-15">开始答题</div>
+                <div class="description">Ubuntu 700 - 乌班图粗体</div>
+                <button class="copy-btn" onclick="copyStyle(15)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 16 - 机器人粗体</div>
+                <div class="font-text font-16">开始答题</div>
+                <div class="description">Roboto 900 - 机器人粗体</div>
+                <button class="copy-btn" onclick="copyStyle(16)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 17 - 国际粗体</div>
+                <div class="font-text font-17">开始答题</div>
+                <div class="description">Inter 900 - 国际化粗体</div>
+                <button class="copy-btn" onclick="copyStyle(17)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 18 - 工作粗体</div>
+                <div class="font-text font-18">开始答题</div>
+                <div class="description">Work Sans 900 - 工作粗体</div>
+                <button class="copy-btn" onclick="copyStyle(18)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 19 - 人性粗体</div>
+                <div class="font-text font-19">开始答题</div>
+                <div class="description">Manrope 800 - 人性化粗体</div>
+                <button class="copy-btn" onclick="copyStyle(19)">复制样式</button>
+            </div>
+
+            <div class="font-item">
+                <div class="font-number">样式 20 - 设计粗体</div>
+                <div class="font-text font-20">开始答题</div>
+                <div class="description">DM Sans 700 - 设计师粗体</div>
+                <button class="copy-btn" onclick="copyStyle(20)">复制样式</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyStyle(styleNumber) {
+            const styles = {
+                1: `font-family: 'Fredoka One', cursive;
+font-weight: 400;
+color: #ff6b6b;
+font-size: 2.2rem;`,
+
+                2: `font-family: 'Nunito', sans-serif;
+font-weight: 900;
+color: #4ecdc4;
+border-radius: 10px;`,
+
+                3: `font-family: 'Comfortaa', cursive;
+font-weight: 700;
+color: #667eea;
+letter-spacing: 1px;`,
+
+                4: `font-family: 'Quicksand', sans-serif;
+font-weight: 700;
+color: #ff9ff3;
+font-size: 2.1rem;`,
+
+                5: `font-family: 'Poppins', sans-serif;
+font-weight: 900;
+color: #feca57;
+letter-spacing: 0.5px;`,
+
+                6: `font-family: 'Rubik', sans-serif;
+font-weight: 900;
+color: #54a0ff;
+font-size: 2.1rem;`,
+
+                7: `font-family: 'Varela Round', sans-serif;
+font-weight: 400;
+color: #96ceb4;
+font-size: 2.3rem;`,
+
+                8: `font-family: 'Baloo 2', cursive;
+font-weight: 800;
+color: #ff6b6b;
+font-size: 2.2rem;`,
+
+                9: `font-family: 'Dosis', sans-serif;
+font-weight: 800;
+color: #764ba2;
+letter-spacing: 1px;`,
+
+                10: `font-family: 'Raleway', sans-serif;
+font-weight: 900;
+color: #45b7d1;
+font-size: 2.1rem;`,
+
+                11: `font-family: 'Montserrat', sans-serif;
+font-weight: 900;
+color: #ff9a9e;
+letter-spacing: 0.5px;`,
+
+                12: `font-family: 'Source Sans Pro', sans-serif;
+font-weight: 900;
+color: #5f27cd;
+font-size: 2.1rem;`,
+
+                13: `font-family: 'Open Sans', sans-serif;
+font-weight: 800;
+color: #00d4ff;
+letter-spacing: 1px;`,
+
+                14: `font-family: 'Lato', sans-serif;
+font-weight: 900;
+color: #341f97;
+font-size: 2.1rem;`,
+
+                15: `font-family: 'Ubuntu', sans-serif;
+font-weight: 700;
+color: #ff6348;
+letter-spacing: 0.5px;`,
+
+                16: `font-family: 'Roboto', sans-serif;
+font-weight: 900;
+color: #2ed573;
+font-size: 2.1rem;`,
+
+                17: `font-family: 'Inter', sans-serif;
+font-weight: 900;
+color: #ff4757;
+letter-spacing: 0.5px;`,
+
+                18: `font-family: 'Work Sans', sans-serif;
+font-weight: 900;
+color: #3742fa;
+font-size: 2.1rem;`,
+
+                19: `font-family: 'Manrope', sans-serif;
+font-weight: 800;
+color: #ff6b35;
+letter-spacing: 1px;`,
+
+                20: `font-family: 'DM Sans', sans-serif;
+font-weight: 700;
+color: #7bed9f;
+font-size: 2.1rem;`
+            };
+
+            navigator.clipboard.writeText(styles[styleNumber]).then(() => {
+                alert(`样式 ${styleNumber} 已复制到剪贴板！`);
+            }).catch(() => {
+                alert('复制失败，请手动复制');
+            });
+        }
+    </script>
+</body>
+</html> 
