@@ -1112,7 +1112,7 @@ print("猫咪") # 将 猫咪 替换为你最喜欢的动物
         
         function checkTFQ(questionId, correctAnswer, explanation) { 
             const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
-            const container = document.getElementById(`${questionId}_container`); // Corrected to get container for TFQ
+            const container = document.getElementById(questionId); // 修改这行，直接使用questionId
             const feedbackEl = container ? container.querySelector('.feedback') : null;
 
             if (!selectedOption) {

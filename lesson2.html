@@ -1054,7 +1054,8 @@ print(type(x))</code></pre>
 
         function checkMCQ(questionId, correctAnswerLetter, explanation) {
             const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
-            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            const container = document.getElementById(questionId);
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
             
             if (!selectedOption) {
                 showCustomMessage("请先选择一个答案！");
@@ -1074,24 +1075,35 @@ print(type(x))</code></pre>
         
         function checkTFQ(questionId, correctAnswer, explanation) { 
             const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
-            const feedbackEl = document.querySelector(`#${questionId} .feedback`);
+            const container = document.getElementById(questionId + '_container');
+            const feedbackEl = container ? container.querySelector('.feedback') : null;
 
             if (!selectedOption) {
                 showCustomMessage("请先选择一个答案！");
-                 if(feedbackEl) feedbackEl.style.display = 'none';
+                 if (feedbackEl) { // Check if feedbackEl exists before hiding
+                    feedbackEl.style.display = 'none';
+                 }
                 return;
             }
             
             const selectedValue = selectedOption.value; 
-            if (selectedValue === correctAnswer) {
-                feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-                feedbackEl.className = 'feedback correct';
+
+            // Ensure feedbackEl exists before attempting to modify its properties
+            if (feedbackEl) {
+                if (selectedValue === correctAnswer) {
+                    feedbackEl.innerHTML = '<strong><i class="fas fa-check-circle text-green-600 mr-1"></i> 判断正确！</strong><br>' + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                    feedbackEl.className = 'feedback correct';
+                } else {
+                    const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
+                    feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+                    feedbackEl.className = 'feedback incorrect';
+                }
+                 feedbackEl.style.display = 'block';
             } else {
-                const actualCorrectAnswerText = correctAnswer === 'true' ? '正确' : '错误';
-                feedbackEl.innerHTML = `<strong><i class="fas fa-times-circle text-red-600 mr-1"></i> 判断错误。</strong>正确答案是：${actualCorrectAnswerText}。<br>` + (explanation || "").replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-                feedbackEl.className = 'feedback incorrect';
+                // Log an error or show a generic message if feedbackEl is not found
+                console.error(`Feedback element not found for TFQ with base ID: ${questionId}. Expected container ID: ${questionId}_container`);
+                showCustomMessage("无法显示答案反馈，页面结构可能存在问题。");
             }
-             if(feedbackEl) feedbackEl.style.display = 'block';
         }
 
         function showSolution(solutionId) {
